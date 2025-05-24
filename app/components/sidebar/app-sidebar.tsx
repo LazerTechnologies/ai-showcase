@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import Scenario from "./scenario";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -31,8 +32,73 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="p-6">
-        <div>Thread List</div>
+      <SidebarContent className="p-6 gap-4">
+        {/* Each of these are scenarios for showcasing some AI agent scenario, eg. MCP, tool usage, multi agent, etc. */}
+        <Scenario
+          title="MCP Integration"
+          description="Demonstrate Model Context Protocol for seamless AI model communication and context sharing across different systems."
+          badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
+        />
+        <Scenario
+          title="Tool Usage Agent"
+          description="Showcase an AI agent that can dynamically select and use various tools like calculators, web scrapers, and APIs."
+          badges={[
+            "Tool Selection",
+            "API Integration",
+            "Dynamic Execution",
+            "Function Calling",
+          ]}
+        />
+        <Scenario
+          title="Multi-Agent Collaboration"
+          description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
+          badges={[
+            "Multi-Agent",
+            "Coordination",
+            "Task Delegation",
+            "Distributed AI",
+          ]}
+        />
+        <Scenario
+          title="Code Generation Assistant"
+          description="An AI agent specialized in generating, reviewing, and refactoring code across multiple programming languages."
+          badges={[
+            "Code Generation",
+            "Code Review",
+            "Refactoring",
+            "Multi-Language",
+          ]}
+        />
+        <Scenario
+          title="Data Analysis Pipeline"
+          description="Automated data processing agent that can clean, analyze, and visualize datasets with minimal human intervention."
+          badges={[
+            "Data Processing",
+            "Analytics",
+            "Visualization",
+            "Automation",
+          ]}
+        />
+        <Scenario
+          title="Customer Support Bot"
+          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+          badges={[
+            "Customer Service",
+            "Knowledge Base",
+            "Ticketing",
+            "Escalation",
+          ]}
+        />
+        <Scenario
+          title="Research Assistant"
+          description="AI agent that can search, summarize, and synthesize information from multiple sources for research tasks."
+          badges={[
+            "Research",
+            "Information Retrieval",
+            "Summarization",
+            "Synthesis",
+          ]}
+        />
       </SidebarContent>
 
       <SidebarRail />
