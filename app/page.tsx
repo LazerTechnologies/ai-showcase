@@ -114,16 +114,15 @@ function MessagesContainer({ messages }: { messages: Message[] }) {
 }
 
 export default function GeneralChat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/chat",
-      onToolCall: (toolCall) => {
-        console.log(toolCall);
-      },
-      onFinish: (message) => {
-        console.log(message);
-      },
-    });
+  const { messages, input, handleInputChange, handleSubmit, status } = useChat({
+    api: "/api/chat",
+    onToolCall: (toolCall) => {
+      console.log(toolCall);
+    },
+    onFinish: (message) => {
+      console.log(message);
+    },
+  });
 
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] max-w-4xl mx-auto">
@@ -138,7 +137,7 @@ export default function GeneralChat() {
           input={input}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          isLoading={isLoading}
+          isLoading={status === "submitted" || status === "streaming"}
         />
       </div>
     </div>
