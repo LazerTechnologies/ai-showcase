@@ -33,11 +33,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="p-6 gap-4">
-        {/* Each of these are scenarios for showcasing some AI agent scenario, eg. MCP, tool usage, multi agent, etc. */}
         <Scenario
-          title="MCP Integration"
-          description="Demonstrate Model Context Protocol for seamless AI model communication and context sharing across different systems."
-          path="/mcp-integration"
+          title="General Chat"
+          description="Just a general chat with a model"
+          path="/"
+          badges={[]}
+        />
+        <Scenario
+          title="MCP"
+          description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
+          path="/mcp"
           badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
         />
         <Scenario

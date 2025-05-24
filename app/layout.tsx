@@ -8,16 +8,9 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "./components/sidebar/app-sidebar";
 import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { LightDarkToggle } from "./components/light-dark-toggle";
+import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,19 +49,7 @@ export default function RootLayout({
               <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 w-full">
                 <SidebarTrigger />
                 <Separator orientation="vertical" className="mr-2 h-4" />
-                <Breadcrumb>
-                  <BreadcrumbList>
-                    <BreadcrumbItem className="hidden md:block">
-                      <BreadcrumbLink href="#">
-                        Build Your Own ChatGPT UX
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator className="hidden md:block" />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>Starter Template</BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </BreadcrumbList>
-                </Breadcrumb>
+                <SidebarBreadcrumb />
                 <LightDarkToggle className="ml-auto" />
               </header>
               <div className="p-6">{children}</div>
