@@ -71,7 +71,7 @@ export default function RootLayout({
                 </Breadcrumb>
                 <LightDarkToggle className="ml-auto" />
               </header>
-              {children}
+              <div className="p-6">{children}</div>
             </SidebarInset>
           </SidebarProvider>
         </body>
