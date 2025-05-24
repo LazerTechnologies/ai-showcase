@@ -8,7 +8,8 @@ const google = createGoogleGenerativeAI({
 
 export const generalAgent = new Agent({
   name: "general-agent",
-  instructions: "You are a general agent. You mostly just greet the user.",
+  instructions:
+    "You are a general-purpose agent. You're able to use tools or respond without tools.",
   model: google("gemini-2.0-flash-exp"),
   tools: {
     weatherTool,
