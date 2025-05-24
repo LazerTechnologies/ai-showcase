@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Send, User, Bot } from "lucide-react";
 import { useRef, useEffect } from "react";
 import Markdown from "react-markdown";
+import Codeblock from "./components/markdown/codeblock";
 
 function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -36,7 +37,15 @@ function ChatMessage({ message }: { message: Message }) {
           }`}
         >
           <div className="text-sm whitespace-pre-wrap">
-            <Markdown>{message.content}</Markdown>
+            <Markdown
+              components={{
+                code: ({ node, ...props }) => (
+                  <Codeblock node={node} {...props} />
+                ),
+              }}
+            >
+              {message.content}
+            </Markdown>
           </div>
         </div>
       </div>
