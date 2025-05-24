@@ -1,20 +1,28 @@
 "use client";
 
-import { useChat } from "@ai-sdk/react";
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
+import { Message } from "@ai-sdk/react";
 
-export function ChatInterface() {
-  const { messages, input, handleInputChange, handleSubmit, status } = useChat({
-    api: "/api/chat",
-    onToolCall: (toolCall) => {
-      console.log(toolCall);
-    },
-    onFinish: (message) => {
-      console.log(message);
-    },
-  });
+interface ChatInterfaceProps {
+  messages: Message[];
+  input: string;
+  handleInputChange: (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isLoading: boolean;
+}
 
+export function ChatInterface({
+  messages,
+  input,
+  handleInputChange,
+  handleSubmit,
+  isLoading,
+}: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] max-w-4xl mx-auto">
       <div className="mb-4">
@@ -28,7 +36,7 @@ export function ChatInterface() {
           input={input}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
-          isLoading={status === "submitted" || status === "streaming"}
+          isLoading={isLoading}
         />
       </div>
     </div>
