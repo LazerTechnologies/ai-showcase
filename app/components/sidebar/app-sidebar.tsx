@@ -37,11 +37,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="MCP Integration"
           description="Demonstrate Model Context Protocol for seamless AI model communication and context sharing across different systems."
+          path="/mcp-integration"
           badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
         />
         <Scenario
           title="Tool Usage Agent"
           description="Showcase an AI agent that can dynamically select and use various tools like calculators, web scrapers, and APIs."
+          path="/tool-usage-agent"
           badges={[
             "Tool Selection",
             "API Integration",
@@ -52,6 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
+          path="/multi-agent-collaboration"
           badges={[
             "Multi-Agent",
             "Coordination",
@@ -62,6 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="Code Generation Assistant"
           description="An AI agent specialized in generating, reviewing, and refactoring code across multiple programming languages."
+          path="/code-generation-assistant"
           badges={[
             "Code Generation",
             "Code Review",
@@ -72,6 +76,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="Data Analysis Pipeline"
           description="Automated data processing agent that can clean, analyze, and visualize datasets with minimal human intervention."
+          path="/data-analysis-pipeline"
           badges={[
             "Data Processing",
             "Analytics",
@@ -82,6 +87,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="Customer Support Bot"
           description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+          path="/customer-support-bot"
           badges={[
             "Customer Service",
             "Knowledge Base",
@@ -92,6 +98,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Scenario
           title="Research Assistant"
           description="AI agent that can search, summarize, and synthesize information from multiple sources for research tasks."
+          path="/research-assistant"
           badges={[
             "Research",
             "Information Retrieval",
