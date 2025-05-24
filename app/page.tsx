@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, User, Bot } from "lucide-react";
 import { useRef, useEffect } from "react";
+import Markdown from "react-markdown";
 
 function ChatMessage({ message }: { message: Message }) {
   const isUser = message.role === "user";
@@ -34,7 +35,9 @@ function ChatMessage({ message }: { message: Message }) {
               : "bg-secondary text-secondary-foreground"
           }`}
         >
-          <div className="text-sm whitespace-pre-wrap">{message.content}</div>
+          <div className="text-sm whitespace-pre-wrap">
+            <Markdown>{message.content}</Markdown>
+          </div>
         </div>
       </div>
     </div>
