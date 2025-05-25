@@ -12,6 +12,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Scenario from "./scenario";
+import { WipOverlay } from "../../../components/ui/wip-overlay";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -39,23 +40,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           path="/"
           badges={[]}
         />
-        <Scenario
-          title="MCP"
-          description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
-          path="/mcp"
-          badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
-        />
-        <Scenario
-          title="Tool Usage Agent"
-          description="Showcase an AI agent that can dynamically select and use various tools like calculators, web scrapers, and APIs."
-          path="/tool-usage-agent"
-          badges={[
-            "Tool Selection",
-            "API Integration",
-            "Dynamic Execution",
-            "Function Calling",
-          ]}
-        />
+        <WipOverlay>
+          <Scenario
+            title="MCP"
+            description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
+            path="/mcp"
+            badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
+          />
+        </WipOverlay>
+        <WipOverlay>
+          <Scenario
+            title="Tool Usage Agent"
+            description="Showcase an AI agent that can dynamically select and use various tools like calculators, web scrapers, and APIs."
+            path="/tool-usage-agent"
+            badges={[
+              "Tool Selection",
+              "API Integration",
+              "Dynamic Execution",
+              "Function Calling",
+            ]}
+          />
+        </WipOverlay>
         <Scenario
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
@@ -67,50 +72,58 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             "Distributed AI",
           ]}
         />
-        <Scenario
-          title="Code Generation Assistant"
-          description="An AI agent specialized in generating, reviewing, and refactoring code across multiple programming languages."
-          path="/code-generation-assistant"
-          badges={[
-            "Code Generation",
-            "Code Review",
-            "Refactoring",
-            "Multi-Language",
-          ]}
-        />
-        <Scenario
-          title="Data Analysis Pipeline"
-          description="Automated data processing agent that can clean, analyze, and visualize datasets with minimal human intervention."
-          path="/data-analysis-pipeline"
-          badges={[
-            "Data Processing",
-            "Analytics",
-            "Visualization",
-            "Automation",
-          ]}
-        />
-        <Scenario
-          title="Customer Support Bot"
-          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
-          path="/customer-support-bot"
-          badges={[
-            "Customer Service",
-            "Knowledge Base",
-            "Ticketing",
-            "Escalation",
-          ]}
-        />
-        <Scenario
-          title="Research Assistant"
-          description="AI agent that can search, summarize, and synthesize information from multiple sources for research tasks."
-          path="/research-assistant"
-          badges={[
-            "Research",
-            "Information Retrieval",
-            "Summarization",
-            "Synthesis",
-          ]}
-        />
+        <WipOverlay>
+          <Scenario
+            title="Code Generation Assistant"
+            description="An AI agent specialized in generating, reviewing, and refactoring code across multiple programming languages."
+            path="/code-generation-assistant"
+            badges={[
+              "Code Generation",
+              "Code Review",
+              "Refactoring",
+              "Multi-Language",
+            ]}
+          />
+        </WipOverlay>
+        <WipOverlay>
+          <Scenario
+            title="Data Analysis Pipeline"
+            description="Automated data processing agent that can clean, analyze, and visualize datasets with minimal human intervention."
+            path="/data-analysis-pipeline"
+            badges={[
+              "Data Processing",
+              "Analytics",
+              "Visualization",
+              "Automation",
+            ]}
+          />
+        </WipOverlay>
+        <WipOverlay>
+          <Scenario
+            title="Customer Support Bot"
+            description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+            path="/customer-support-bot"
+            badges={[
+              "Customer Service",
+              "Knowledge Base",
+              "Ticketing",
+              "Escalation",
+            ]}
+          />
+        </WipOverlay>
+        <WipOverlay>
+          <Scenario
+            title="Research Assistant"
+            description="AI agent that can search, summarize, and synthesize information from multiple sources for research tasks."
+            path="/research-assistant"
+            badges={[
+              "Research",
+              "Information Retrieval",
+              "Summarization",
+              "Synthesis",
+            ]}
+          />
+        </WipOverlay>
       </SidebarContent>
 
       <SidebarRail />
