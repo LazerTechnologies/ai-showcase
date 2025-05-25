@@ -2,10 +2,10 @@
 
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
-import { Message } from "@ai-sdk/react";
+import { StreamMessage } from "@/app/hooks/useDataStream";
 
 interface ChatInterfaceProps {
-  messages: Message[];
+  messages: StreamMessage[];
   input: string;
   handleInputChange: (
     e:

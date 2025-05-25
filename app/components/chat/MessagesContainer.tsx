@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { type Message } from "@ai-sdk/react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
+import { StreamMessage } from "@/app/hooks/useDataStream";
 
 interface MessagesContainerProps {
-  messages: Message[];
+  messages: StreamMessage[];
 }
 
 export function MessagesContainer({ messages }: MessagesContainerProps) {
