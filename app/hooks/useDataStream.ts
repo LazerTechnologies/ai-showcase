@@ -6,6 +6,8 @@ export interface StreamMessage {
   content: string;
   streamId?: string;
   timestamp: number;
+  toolName?: string;
+  isToolUsage?: boolean;
 }
 
 export interface UseDataStreamReturn {
@@ -107,6 +109,21 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                       timestamp: Date.now(),
                     };
                     assistantMessages.set(data.streamId, assistantMessage);
+                  } else if (data.type === "tool-call") {
+                    console.log("tool-call", data);
+                    // Create a tool usage message
+                    const toolMessage: StreamMessage = {
+                      id: `${Date.now()}-tool-${data.toolCallId}`,
+                      role: "assistant",
+                      content: `using tool: ${data.toolName}`,
+                      streamId: data.streamId,
+                      timestamp: Date.now(),
+                      toolName: data.toolName as string,
+                      isToolUsage: true,
+                    };
+
+                    // Add the tool message immediately
+                    setMessages((prev) => [...prev, toolMessage]);
                   } else if (data.streamId && data.type === "text-delta") {
                     // Update the content for this stream
                     const existingMessage = assistantMessages.get(
@@ -133,6 +150,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                     ...prev.filter(
                       (msg) =>
                         msg.role === "user" ||
+                        msg.isToolUsage === true ||
                         !assistantMessages.has(msg.streamId || "")
                     ),
                     ...Array.from(assistantMessages.values()),

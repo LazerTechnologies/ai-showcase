@@ -1,4 +1,4 @@
-import { User, Bot } from "lucide-react";
+import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
 import { StreamMessage } from "@/app/hooks/useDataStream";
@@ -14,6 +14,10 @@ const getStreamColor = (streamId?: string) => {
   const colors = {
     "general-agent":
       "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
+    "delegate-agent":
+      "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
+    "coder-agent":
+      "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100",
     "research-agent":
       "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100",
     "code-agent":
@@ -33,6 +37,8 @@ const getAvatarColor = (streamId?: string) => {
 
   const colors = {
     "general-agent": "bg-blue-500 text-white",
+    "delegate-agent": "bg-blue-500 text-white",
+    "coder-agent": "bg-green-500 text-white",
     "research-agent": "bg-green-500 text-white",
     "code-agent": "bg-purple-500 text-white",
     "analysis-agent": "bg-orange-500 text-white",
@@ -43,6 +49,41 @@ const getAvatarColor = (streamId?: string) => {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
+  const isTool = message.isToolUsage;
+
+  // Special handling for tool usage messages
+  if (isTool) {
+    return (
+      <div className="flex gap-3 p-4 justify-start">
+        <div className="flex gap-3 max-w-[80%]">
+          <div className="flex flex-col items-center gap-1">
+            <div
+              className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${getAvatarColor(
+                message.streamId
+              )}`}
+            >
+              <Wrench size={16} />
+            </div>
+            {message.streamId && (
+              <div className="text-xs text-muted-foreground text-center max-w-20 truncate">
+                {message.streamId}
+              </div>
+            )}
+          </div>
+          <div
+            className={`rounded-lg px-4 py-2 ${getStreamColor(
+              message.streamId
+            )} border border-opacity-20`}
+          >
+            <div className="text-sm font-medium flex items-center gap-2">
+              <Wrench size={14} />
+              {message.content}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
