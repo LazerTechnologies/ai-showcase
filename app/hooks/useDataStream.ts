@@ -115,7 +115,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                     const toolMessage: StreamMessage = {
                       id: `${Date.now()}-tool-${data.toolCallId}`,
                       role: "assistant",
-                      content: `using tool: ${data.toolName}`,
+                      content: `Using tool: ${data.toolName}`,
                       streamId: data.streamId,
                       timestamp: Date.now(),
                       toolName: data.toolName as string,
