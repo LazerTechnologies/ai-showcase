@@ -14,6 +14,8 @@ export default function GeneralChat() {
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
       isLoading={isLoading}
+      title="Multi-Agent Collaboration"
+      description="Watch multiple AI agents work together in real-time, coordinating their responses and building on each other's insights to solve complex problems."
     />
   );
 }

@@ -14,6 +14,8 @@ interface ChatInterfaceProps {
   ) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
+  title: string;
+  description: string;
 }
 
 export function ChatInterface({
@@ -22,12 +24,14 @@ export function ChatInterface({
   handleInputChange,
   handleSubmit,
   isLoading,
+  title,
+  description,
 }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-[calc(100vh-8rem)] max-w-4xl mx-auto">
       <div className="mb-4">
-        <h1 className="text-2xl font-bold">AI Assistant</h1>
-        <p className="text-muted-foreground">Chat with your AI assistant</p>
+        <h1 className="text-2xl font-bold">{title}</h1>
+        <p className="text-muted-foreground">{description}</p>
       </div>
 
       <div className="flex flex-col flex-1 border rounded-lg overflow-hidden bg-background">
