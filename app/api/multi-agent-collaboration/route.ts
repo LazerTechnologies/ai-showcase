@@ -12,14 +12,6 @@ export async function POST(req: Request) {
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
-      // Write initial data to identify streams
-      dataStream.writeData({
-        type: "stream-start",
-        streamId: "delegate-agent",
-      });
-      dataStream.writeData({ type: "stream-start", streamId: "coder-agent" });
-
-      // Create the coder tool that will be used by the general agent
       const coderTool = createTool({
         id: "coder-agent",
         description: "Calls the coder agent to write code.",
@@ -77,9 +69,6 @@ export async function POST(req: Request) {
           ...serializableChunk,
         });
       }
-
-      // Write completion signal
-      dataStream.writeData({ type: "complete" });
     },
   });
 }

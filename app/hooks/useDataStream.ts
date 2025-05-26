@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 export interface StreamMessage {
   id: string;
@@ -8,6 +8,16 @@ export interface StreamMessage {
   timestamp: number;
   toolName?: string;
   isToolUsage?: boolean;
+}
+
+interface StreamingMessage {
+  streamStartedAt: number;
+  text: string;
+}
+
+interface ChatState {
+  messages: StreamMessage[];
+  streamingMessages: Record<string, StreamingMessage>;
 }
 
 export interface UseDataStreamReturn {
@@ -24,7 +34,10 @@ export interface UseDataStreamReturn {
 }
 
 export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
-  const [messages, setMessages] = useState<StreamMessage[]>([]);
+  const [chatState, setChatState] = useState<ChatState>({
+    messages: [],
+    streamingMessages: {},
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,7 +65,10 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
         timestamp: Date.now(),
       };
 
-      setMessages((prev) => [...prev, userMessage]);
+      setChatState((prev) => ({
+        ...prev,
+        messages: [...prev.messages, userMessage],
+      }));
       setInput("");
       setIsLoading(true);
 
@@ -63,7 +79,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            messages: [...messages, userMessage].map((msg) => ({
+            messages: [...chatState.messages, userMessage].map((msg) => ({
               role: msg.role,
               content: msg.content,
             })),
@@ -81,7 +97,6 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
 
         const decoder = new TextDecoder();
         let buffer = "";
-        const assistantMessages = new Map<string, StreamMessage>();
 
         while (true) {
           const { done, value } = await reader.read();
@@ -97,64 +112,91 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                 const jsonStr = line.slice(2);
                 const dataArray = JSON.parse(jsonStr);
 
-                // Data is always an array
                 for (const data of dataArray) {
-                  if (data.type === "stream-start") {
-                    // Initialize a new assistant message for this stream
-                    const assistantMessage: StreamMessage = {
-                      id: `${Date.now()}-${data.streamId}`,
-                      role: "assistant",
-                      content: "",
-                      streamId: data.streamId,
-                      timestamp: Date.now(),
-                    };
-                    assistantMessages.set(data.streamId, assistantMessage);
-                  } else if (data.type === "tool-call") {
-                    console.log("tool-call", data);
-                    // Create a tool usage message
-                    const toolMessage: StreamMessage = {
-                      id: `${Date.now()}-tool-${data.toolCallId}`,
-                      role: "assistant",
-                      content: `Using tool: ${data.toolName}`,
-                      streamId: data.streamId,
-                      timestamp: Date.now(),
-                      toolName: data.toolName as string,
-                      isToolUsage: true,
-                    };
+                  console.log(data.type);
+                  switch (data.type) {
+                    case "tool-call":
+                      const toolMessage: StreamMessage = {
+                        id: `${Date.now()}-tool-${data.toolCallId}`,
+                        role: "assistant",
+                        content: `Using tool: ${data.toolName}`,
+                        streamId: data.streamId,
+                        timestamp: Date.now(),
+                        toolName: data.toolName as string,
+                        isToolUsage: true,
+                      };
+                      setChatState((prev) => ({
+                        ...prev,
+                        messages: [...prev.messages, toolMessage],
+                      }));
+                      break;
 
-                    // Add the tool message immediately
-                    setMessages((prev) => [...prev, toolMessage]);
-                  } else if (data.streamId && data.type === "text-delta") {
-                    // Update the content for this stream
-                    const existingMessage = assistantMessages.get(
-                      data.streamId
-                    );
-                    if (existingMessage) {
-                      existingMessage.content += data.textDelta || "";
-                      assistantMessages.set(data.streamId, {
-                        ...existingMessage,
+                    case "text-delta":
+                      if (data.streamId) {
+                        setChatState((prev) => {
+                          const existing =
+                            prev.streamingMessages[data.streamId];
+                          if (existing) {
+                            return {
+                              ...prev,
+                              streamingMessages: {
+                                ...prev.streamingMessages,
+                                [data.streamId]: {
+                                  ...existing,
+                                  text: existing.text + (data.textDelta || ""),
+                                },
+                              },
+                            };
+                          } else {
+                            return {
+                              ...prev,
+                              streamingMessages: {
+                                ...prev.streamingMessages,
+                                [data.streamId]: {
+                                  streamStartedAt: Date.now(),
+                                  text: data.textDelta || "",
+                                },
+                              },
+                            };
+                          }
+                        });
+                      }
+                      break;
+
+                    case "finish":
+                      setChatState((prev) => {
+                        const streamingMessage =
+                          prev.streamingMessages[data.streamId];
+                        if (streamingMessage) {
+                          const completedMessage: StreamMessage = {
+                            id: `${Date.now()}-${data.streamId}`,
+                            role: "assistant",
+                            content: streamingMessage.text,
+                            streamId: data.streamId,
+                            timestamp: streamingMessage.streamStartedAt,
+                          };
+
+                          const newStreamingMessages = {
+                            ...prev.streamingMessages,
+                          };
+                          delete newStreamingMessages[data.streamId];
+
+                          return {
+                            messages: [...prev.messages, completedMessage],
+                            streamingMessages: newStreamingMessages,
+                          };
+                        }
+                        return prev;
                       });
-                    }
-                  } else if (data.type === "complete") {
-                    // Finalize all messages
-                    setMessages((prev) => [
-                      ...prev,
-                      ...Array.from(assistantMessages.values()),
-                    ]);
-                  }
-                }
+                      break;
 
-                // Update messages in real-time during streaming
-                if (assistantMessages.size > 0) {
-                  setMessages((prev) => [
-                    ...prev.filter(
-                      (msg) =>
-                        msg.role === "user" ||
-                        msg.isToolUsage === true ||
-                        !assistantMessages.has(msg.streamId || "")
-                    ),
-                    ...Array.from(assistantMessages.values()),
-                  ]);
+                    case "step-start":
+                    case "step-finish":
+                      break;
+
+                    default:
+                      throw new Error(`Unknown data type: ${data.type}`);
+                  }
                 }
               } catch (error) {
                 console.error("Error parsing stream data:", error);
@@ -164,23 +206,44 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
         }
       } catch (error) {
         console.error("Error in chat stream:", error);
-        // Add error message
         const errorMessage: StreamMessage = {
           id: Date.now().toString(),
           role: "assistant",
           content: "Sorry, there was an error processing your request.",
           timestamp: Date.now(),
         };
-        setMessages((prev) => [...prev, errorMessage]);
+        setChatState((prev) => ({
+          ...prev,
+          messages: [...prev.messages, errorMessage],
+        }));
       } finally {
         setIsLoading(false);
       }
     },
-    [input, isLoading, messages, apiEndpoint]
+    [input, isLoading, chatState.messages, apiEndpoint]
   );
 
+  // Combine messages and streaming messages, sorted by timestamp/streamStartedAt
+  const allMessages = useMemo(() => {
+    const streamingMessages: StreamMessage[] = Object.entries(
+      chatState.streamingMessages
+    )
+      .filter(([, streamMsg]) => streamMsg !== undefined)
+      .map(([streamId, streamMsg]) => ({
+        id: `streaming-${streamId}`,
+        role: "assistant" as const,
+        content: streamMsg!.text,
+        streamId,
+        timestamp: streamMsg!.streamStartedAt,
+      }));
+
+    return [...chatState.messages, ...streamingMessages].sort(
+      (a, b) => a.timestamp - b.timestamp
+    );
+  }, [chatState.messages, chatState.streamingMessages]);
+
   return {
-    messages,
+    messages: allMessages,
     input,
     setInput,
     handleInputChange,

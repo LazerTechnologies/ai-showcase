@@ -9,9 +9,6 @@ export async function POST(req: Request) {
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
-      // Write initial data to identify stream
-      dataStream.writeData({ type: "stream-start", streamId: "general-agent" });
-
       // Create the general agent stream
       const generalStream = await generalAgent.stream(messages);
 
@@ -23,9 +20,6 @@ export async function POST(req: Request) {
           ...serializableChunk,
         });
       }
-
-      // Write completion signal
-      dataStream.writeData({ type: "complete" });
     },
   });
 }
