@@ -202,6 +202,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
 
                     case "step-start":
                     case "step-finish":
+                    case "tool-result":
                       break;
 
                     default:
