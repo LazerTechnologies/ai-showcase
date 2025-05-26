@@ -1,15 +1,13 @@
 import * as React from "react";
-import { Github, MessagesSquare } from "lucide-react";
+import { MessagesSquare } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar";
 import Scenario from "./scenario";
 import { WipOverlay } from "../../../components/ui/wip-overlay";
