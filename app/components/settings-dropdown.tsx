@@ -2,6 +2,9 @@
 
 import * as React from "react";
 import { Settings } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,39 +17,46 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export const USER_ID_STORAGE_KEY = "userId";
 export const THREAD_ID_STORAGE_KEY = "threadId";
 
-interface SettingsData {
-  userId: string;
-  threadId: string;
-}
+const settingsSchema = z.object({
+  userId: z.string().min(1, "User ID is required"),
+  threadId: z.string().min(1, "Thread ID is required"),
+});
+
+type SettingsData = z.infer<typeof settingsSchema>;
 
 export function SettingsDropdown({ className }: { className?: string }) {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [settings, setSettings] = React.useState<SettingsData>(() => ({
-    userId:
-      typeof window !== "undefined"
-        ? localStorage.getItem(USER_ID_STORAGE_KEY) || ""
-        : "",
-    threadId:
-      typeof window !== "undefined"
-        ? localStorage.getItem(THREAD_ID_STORAGE_KEY) || ""
-        : "",
-  }));
 
-  const handleSave = () => {
-    localStorage.setItem(USER_ID_STORAGE_KEY, settings.userId);
-    localStorage.setItem(THREAD_ID_STORAGE_KEY, settings.threadId);
+  const form = useForm<SettingsData>({
+    resolver: zodResolver(settingsSchema),
+    defaultValues: {
+      userId:
+        typeof window !== "undefined"
+          ? localStorage.getItem(USER_ID_STORAGE_KEY) || ""
+          : "",
+      threadId:
+        typeof window !== "undefined"
+          ? localStorage.getItem(THREAD_ID_STORAGE_KEY) || ""
+          : "",
+    },
+  });
+
+  const onSubmit = (data: SettingsData) => {
+    localStorage.setItem(USER_ID_STORAGE_KEY, data.userId);
+    localStorage.setItem(THREAD_ID_STORAGE_KEY, data.threadId);
     setIsDialogOpen(false);
-  };
-
-  const handleInputChange = (field: keyof SettingsData, value: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
   };
 
   return (
@@ -66,40 +76,49 @@ export function SettingsDropdown({ className }: { className?: string }) {
             to your local storage.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <label htmlFor="userId" className="text-sm font-medium">
-              User ID
-            </label>
-            <Input
-              id="userId"
-              value={settings.userId}
-              onChange={(e) => handleInputChange("userId", e.target.value)}
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="userId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>User ID</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid gap-2">
-            <label htmlFor="threadId" className="text-sm font-medium">
-              Thread ID
-            </label>
-            <Input
-              id="threadId"
-              value={settings.threadId}
-              onChange={(e) => handleInputChange("threadId", e.target.value)}
+
+            <FormField
+              control={form.control}
+              name="threadId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Thread ID</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setIsDialogOpen(false)}
-          >
-            Cancel
-          </Button>
-          <Button type="button" onClick={handleSave}>
-            Save
-          </Button>
-        </DialogFooter>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Save</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
