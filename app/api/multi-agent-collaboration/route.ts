@@ -1,58 +1,66 @@
-import { createDataStreamResponse } from "ai";
+import { createDataStreamResponse, type JSONValue } from "ai";
 import { delegateAgent } from "../../agents/delegate";
 import { coderAgent } from "../../agents/coder";
 import { z } from "zod";
 import { createTool } from "@mastra/core/tools";
+import { Agent } from "@mastra/core/agent";
 import { makeSerializable } from "../../utils/serialization";
 
 export const maxDuration = 30;
+
+interface DataStream {
+  writeData: (value: JSONValue) => void;
+}
+
+function createAgentTool(
+  agent: Agent,
+  streamId: string,
+  description: string,
+  dataStream: DataStream
+) {
+  return createTool({
+    id: streamId,
+    description,
+    inputSchema: z.object({
+      prompt: z.string().describe("The prompt to the agent"),
+    }),
+    outputSchema: z.object({
+      output: z.string().describe("The agent's response"),
+    }),
+    execute: async ({ context }) => {
+      const agentStream = await agent.stream(context.prompt);
+
+      let finalText = "";
+
+      for await (const chunk of agentStream.fullStream) {
+        const serializableChunk = makeSerializable(chunk);
+        dataStream.writeData({
+          streamId,
+          ...serializableChunk,
+        });
+      }
+
+      for await (const textChunk of agentStream.textStream) {
+        finalText += textChunk;
+      }
+
+      return { output: finalText };
+    },
+  });
+}
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
-      const coderTool = createTool({
-        id: "coder-agent",
-        description: "Calls the coder agent to write code.",
-        inputSchema: z.object({
-          prompt: z.string().describe("The prompt to the coder agent"),
-        }),
-        outputSchema: z.object({
-          output: z.string().describe("The coder agent's response"),
-        }),
-        execute: async ({ context }) => {
-          console.log("starting");
-          const coderStream = await coderAgent.stream(context.prompt, {
-            onStepFinish: (step) => {
-              console.log("step", step);
-            },
-            onFinish: (message) => {
-              console.log("message", message);
-            },
-          });
+      const coderTool = createAgentTool(
+        coderAgent,
+        "coder-agent",
+        "Coder agent",
+        dataStream
+      );
 
-          let finalText = "";
-
-          // Stream the coder agent's chunks with coder-agent streamId
-          for await (const chunk of coderStream.fullStream) {
-            const serializableChunk = makeSerializable(chunk);
-            dataStream.writeData({
-              streamId: "coder-agent",
-              ...serializableChunk,
-            });
-          }
-
-          // Collect the final text from the text stream
-          for await (const textChunk of coderStream.textStream) {
-            finalText += textChunk;
-          }
-
-          return { output: finalText };
-        },
-      });
-
-      // Create the general agent stream with the coder tool
       const delegateStream = await delegateAgent.stream(messages, {
         toolsets: {
           agents: {
@@ -61,7 +69,6 @@ export async function POST(req: Request) {
         },
       });
 
-      // Stream the general agent's chunks with general-agent streamId
       for await (const chunk of delegateStream.fullStream) {
         const serializableChunk = makeSerializable(chunk);
         dataStream.writeData({
