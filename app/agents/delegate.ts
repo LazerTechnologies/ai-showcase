@@ -1,5 +1,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
+import { Memory } from "@mastra/memory";
+import { LibSQLStore } from "@mastra/libsql";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -11,4 +13,9 @@ export const delegateAgent = new Agent({
     Try not to ask clarifier questions unless absolutely necessary.
     When passing on work that other agents have done, make sure to credit their work.`,
   model: google("gemini-2.0-flash-exp"),
+  memory: new Memory({
+    storage: new LibSQLStore({
+      url: "file:../../memory.db",
+    }),
+  }),
 });

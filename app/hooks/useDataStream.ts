@@ -1,4 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
+import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
+import { THREAD_ID_STORAGE_KEY } from "../constants/local-storage";
 
 export interface StreamMessage {
   id: string;
@@ -83,6 +85,14 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
               role: msg.role,
               content: msg.content,
             })),
+            userId:
+              typeof window !== "undefined"
+                ? localStorage.getItem(USER_ID_STORAGE_KEY) ?? undefined
+                : undefined,
+            threadId:
+              typeof window !== "undefined"
+                ? localStorage.getItem(THREAD_ID_STORAGE_KEY) ?? undefined
+                : undefined,
           }),
         });
 

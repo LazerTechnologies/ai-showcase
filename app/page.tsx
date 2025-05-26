@@ -15,7 +15,7 @@ export default function GeneralChat() {
       handleSubmit={handleSubmit}
       isLoading={isLoading}
       title="General Chat"
-      description="A versatile AI assistant ready to help with any questions, tasks, or conversations you have in mind."
+      description="This model has its memory persisted to a database based on your user ID and thread ID. Try refreshing the page, and try changing your user ID and thread ID using the settings dropdown! It also auto-vectorizes your conversation for semantic recall beyond the context window. That means if the last 20 messages are always sent to the model, it'll also fetch an additional number of old messages that it thinks may be relevant."
     />
   );
 }

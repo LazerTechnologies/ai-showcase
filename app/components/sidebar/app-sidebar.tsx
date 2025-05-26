@@ -36,7 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="p-6 gap-4">
         <Scenario
           title="General Chat"
-          description="Just a general chat with a model"
+          description="General chat with a model: memory included"
           path="/"
           badges={[]}
         />

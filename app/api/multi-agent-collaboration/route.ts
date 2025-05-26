@@ -50,7 +50,7 @@ function createAgentTool(
 }
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, userId, threadId } = await req.json();
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
@@ -67,6 +67,8 @@ export async function POST(req: Request) {
             coder: coderTool,
           },
         },
+        resourceId: userId,
+        threadId,
       });
 
       for await (const chunk of delegateStream.fullStream) {
