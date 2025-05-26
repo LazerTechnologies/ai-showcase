@@ -25,6 +25,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "sonner";
 
 export const USER_ID_STORAGE_KEY = "userId";
 export const THREAD_ID_STORAGE_KEY = "threadId";
@@ -57,6 +58,7 @@ export function SettingsDropdown({ className }: { className?: string }) {
     localStorage.setItem(USER_ID_STORAGE_KEY, data.userId);
     localStorage.setItem(THREAD_ID_STORAGE_KEY, data.threadId);
     setIsDialogOpen(false);
+    toast.success("Settings saved");
   };
 
   return (

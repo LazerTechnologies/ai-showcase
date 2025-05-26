@@ -12,6 +12,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { LightDarkToggle } from "./components/light-dark-toggle";
 import { SettingsDropdown } from "./components/settings-dropdown";
 import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
+import { Toaster } from "../components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,6 +60,7 @@ export default function RootLayout({
               <div className="p-6">{children}</div>
             </SidebarInset>
           </SidebarProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
