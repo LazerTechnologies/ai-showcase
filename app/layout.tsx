@@ -10,6 +10,7 @@ import { AppSidebar } from "./components/sidebar/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { LightDarkToggle } from "./components/light-dark-toggle";
+import { SettingsDropdown } from "./components/settings-dropdown";
 import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
 
 const geistSans = Geist({
@@ -50,7 +51,10 @@ export default function RootLayout({
                 <SidebarTrigger />
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <SidebarBreadcrumb />
-                <LightDarkToggle className="ml-auto" />
+                <div className="ml-auto flex items-center gap-2">
+                  <LightDarkToggle />
+                  <SettingsDropdown />
+                </div>
               </header>
               <div className="p-6">{children}</div>
             </SidebarInset>
