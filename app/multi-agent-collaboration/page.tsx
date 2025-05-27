@@ -15,7 +15,7 @@ export default function GeneralChat() {
       handleSubmit={handleSubmit}
       isLoading={isLoading}
       title="Multi-Agent Collaboration"
-      description="Watch multiple AI agents work together in real-time, coordinating their responses and building on each other's insights to solve complex problems."
+      description="Watch multiple AI agents work together in real-time, coordinating their responses and building on each other's insights to solve complex problems. In this particular example, try asking this chat to write some TypeScript code for you and see how the agent coordinates with a coder agent to do so."
     />
   );
 }
