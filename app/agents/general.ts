@@ -53,7 +53,5 @@ export const generalAgent = new Agent({
     weatherTool,
   },
   memory:
-    process.env.NODE_ENV === "production"
-      ? memoryProduction
-      : memoryDevelopment,
+    process.env.APP_ENV === "production" ? memoryProduction : memoryDevelopment,
 });
