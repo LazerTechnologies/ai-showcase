@@ -13,6 +13,7 @@ import { LightDarkToggle } from "./components/light-dark-toggle";
 import { SettingsDropdown } from "./components/settings-dropdown";
 import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
 import { Toaster } from "../components/ui/sonner";
+import { InitializeLocalStorage } from "./components/initialize-local-storage";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <InitializeLocalStorage />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
