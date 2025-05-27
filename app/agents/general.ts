@@ -1,34 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
 import { weatherTool } from "./tools/weather";
 import { Memory } from "@mastra/memory";
 import { LibSQLStore } from "@mastra/libsql";
-import { PostgresStore, PgVector } from "@mastra/pg";
 import { fastembed } from "@mastra/fastembed";
-
-const connectionString = process.env.DATABASE_URL!;
-
-const parsedConnectionString = new URL(connectionString);
-const host = parsedConnectionString.hostname;
-const port = Number(parsedConnectionString.port);
-const user = parsedConnectionString.username;
-const database = parsedConnectionString.pathname.slice(1);
-const password = parsedConnectionString.password;
+import { UpstashStore, UpstashVector } from "@mastra/upstash";
 
 function getMemory(): Memory {
   if (process.env.APP_ENV === "production") {
     return new Memory({
-      storage: new PostgresStore({
-        host,
-        port,
-        user,
-        database,
-        password,
-      }),
       embedder: fastembed,
-      vector: new PgVector({ connectionString }),
+      storage: new UpstashStore({
+        url: process.env.UPSTASH_REDIS_REST_URL!,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+      }),
+      vector: new UpstashVector({
+        url: process.env.UPSTASH_REDIS_REST_URL!,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+      }),
       options: {
-        lastMessages: 30,
+        lastMessages: 10,
         semanticRecall: {
           topK: 3,
           messageRange: 2,
@@ -56,5 +48,4 @@ export const generalAgent = new Agent({
   tools: {
     weatherTool,
   },
-  memory: getMemory(),
 });
