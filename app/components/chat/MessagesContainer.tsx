@@ -27,9 +27,7 @@ export function MessagesContainer({ messages }: MessagesContainerProps) {
           <div className="text-center">
             <Bot size={48} className="mx-auto mb-4 opacity-50" />
             <p className="text-lg font-medium">Start a conversation</p>
-            <p className="text-sm">
-              Send a message to begin chatting with the AI assistant.
-            </p>
+            <p className="text-sm">Send a message to begin chatting.</p>
           </div>
         </div>
       ) : (
