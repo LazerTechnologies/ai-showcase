@@ -83,8 +83,8 @@ export function ChatInterface({
         {/* Desktop actions panel */}
         {!isMobile && actions && (
           <div className="w-80 border rounded-lg bg-background p-4">
-            <h2 className="text-lg font-semibold mb-4">Actions</h2>
-            {actions}
+            <h2 className="text-lg font-semibold mb-6">Actions</h2>
+            <div className="flex flex-col gap-5">{actions}</div>
           </div>
         )}
       </div>
