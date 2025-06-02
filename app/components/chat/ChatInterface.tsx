@@ -13,6 +13,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { SetUserId } from "./actions/SetUserId";
+import { SetThreadId } from "./actions/SetThreadId";
 
 interface ChatInterfaceProps {
   messages: StreamMessage[];
@@ -84,7 +86,11 @@ export function ChatInterface({
         {!isMobile && actions && (
           <div className="w-80 border rounded-lg bg-background p-4">
             <h2 className="text-lg font-semibold mb-6">Actions</h2>
-            <div className="flex flex-col gap-5">{actions}</div>
+            <div className="flex flex-col gap-5">
+              <SetUserId />
+              <SetThreadId />
+              {actions}
+            </div>
           </div>
         )}
       </div>
