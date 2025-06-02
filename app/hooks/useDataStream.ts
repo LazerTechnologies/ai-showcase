@@ -35,7 +35,10 @@ export interface UseDataStreamReturn {
   isLoading: boolean;
 }
 
-export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
+export function useDataStream(
+  apiEndpoint: string,
+  headers?: Record<string, string>
+): UseDataStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
     messages: [],
     streamingMessages: {},
@@ -79,6 +82,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...headers,
           },
           body: JSON.stringify({
             messages: [...chatState.messages, userMessage].map((msg) => ({
@@ -123,7 +127,6 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                 const dataArray = JSON.parse(jsonStr);
 
                 for (const data of dataArray) {
-                  console.log(data.type);
                   switch (data.type) {
                     case "tool-call":
                       const toolMessage: StreamMessage = {
@@ -206,7 +209,11 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
                       break;
 
                     default:
-                      throw new Error(`Unknown data type: ${data.type}`);
+                      throw new Error(
+                        `Unknown data type: ${data.type}: ${JSON.stringify(
+                          data
+                        )}`
+                      );
                   }
                 }
               } catch (error) {
@@ -231,7 +238,7 @@ export function useDataStream(apiEndpoint: string): UseDataStreamReturn {
         setIsLoading(false);
       }
     },
-    [input, isLoading, chatState.messages, apiEndpoint]
+    [input, isLoading, chatState.messages, apiEndpoint, headers]
   );
 
   // Combine messages and streaming messages, sorted by timestamp/streamStartedAt
