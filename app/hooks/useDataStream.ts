@@ -127,7 +127,6 @@ export function useDataStream(
                 const dataArray = JSON.parse(jsonStr);
 
                 for (const data of dataArray) {
-                  console.log(data.type);
                   switch (data.type) {
                     case "tool-call":
                       const toolMessage: StreamMessage = {
