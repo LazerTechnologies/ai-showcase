@@ -210,7 +210,11 @@ export function useDataStream(
                       break;
 
                     default:
-                      throw new Error(`Unknown data type: ${data.type}`);
+                      throw new Error(
+                        `Unknown data type: ${data.type}: ${JSON.stringify(
+                          data
+                        )}`
+                      );
                   }
                 }
               } catch (error) {
