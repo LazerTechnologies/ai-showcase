@@ -7,6 +7,7 @@ export const routes = {
   dataAnalysisPipeline: "/data-analysis-pipeline",
   customerSupportBot: "/customer-support-bot",
   researchAssistant: "/research-assistant",
+  authorization: "/authorization",
 } as const;
 
 export type Route = (typeof routes)[keyof typeof routes];
@@ -20,4 +21,5 @@ export const routeTitles: Record<Route, string> = {
   "/data-analysis-pipeline": "Data Analysis Pipeline",
   "/customer-support-bot": "Customer Support Bot",
   "/research-assistant": "Research Assistant",
+  "/authorization": "Authorization",
 } as const;
