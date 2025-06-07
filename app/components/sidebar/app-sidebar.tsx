@@ -46,12 +46,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
           />
         </WipOverlay>
-        <Scenario
-          title="Authorization"
-          description="This chat uses headers to pass authorization data during the request. This is then used to change the system prompt, which tools are available to the model, and configurations to pass to those tools."
-          path="/authorization"
-          badges={["Authorization", "Tool Selection"]}
-        />
         <WipOverlay>
           <Scenario
             title="Tool Usage Agent"
@@ -65,6 +59,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ]}
           />
         </WipOverlay>
+        <Scenario
+          title="Authorization"
+          description="This chat uses headers to pass authorization data during the request. This is then used to change the system prompt, which tools are available to the model, and configurations to pass to those tools."
+          path="/authorization"
+          badges={["Authorization", "Tool Selection"]}
+        />
         <Scenario
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
