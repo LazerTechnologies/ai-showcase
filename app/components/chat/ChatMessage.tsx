@@ -3,9 +3,17 @@ import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
 import { StreamMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
+import { partsToString } from "@/app/utils/message-utils";
 
 interface ChatMessageProps {
   message: StreamMessage | UIMessage;
+}
+
+// Helper function to check if message contains tool invocations
+function isToolMessage(message: StreamMessage | UIMessage): boolean {
+  return (
+    message.parts?.some((part) => part.type === "tool-invocation") ?? false
+  );
 }
 
 // Define colors for different stream IDs
@@ -84,14 +92,14 @@ function Avatar({ isUser, isTool, streamId }: AvatarProps) {
 }
 
 interface MessageContentProps {
-  content: string;
+  message: StreamMessage | UIMessage;
   isUser: boolean;
   isTool: boolean;
   streamId?: string;
 }
 
 function MessageContent({
-  content,
+  message,
   isUser,
   isTool,
   streamId,
@@ -101,6 +109,7 @@ function MessageContent({
     : getStreamColor(streamId);
 
   const borderClass = isTool ? "border border-opacity-20" : "";
+  const content = partsToString(message.parts);
 
   if (isTool) {
     return (
@@ -130,8 +139,7 @@ function MessageContent({
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
-  const isTool =
-    "isToolUsage" in message ? message.isToolUsage ?? false : false;
+  const isTool = isToolMessage(message);
   const streamId = "streamId" in message ? message.streamId : undefined;
 
   return (
@@ -145,7 +153,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
       >
         <Avatar isUser={isUser} isTool={isTool} streamId={streamId} />
         <MessageContent
-          content={message.content}
+          message={message}
           isUser={isUser}
           isTool={isTool}
           streamId={streamId}

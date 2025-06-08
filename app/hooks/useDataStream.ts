@@ -1,15 +1,10 @@
 import { useState, useCallback, useMemo } from "react";
 import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
 import { THREAD_ID_STORAGE_KEY } from "../constants/local-storage";
+import { Message as UIMessage } from "ai";
 
-export interface StreamMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
+export interface StreamMessage extends UIMessage {
   streamId?: string;
-  timestamp: number;
-  toolName?: string;
-  isToolUsage?: boolean;
 }
 
 interface StreamingMessage {
@@ -67,7 +62,8 @@ export function useDataStream(
         id: Date.now().toString(),
         role: "user",
         content: input.trim(),
-        timestamp: Date.now(),
+        parts: [{ type: "text", text: input.trim() }],
+        createdAt: new Date(),
       };
 
       setChatState((prev) => ({
@@ -87,7 +83,7 @@ export function useDataStream(
           body: JSON.stringify({
             messages: [...chatState.messages, userMessage].map((msg) => ({
               role: msg.role,
-              content: msg.content,
+              parts: msg.parts,
             })),
             userId:
               typeof window !== "undefined"
@@ -133,10 +129,19 @@ export function useDataStream(
                         id: `${Date.now()}-tool-${data.toolCallId}`,
                         role: "assistant",
                         content: `Using tool: ${data.toolName}`,
+                        parts: [
+                          {
+                            type: "tool-invocation",
+                            toolInvocation: {
+                              toolCallId: data.toolCallId,
+                              toolName: data.toolName,
+                              args: data.args || {},
+                              state: "call",
+                            },
+                          },
+                        ],
+                        createdAt: new Date(),
                         streamId: data.streamId,
-                        timestamp: Date.now(),
-                        toolName: data.toolName as string,
-                        isToolUsage: true,
                       };
                       setChatState((prev) => ({
                         ...prev,
@@ -185,8 +190,13 @@ export function useDataStream(
                             id: `${Date.now()}-${data.streamId}`,
                             role: "assistant",
                             content: streamingMessage.text,
+                            parts: [
+                              { type: "text", text: streamingMessage.text },
+                            ],
+                            createdAt: new Date(
+                              streamingMessage.streamStartedAt
+                            ),
                             streamId: data.streamId,
-                            timestamp: streamingMessage.streamStartedAt,
                           };
 
                           const newStreamingMessages = {
@@ -228,7 +238,13 @@ export function useDataStream(
           id: Date.now().toString(),
           role: "assistant",
           content: "Sorry, there was an error processing your request.",
-          timestamp: Date.now(),
+          parts: [
+            {
+              type: "text",
+              text: "Sorry, there was an error processing your request.",
+            },
+          ],
+          createdAt: new Date(),
         };
         setChatState((prev) => ({
           ...prev,
@@ -251,12 +267,13 @@ export function useDataStream(
         id: `streaming-${streamId}`,
         role: "assistant" as const,
         content: streamMsg!.text,
+        parts: [{ type: "text", text: streamMsg!.text }],
+        createdAt: new Date(streamMsg!.streamStartedAt),
         streamId,
-        timestamp: streamMsg!.streamStartedAt,
       }));
 
     return [...chatState.messages, ...streamingMessages].sort(
-      (a, b) => a.timestamp - b.timestamp
+      (a, b) => (a.createdAt?.getTime() || 0) - (b.createdAt?.getTime() || 0)
     );
   }, [chatState.messages, chatState.streamingMessages]);
 
