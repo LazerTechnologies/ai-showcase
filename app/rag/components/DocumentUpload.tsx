@@ -47,7 +47,7 @@ export function DocumentUpload({ namespace }: DocumentUploadProps) {
   return (
     <div className="space-y-4">
       <div>
-        <Label htmlFor="document-content">Document Content</Label>
+        <Label htmlFor="document-content">Document content</Label>
         <Textarea
           id="document-content"
           placeholder="Paste your document content here..."

@@ -14,8 +14,8 @@ export function NamespaceInput({
   return (
     <SingleFieldAction
       label="Namespace"
-      description="Pinecone namespace for organizing your documents within the ai-showcase index"
-      placeholder="Enter namespace (e.g., my-documents)"
+      description="Pinecone namespace for uploading and querying documents within the index."
+      placeholder="Default: default-namespace"
       defaultValue={namespace}
       validate={(value) => {
         if (!value.trim()) {

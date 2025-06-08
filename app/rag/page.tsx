@@ -30,7 +30,7 @@ export default function RAGChat() {
       handleSubmit={handleSubmit}
       isLoading={isLoading}
       title="RAG with Pinecone"
-      description="Chat with your documents using Retrieval-Augmented Generation. Upload documents to create a knowledge base, then ask questions about the content. The system will chunk your documents, generate embeddings, and store them in Pinecone for semantic search."
+      description="Chat with your documents using Retrieval-Augmented Generation. Upload documents to create a knowledge base, then ask questions about the content. By default, the changelog for NextJS 15 has been uploaded to the namespace 'default-namespace'."
       actions={actions}
     />
   );
