@@ -9,11 +9,10 @@ import { NamespaceInput } from "./components/NamespaceInput";
 export default function RAGChat() {
   const [namespace, setNamespace] = useState("default-namespace");
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/rag",
-      body: { namespace },
-    });
+  const { messages, input, handleInputChange, handleSubmit, status } = useChat({
+    api: "/api/rag",
+    body: { namespace },
+  });
 
   const actions = (
     <div className="space-y-6">
@@ -28,7 +27,7 @@ export default function RAGChat() {
       input={input}
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
-      isLoading={isLoading}
+      isLoading={status === "streaming"}
       title="RAG with Pinecone"
       description="Chat with your documents using Retrieval-Augmented Generation. Upload documents to create a knowledge base, then ask questions about the content. By default, the changelog for NextJS 15 has been uploaded to the namespace 'default-namespace'."
       actions={actions}
