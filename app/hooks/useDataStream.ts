@@ -3,22 +3,34 @@ import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
 import { THREAD_ID_STORAGE_KEY } from "../constants/local-storage";
 import { Message as UIMessage } from "ai";
 
-export interface StreamMessage extends UIMessage {
+/**
+ * A wrapper around the UIMessage type that allows for a streamId to be added
+ * to differentiate between messages from different agents.
+ */
+export interface MultiAgentUIMessage extends UIMessage {
   streamId?: string;
 }
 
-interface StreamingMessage {
+/**
+ * As text delta chunks are streamed in, keep track of the full message
+ */
+interface StreamingTextDelta {
   streamStartedAt: number;
   text: string;
 }
 
+/**
+ * The state of the chat: messages are messages that have been fully streamed,
+ * and streamingMessages are messages that are still being streamed. Each agent
+ * has maximum one streaming message at a time.
+ */
 interface ChatState {
-  messages: StreamMessage[];
-  streamingMessages: Record<string, StreamingMessage>;
+  messages: MultiAgentUIMessage[];
+  streamingMessages: Record<string, StreamingTextDelta>;
 }
 
 export interface UseDataStreamReturn {
-  messages: StreamMessage[];
+  messages: MultiAgentUIMessage[];
   input: string;
   setInput: (value: string) => void;
   handleInputChange: (
@@ -58,7 +70,7 @@ export function useDataStream(
 
       if (!input.trim() || isLoading) return;
 
-      const userMessage: StreamMessage = {
+      const userMessage: MultiAgentUIMessage = {
         id: Date.now().toString(),
         role: "user",
         content: input.trim(),
@@ -125,7 +137,7 @@ export function useDataStream(
                 for (const data of dataArray) {
                   switch (data.type) {
                     case "tool-call":
-                      const toolMessage: StreamMessage = {
+                      const toolMessage: MultiAgentUIMessage = {
                         id: `${Date.now()}-tool-${data.toolCallId}`,
                         role: "assistant",
                         content: `Using tool: ${data.toolName}`,
@@ -186,7 +198,7 @@ export function useDataStream(
                         const streamingMessage =
                           prev.streamingMessages[data.streamId];
                         if (streamingMessage) {
-                          const completedMessage: StreamMessage = {
+                          const completedMessage: MultiAgentUIMessage = {
                             id: `${Date.now()}-${data.streamId}`,
                             role: "assistant",
                             content: streamingMessage.text,
@@ -234,7 +246,7 @@ export function useDataStream(
         }
       } catch (error) {
         console.error("Error in chat stream:", error);
-        const errorMessage: StreamMessage = {
+        const errorMessage: MultiAgentUIMessage = {
           id: Date.now().toString(),
           role: "assistant",
           content: "Sorry, there was an error processing your request.",
@@ -259,7 +271,7 @@ export function useDataStream(
 
   // Combine messages and streaming messages, sorted by timestamp/streamStartedAt
   const allMessages = useMemo(() => {
-    const streamingMessages: StreamMessage[] = Object.entries(
+    const streamingMessages: MultiAgentUIMessage[] = Object.entries(
       chatState.streamingMessages
     )
       .filter(([, streamMsg]) => streamMsg !== undefined)

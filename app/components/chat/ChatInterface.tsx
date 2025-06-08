@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
-import { StreamMessage } from "@/app/hooks/useDataStream";
+import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import { SetUserId } from "./actions/SetUserId";
 import { SetThreadId } from "./actions/SetThreadId";
 
 interface ChatInterfaceProps {
-  messages: StreamMessage[] | UIMessage[];
+  messages: MultiAgentUIMessage[] | UIMessage[];
   input: string;
   handleInputChange: (
     e:

@@ -1,16 +1,16 @@
 import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
-import { StreamMessage } from "@/app/hooks/useDataStream";
+import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
 import { partsToString } from "@/app/utils/message-utils";
 
 interface ChatMessageProps {
-  message: StreamMessage | UIMessage;
+  message: MultiAgentUIMessage | UIMessage;
 }
 
 // Helper function to check if message contains tool invocations
-function isToolMessage(message: StreamMessage | UIMessage): boolean {
+function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
   return (
     message.parts?.some((part) => part.type === "tool-invocation") ?? false
   );
@@ -92,7 +92,7 @@ function Avatar({ isUser, isTool, streamId }: AvatarProps) {
 }
 
 interface MessageContentProps {
-  message: StreamMessage | UIMessage;
+  message: MultiAgentUIMessage | UIMessage;
   isUser: boolean;
   isTool: boolean;
   streamId?: string;
