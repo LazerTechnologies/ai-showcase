@@ -66,6 +66,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           badges={["Authorization", "Tool Selection"]}
         />
         <Scenario
+          title="RAG with Pinecone"
+          description="Retrieval-Augmented Generation using Pinecone vector database. Upload documents, create embeddings, and chat with your data using semantic search."
+          path="/rag"
+          badges={["RAG", "Pinecone", "Vector Search", "Document Upload"]}
+        />
+        <Scenario
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
           path="/multi-agent-collaboration"

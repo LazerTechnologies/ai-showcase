@@ -2,9 +2,10 @@ import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
 import { StreamMessage } from "@/app/hooks/useDataStream";
+import { Message as UIMessage } from "ai";
 
 interface ChatMessageProps {
-  message: StreamMessage;
+  message: StreamMessage | UIMessage;
 }
 
 // Define colors for different stream IDs
@@ -129,7 +130,9 @@ function MessageContent({
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
-  const isTool = message.isToolUsage ?? false;
+  const isTool =
+    "isToolUsage" in message ? message.isToolUsage ?? false : false;
+  const streamId = "streamId" in message ? message.streamId : undefined;
 
   return (
     <div
@@ -140,12 +143,12 @@ export function ChatMessage({ message }: ChatMessageProps) {
           isUser ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        <Avatar isUser={isUser} isTool={isTool} streamId={message.streamId} />
+        <Avatar isUser={isUser} isTool={isTool} streamId={streamId} />
         <MessageContent
           content={message.content}
           isUser={isUser}
           isTool={isTool}
-          streamId={message.streamId}
+          streamId={streamId}
         />
       </div>
     </div>

@@ -4,9 +4,10 @@ import { useRef, useEffect } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { StreamMessage } from "@/app/hooks/useDataStream";
+import { Message as UIMessage } from "ai";
 
 interface MessagesContainerProps {
-  messages: StreamMessage[];
+  messages: StreamMessage[] | UIMessage[];
 }
 
 export function MessagesContainer({ messages }: MessagesContainerProps) {
