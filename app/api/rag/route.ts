@@ -1,5 +1,7 @@
 import { createRAGAgent } from "./agent";
 
+export const maxDuration = 30;
+
 export async function POST(req: Request) {
   const { messages, namespace } = await req.json();
 

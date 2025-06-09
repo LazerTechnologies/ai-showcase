@@ -21,7 +21,6 @@
     "@mastra/pg": "^0.10.1",
     "@mastra/pinecone": "^0.10.1",
     "@mastra/rag": "^0.10.2",
-    "@mastra/upstash": "^0.10.2",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-label": "^2.1.7",
