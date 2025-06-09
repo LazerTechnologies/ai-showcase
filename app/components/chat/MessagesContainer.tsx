@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
@@ -10,7 +10,49 @@ interface MessagesContainerProps {
   messages: MultiAgentUIMessage[] | UIMessage[];
 }
 
-export function MessagesContainer({ messages }: MessagesContainerProps) {
+const supportedPartsSequence = ["tool-invocation", "text"];
+
+/**
+ * Re-arrange messages so that they only have one part for UI purposes.
+ */
+const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
+  messages: T[]
+): T[] => {
+  const result: T[] = [];
+  for (const message of messages) {
+    if (!message.parts) {
+      continue;
+    }
+    if (message.parts.length === 1) {
+      result.push(message);
+    } else {
+      // Tools go above text
+      const sortedParts = message.parts.sort((a, b) => {
+        if (a.type === "tool-invocation") {
+          return -1;
+        }
+        if (b.type === "tool-invocation") {
+          return 1;
+        }
+        return 0;
+      });
+      sortedParts.forEach((part) => {
+        if (supportedPartsSequence.includes(part.type)) {
+          result.push({ ...message, parts: [part] });
+        }
+      });
+    }
+  }
+  return result;
+};
+
+export function MessagesContainer({
+  messages: messagesProp,
+}: MessagesContainerProps) {
+  const messages = useMemo(
+    () => separateMessages(messagesProp),
+    [messagesProp]
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -34,7 +76,10 @@ export function MessagesContainer({ messages }: MessagesContainerProps) {
       ) : (
         <div className="space-y-1">
           {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
+            <ChatMessage
+              key={`${message.id}-${message.parts?.[0]?.type}`}
+              message={message}
+            />
           ))}
           <div ref={messagesEndRef} />
         </div>
