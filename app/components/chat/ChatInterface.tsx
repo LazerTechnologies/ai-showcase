@@ -61,7 +61,7 @@ export function ChatInterface({
         <SheetHeader>
           <SheetTitle>Actions</SheetTitle>
         </SheetHeader>
-        <div className="mt-4">{actions}</div>
+        <div className="p-4">{actions}</div>
       </SheetContent>
     </Sheet>
   );
