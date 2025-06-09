@@ -10,6 +10,7 @@ interface ChatInputProps {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
+  formRef?: React.RefObject<HTMLFormElement | null>;
 }
 
 export function ChatInput({
@@ -17,6 +18,7 @@ export function ChatInput({
   handleInputChange,
   handleSubmit,
   isLoading,
+  formRef,
 }: ChatInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -28,7 +30,11 @@ export function ChatInput({
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex gap-2 p-4 border-t bg-background">
+    <form
+      ref={formRef}
+      onSubmit={onSubmit}
+      className="flex gap-2 p-4 border-t bg-background"
+    >
       <Input
         ref={inputRef}
         value={input}

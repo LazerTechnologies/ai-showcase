@@ -39,8 +39,8 @@ export function partsToString(parts: UIMessage["parts"]): string {
           return `File: ${
             (typedPart as unknown as { mimeType: string }).mimeType
           }`;
-        case "step-start":
-          return "--- Step Start ---";
+        // case "step-start":
+        //   return "--- Step Start ---";
         default:
           return "";
       }
