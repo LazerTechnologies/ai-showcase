@@ -6,8 +6,6 @@ import { createTool } from "@mastra/core/tools";
 import { Agent } from "@mastra/core/agent";
 import { makeSerializable } from "../../utils/serialization";
 
-export const maxDuration = 30;
-
 interface DataStream {
   writeData: (value: JSONValue) => void;
 }

@@ -2,8 +2,6 @@ import { createDataStreamResponse } from "ai";
 import { generalAgent } from "../../agents/general";
 import { makeSerializable } from "../../utils/serialization";
 
-export const maxDuration = 30;
-
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
 
