@@ -4,9 +4,14 @@ import Codeblock from "../markdown/codeblock";
 import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
 import { partsToString } from "@/app/utils/message-utils";
+import {
+  MessageColors,
+  USER_MESSAGE_COLORS,
+} from "@/app/constants/message-colors";
 
 interface ChatMessageProps {
   message: MultiAgentUIMessage | UIMessage;
+  messageColors?: MessageColors;
 }
 
 // Helper function to check if message contains tool invocations
@@ -16,56 +21,17 @@ function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
   );
 }
 
-// Define colors for different stream IDs
-const getStreamColor = (streamId?: string) => {
-  if (!streamId) return "bg-secondary text-secondary-foreground";
-
-  const colors = {
-    "general-agent":
-      "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
-    "delegate-agent":
-      "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
-    "coder-agent":
-      "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100",
-    "research-agent":
-      "bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100",
-    "code-agent":
-      "bg-purple-100 text-purple-900 dark:bg-purple-900 dark:text-purple-100",
-    "analysis-agent":
-      "bg-orange-100 text-orange-900 dark:bg-orange-900 dark:text-orange-100",
-  };
-
-  return (
-    colors[streamId as keyof typeof colors] ||
-    "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
-  );
-};
-
-const getAvatarColor = (streamId?: string) => {
-  if (!streamId) return "bg-secondary text-secondary-foreground";
-
-  const colors = {
-    "general-agent": "bg-blue-500 text-white",
-    "delegate-agent": "bg-blue-500 text-white",
-    "coder-agent": "bg-green-500 text-white",
-    "research-agent": "bg-green-500 text-white",
-    "code-agent": "bg-purple-500 text-white",
-    "analysis-agent": "bg-orange-500 text-white",
-  };
-
-  return colors[streamId as keyof typeof colors] || "bg-gray-500 text-white";
-};
-
 interface AvatarProps {
   isUser: boolean;
   isTool: boolean;
   streamId?: string;
+  messageColors?: MessageColors;
 }
 
-function Avatar({ isUser, isTool, streamId }: AvatarProps) {
+function Avatar({ isUser, isTool, streamId, messageColors }: AvatarProps) {
   const avatarColor = isUser
-    ? "bg-primary text-primary-foreground"
-    : getAvatarColor(streamId);
+    ? USER_MESSAGE_COLORS.avatarColor
+    : messageColors?.avatarColor || "";
 
   const icon = isUser ? (
     <User size={16} />
@@ -95,18 +61,18 @@ interface MessageContentProps {
   message: MultiAgentUIMessage | UIMessage;
   isUser: boolean;
   isTool: boolean;
-  streamId?: string;
+  messageColors?: MessageColors;
 }
 
 function MessageContent({
   message,
   isUser,
   isTool,
-  streamId,
+  messageColors,
 }: MessageContentProps) {
   const containerColor = isUser
-    ? "bg-primary text-primary-foreground"
-    : getStreamColor(streamId);
+    ? USER_MESSAGE_COLORS.streamColor
+    : messageColors?.streamColor || "";
 
   const borderClass = isTool ? "border border-opacity-20" : "";
   const content = partsToString(message.parts);
@@ -137,7 +103,7 @@ function MessageContent({
   );
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, messageColors }: ChatMessageProps) {
   const isUser = message.role === "user";
   const isTool = isToolMessage(message);
   const streamId = "streamId" in message ? message.streamId : undefined;
@@ -151,12 +117,17 @@ export function ChatMessage({ message }: ChatMessageProps) {
           isUser ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        <Avatar isUser={isUser} isTool={isTool} streamId={streamId} />
+        <Avatar
+          isUser={isUser}
+          isTool={isTool}
+          streamId={streamId}
+          messageColors={messageColors}
+        />
         <MessageContent
           message={message}
           isUser={isUser}
           isTool={isTool}
-          streamId={streamId}
+          messageColors={messageColors}
         />
       </div>
     </div>

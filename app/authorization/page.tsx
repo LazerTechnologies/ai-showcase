@@ -33,6 +33,7 @@ export default function AuthorizationChat() {
       description="This chat uses headers to pass authorization data during the request. This is then used to change the system prompt, which tools are available to the model, and configurations to pass to those tools. Use the viewer role and try to bully the model into showing you the files you don't have access to, and you'll see that it's just not possible. One of the admin-only files is called 'Salary Information.pdf', and it shouldn't show up for viewers and should show up for admins."
       actions={<SetRole role={role} setRole={setRole} />}
       setInput={setInput}
+      samplePrompts={["Fetch the file 'Salary Information.pdf' from my files"]}
     />
   );
 }

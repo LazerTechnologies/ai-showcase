@@ -5,9 +5,13 @@ import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
+import {
+  MESSAGE_COLOR_SETS,
+  MessageColors,
+} from "@/app/constants/message-colors";
 
 interface MessagesContainerProps {
-  messages: MultiAgentUIMessage[] | UIMessage[];
+  messages: (MultiAgentUIMessage | UIMessage)[];
 }
 
 const supportedPartsSequence = ["tool-invocation", "text"];
@@ -53,6 +57,27 @@ export function MessagesContainer({
     () => separateMessages(messagesProp),
     [messagesProp]
   );
+
+  const streamColorMap = useMemo(() => {
+    const uniqueStreams = new Set<string>();
+
+    messages.forEach((message) => {
+      if ("streamId" in message && message.streamId) {
+        uniqueStreams.add(message.streamId);
+      }
+    });
+
+    const streamArray = Array.from(uniqueStreams);
+    const colorMap = new Map<string, MessageColors>();
+
+    streamArray.forEach((streamId, index) => {
+      const colorIndex = index % MESSAGE_COLOR_SETS.length;
+      colorMap.set(streamId, MESSAGE_COLOR_SETS[colorIndex]);
+    });
+
+    return colorMap;
+  }, [messages]);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -75,12 +100,21 @@ export function MessagesContainer({
         </div>
       ) : (
         <div className="space-y-1">
-          {messages.map((message) => (
-            <ChatMessage
-              key={`${message.id}-${message.parts?.[0]?.type}`}
-              message={message}
-            />
-          ))}
+          {messages.map((message) => {
+            const streamId =
+              "streamId" in message ? message.streamId : undefined;
+            const messageColors = streamId
+              ? streamColorMap.get(streamId)
+              : MESSAGE_COLOR_SETS[0];
+
+            return (
+              <ChatMessage
+                key={`${message.id}-${message.parts?.[0]?.type}`}
+                message={message}
+                messageColors={messageColors}
+              />
+            );
+          })}
           <div ref={messagesEndRef} />
         </div>
       )}
