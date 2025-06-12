@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
-import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
+import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
 import { Message as UIMessage } from "ai";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";

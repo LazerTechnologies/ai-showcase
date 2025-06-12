@@ -3,7 +3,7 @@
 import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
-import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
+import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
 import { Message as UIMessage } from "ai";
 import {
   DEFAULT_MESSAGE_COLORS,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useDataStream } from "@/app/hooks/useDataStream";
+import { useMultiAgentStream } from "@/app/hooks/useMultiAgentStream";
 import { ChatInterface } from "@/app/components/chat";
 import { SetRole } from "./SetRole";
 
@@ -16,7 +16,7 @@ export default function AuthorizationChat() {
     handleSubmit,
     isLoading,
     setInput,
-  } = useDataStream("/api/authorization", {
+  } = useMultiAgentStream("/api/authorization", {
     // In a real-world application, this would be a JWT token or other authentication mechanism
     // that's decoded on the server-side to get the user and their role
     "x-user-role": role,

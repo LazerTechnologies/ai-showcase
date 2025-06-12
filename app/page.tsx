@@ -1,6 +1,6 @@
 "use client";
 
-import { useDataStream } from "@/app/hooks/useDataStream";
+import { useMultiAgentStream } from "@/app/hooks/useMultiAgentStream";
 import { ChatInterface } from "@/app/components/chat";
 
 export default function GeneralChat() {
@@ -11,7 +11,7 @@ export default function GeneralChat() {
     handleSubmit,
     isLoading,
     setInput,
-  } = useDataStream("/api/chat");
+  } = useMultiAgentStream("/api/chat");
 
   return (
     <ChatInterface

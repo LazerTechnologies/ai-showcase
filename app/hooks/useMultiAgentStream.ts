@@ -29,7 +29,7 @@ interface ChatState {
   streamingMessages: Record<string, StreamingTextDelta>;
 }
 
-export interface UseDataStreamReturn {
+export interface UseMultiAgentStreamReturn {
   messages: MultiAgentUIMessage[];
   input: string;
   setInput: (value: string) => void;
@@ -42,10 +42,14 @@ export interface UseDataStreamReturn {
   isLoading: boolean;
 }
 
-export function useDataStream(
+/**
+ * A hook that allows for multi-agent streaming. It's very similar to the useChat hook, but each chunk is simply
+ * also provided with a streamId to differentiate between messages from different agents.
+ */
+export function useMultiAgentStream(
   apiEndpoint: string,
   headers?: Record<string, string>
-): UseDataStreamReturn {
+): UseMultiAgentStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
     messages: [],
     streamingMessages: {},
