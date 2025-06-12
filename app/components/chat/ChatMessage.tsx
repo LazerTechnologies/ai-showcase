@@ -11,7 +11,7 @@ import {
 
 interface ChatMessageProps {
   message: MultiAgentUIMessage | UIMessage;
-  messageColors?: MessageColors;
+  messageColors: MessageColors;
 }
 
 // Helper function to check if message contains tool invocations

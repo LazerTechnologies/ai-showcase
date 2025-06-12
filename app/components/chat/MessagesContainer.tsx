@@ -6,11 +6,13 @@ import { ChatMessage } from "./ChatMessage";
 import { MultiAgentUIMessage } from "@/app/hooks/useDataStream";
 import { Message as UIMessage } from "ai";
 import {
+  DEFAULT_MESSAGE_COLORS,
   MESSAGE_COLOR_SETS,
   MessageColors,
 } from "@/app/constants/message-colors";
 
 interface MessagesContainerProps {
+  isSingleAgent?: boolean;
   messages: (MultiAgentUIMessage | UIMessage)[];
 }
 
@@ -51,6 +53,7 @@ const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
 };
 
 export function MessagesContainer({
+  isSingleAgent = false,
   messages: messagesProp,
 }: MessagesContainerProps) {
   const messages = useMemo(
@@ -59,6 +62,11 @@ export function MessagesContainer({
   );
 
   const streamColorMap = useMemo(() => {
+    // Optimization: if single-agent, return empty map early
+    if (isSingleAgent) {
+      return new Map<string, MessageColors>();
+    }
+
     const uniqueStreams = new Set<string>();
 
     messages.forEach((message) => {
@@ -76,7 +84,7 @@ export function MessagesContainer({
     });
 
     return colorMap;
-  }, [messages]);
+  }, [messages, isSingleAgent]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -105,13 +113,13 @@ export function MessagesContainer({
               "streamId" in message ? message.streamId : undefined;
             const messageColors = streamId
               ? streamColorMap.get(streamId)
-              : MESSAGE_COLOR_SETS[0];
+              : DEFAULT_MESSAGE_COLORS;
 
             return (
               <ChatMessage
                 key={`${message.id}-${message.parts?.[0]?.type}`}
                 message={message}
-                messageColors={messageColors}
+                messageColors={messageColors || DEFAULT_MESSAGE_COLORS}
               />
             );
           })}

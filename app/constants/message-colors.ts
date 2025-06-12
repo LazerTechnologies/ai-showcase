@@ -8,12 +8,13 @@ export const USER_MESSAGE_COLORS: MessageColors = {
   streamColor: "bg-primary text-primary-foreground",
 };
 
+export const DEFAULT_MESSAGE_COLORS: MessageColors = {
+  avatarColor: "bg-blue-500 text-white",
+  streamColor: "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
+};
+
 export const MESSAGE_COLOR_SETS: MessageColors[] = [
-  {
-    avatarColor: "bg-blue-500 text-white",
-    streamColor:
-      "bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100",
-  },
+  DEFAULT_MESSAGE_COLORS,
   {
     avatarColor: "bg-green-500 text-white",
     streamColor:

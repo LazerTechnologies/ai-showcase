@@ -32,6 +32,7 @@ interface ChatInterfaceProps {
   actions?: React.ReactNode;
   samplePrompts?: string[];
   setInput: (value: string) => void;
+  isSingleAgent?: boolean;
 }
 
 export function ChatInterface({
@@ -45,6 +46,7 @@ export function ChatInterface({
   actions,
   samplePrompts,
   setInput,
+  isSingleAgent,
 }: ChatInterfaceProps) {
   const isMobile = useIsMobile();
   const [isActionsOpen, setIsActionsOpen] = useState(false);
@@ -79,7 +81,10 @@ export function ChatInterface({
       <div className="flex flex-1 gap-4">
         {/* Main chat area */}
         <div className="flex flex-col flex-1 border rounded-lg overflow-hidden bg-background">
-          <MessagesContainer messages={messages} />
+          <MessagesContainer
+            messages={messages}
+            isSingleAgent={isSingleAgent}
+          />
 
           {/* Sample prompts */}
           {samplePrompts && samplePrompts.length > 0 && (

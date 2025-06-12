@@ -34,6 +34,7 @@ export default function AuthorizationChat() {
       actions={<SetRole role={role} setRole={setRole} />}
       setInput={setInput}
       samplePrompts={["Fetch the file 'Salary Information.pdf' from my files"]}
+      isSingleAgent
     />
   );
 }

@@ -37,6 +37,7 @@ export default function RAGChat() {
         "What experimental features are available in NextJS 15?",
       ]}
       setInput={setInput}
+      isSingleAgent
     />
   );
 }
