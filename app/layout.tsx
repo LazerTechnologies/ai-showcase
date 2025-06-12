@@ -14,6 +14,7 @@ import { SettingsDropdown } from "./components/settings-dropdown";
 import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
 import { Toaster } from "../components/ui/sonner";
 import { InitializeLocalStorage } from "./components/initialize-local-storage";
+import { ApiStatusIndicator } from "./components/api-status-indicator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({
                 <Separator orientation="vertical" className="mr-2 h-4" />
                 <SidebarBreadcrumb />
                 <div className="ml-auto flex items-center gap-2">
+                  <ApiStatusIndicator />
                   <LightDarkToggle />
                   <SettingsDropdown />
                 </div>
