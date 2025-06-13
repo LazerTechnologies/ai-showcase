@@ -15,6 +15,7 @@ import { SidebarBreadcrumb } from "./components/sidebar/sidebar-breadcrumb";
 import { Toaster } from "../components/ui/sonner";
 import { InitializeLocalStorage } from "./components/initialize-local-storage";
 import { ApiStatusIndicator } from "./components/api-status-indicator";
+import { QueryProvider } from "./components/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,30 +43,32 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <InitializeLocalStorage />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 w-full">
-                <SidebarTrigger />
-                <Separator orientation="vertical" className="mr-2 h-4" />
-                <SidebarBreadcrumb />
-                <div className="ml-auto flex items-center gap-2">
-                  <ApiStatusIndicator />
-                  <LightDarkToggle />
-                  <SettingsDropdown />
-                </div>
-              </header>
-              <div className="p-6">{children}</div>
-            </SidebarInset>
-          </SidebarProvider>
-          <Toaster />
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 w-full">
+                  <SidebarTrigger />
+                  <Separator orientation="vertical" className="mr-2 h-4" />
+                  <SidebarBreadcrumb />
+                  <div className="ml-auto flex items-center gap-2">
+                    <ApiStatusIndicator />
+                    <LightDarkToggle />
+                    <SettingsDropdown />
+                  </div>
+                </header>
+                <div className="p-6">{children}</div>
+              </SidebarInset>
+            </SidebarProvider>
+            <Toaster />
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );
