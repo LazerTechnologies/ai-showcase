@@ -69,7 +69,7 @@ export function ChatInterface({
   );
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] max-w-6xl mx-auto">
+    <div className="flex flex-col h-[calc(100vh-8rem)] max-w-6xl mx-auto gap-2">
       <div className="mb-4 flex flex-col gap-2">
         <h1 className="text-2xl font-bold">{title}</h1>
         <p className="text-muted-foreground">{description}</p>
