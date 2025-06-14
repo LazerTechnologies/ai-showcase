@@ -114,19 +114,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ]}
           />
         </WipOverlay>
-        <WipOverlay>
-          <Scenario
-            title="Customer Support Bot"
-            description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
-            path="/customer-support-bot"
-            badges={[
-              "Customer Service",
-              "Knowledge Base",
-              "Ticketing",
-              "Escalation",
-            ]}
-          />
-        </WipOverlay>
+        <Scenario
+          title="Customer Support Bot"
+          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+          path="/customer-support-bot"
+          badges={[
+            "Customer Service",
+            "Knowledge Base",
+            "Ticketing",
+            "Escalation",
+          ]}
+        />
         <WipOverlay>
           <Scenario
             title="Research Assistant"
