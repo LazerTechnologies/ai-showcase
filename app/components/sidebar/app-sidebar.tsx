@@ -72,6 +72,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           badges={["RAG", "Pinecone", "Vector Search", "Document Upload"]}
         />
         <Scenario
+          title="Agentic Retrieval"
+          description="An agent that chooses between different search methods: name/ID lookup, keyword search, or semantic search to find Google Drive files based on your request."
+          path="/agentic-retrieval"
+          badges={["RAG", "Vector Search"]}
+        />
+        <Scenario
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
           path="/multi-agent-collaboration"

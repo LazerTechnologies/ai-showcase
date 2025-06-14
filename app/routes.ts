@@ -9,6 +9,7 @@ export const routes = {
   researchAssistant: "/research-assistant",
   authorization: "/authorization",
   rag: "/rag",
+  agenticRetrieval: "/agentic-retrieval",
 } as const;
 
 export type Route = (typeof routes)[keyof typeof routes];
@@ -24,4 +25,5 @@ export const routeTitles: Record<Route, string> = {
   "/research-assistant": "Research Assistant",
   "/authorization": "Authorization",
   "/rag": "RAG with Pinecone",
+  "/agentic-retrieval": "Agentic Retrieval",
 } as const;
