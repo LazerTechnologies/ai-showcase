@@ -1,6 +1,6 @@
 import { createDataStreamResponse, type JSONValue } from "ai";
-import { delegateAgent } from "../../agents/delegate";
-import { coderAgent } from "../../agents/coder";
+import { delegateAgent } from "./delegate-agent";
+import { coderAgent } from "./coder-agent";
 import { z } from "zod";
 import { createTool } from "@mastra/core/tools";
 import { Agent } from "@mastra/core/agent";

@@ -7,8 +7,8 @@ const google = createGoogleGenerativeAI({
 
 export const delegateAgent = new Agent({
   name: "delegate-agent",
-  instructions: `You don't have any tools, or produce output yourself, but you can delegate to other agents via your toolset.
-    Try not to ask clarifier questions unless absolutely necessary.
-    When passing on work that other agents have done, make sure to credit their work.`,
+  instructions: `You respond to user queries by delegating work to other agents via your toolset.
+  Don't try to create your own output.
+  Make sure to credit the agents that you delegate to.`,
   model: google("gemini-2.0-flash-exp"),
 });

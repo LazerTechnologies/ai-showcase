@@ -1,5 +1,5 @@
 import { createDataStreamResponse } from "ai";
-import { generalAgent } from "../../agents/general";
+import { generalAgent } from "./general-agent";
 import { makeSerializable } from "../../utils/serialization";
 
 export const maxDuration = 30;

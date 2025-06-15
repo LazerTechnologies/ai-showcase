@@ -1,18 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
-import { weatherTool } from "./tools/weather";
-import { Memory } from "@mastra/memory";
-import { LibSQLStore } from "@mastra/libsql";
-import { fastembed } from "@mastra/fastembed";
-
-function getMemory(): Memory {
-  return new Memory({
-    storage: new LibSQLStore({
-      url: "file:../../memory.db",
-    }),
-  });
-}
+import { weatherTool } from "./weather-tool";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
