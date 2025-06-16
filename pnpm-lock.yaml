@@ -21,29 +21,29 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.56.4(react@19.1.0))
       '@mastra/core':
-        specifier: ^0.10.3
-        version: 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+        specifier: ^0.10.5
+        version: 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       '@mastra/fastembed':
         specifier: ^0.10.0
         version: 0.10.0(react@19.1.0)(sswr@2.2.0(svelte@5.33.4))(svelte@5.33.4)(vue@3.5.15(typescript@5.8.3))(zod@3.25.28)
       '@mastra/libsql':
-        specifier: ^0.10.1
-        version: 0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))
+        specifier: ^0.10.2
+        version: 0.10.2(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))
       '@mastra/mcp':
-        specifier: ^0.10.2
-        version: 0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(zod@3.25.28)
+        specifier: ^0.10.3
+        version: 0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(zod@3.25.28)
       '@mastra/memory':
-        specifier: ^0.10.2
-        version: 0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(react@19.1.0)
+        specifier: ^0.10.3
+        version: 0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(react@19.1.0)
       '@mastra/pg':
-        specifier: ^0.10.1
-        version: 0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(pg-query-stream@4.8.1(pg@8.14.1))
+        specifier: ^0.10.3
+        version: 0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(pg-query-stream@4.8.1(pg@8.14.1))
       '@mastra/pinecone':
-        specifier: ^0.10.1
-        version: 0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))
-      '@mastra/rag':
         specifier: ^0.10.2
-        version: 0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(ai@4.3.16(react@19.1.0)(zod@3.25.28))
+        version: 0.10.2(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))
+      '@mastra/rag':
+        specifier: ^0.10.3
+        version: 0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(ai@4.3.16(react@19.1.0)(zod@3.25.28))
       '@radix-ui/react-dialog':
         specifier: ^1.1.14
         version: 1.1.14(@types/react-dom@19.1.5(@types/react@19.1.5))(@types/react@19.1.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -682,19 +682,19 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
-  '@libsql/client@0.15.7':
-    resolution: {integrity: sha512-2rKekOBINDKXGwB0I5qeTDuom2944hEkWkjN8O41j95/HRKP+3sk/fq6/PoPJSuwY3pgWAS8vyby+FgOyPnIVQ==}
+  '@libsql/client@0.15.9':
+    resolution: {integrity: sha512-VT3do0a0vwYVaNcp/y05ikkKS3OrFR5UeEf5SUuYZVgKVl1Nc1k9ajoYSsOid8AD/vlhLDB5yFQaV4HmT/OB9w==}
 
-  '@libsql/core@0.15.7':
-    resolution: {integrity: sha512-hW1++8iKAEnb7Y3EZ2zXRR+1K0MKdRT7SLaNgFkfwz6CmiIBY3sYN7VSftNS7IR6xKRvFBpoz10CC63NoFGkaQ==}
+  '@libsql/core@0.15.9':
+    resolution: {integrity: sha512-4OVdeAmuaCUq5hYT8NNn0nxlO9AcA/eTjXfUZ+QK8MT3Dz7Z76m73x7KxjU6I64WyXX98dauVH2b9XM+d84npw==}
 
-  '@libsql/darwin-arm64@0.5.11':
-    resolution: {integrity: sha512-Av4+H8VypNZdbRbDKu5ogoCBHOdYh2Vx6iO7+0SACjcgnpqjnGL59lJUuX3fmV48VI6al1xORYJVApo//B5iqA==}
+  '@libsql/darwin-arm64@0.5.13':
+    resolution: {integrity: sha512-ASz/EAMLDLx3oq9PVvZ4zBXXHbz2TxtxUwX2xpTRFR4V4uSHAN07+jpLu3aK5HUBLuv58z7+GjaL5w/cyjR28Q==}
     cpu: [arm64]
     os: [darwin]
 
-  '@libsql/darwin-x64@0.5.11':
-    resolution: {integrity: sha512-+BXozvOKhwbye16itymY2YXeHOcIeZGORdJK2prfXA7Q2HR4/dRdUirR1o/koxxxG616uiWlAVj5WJ0j2IWkQA==}
+  '@libsql/darwin-x64@0.5.13':
+    resolution: {integrity: sha512-kzglniv1difkq8opusSXM7u9H0WoEPeKxw0ixIfcGfvlCVMJ+t9UNtXmyNHW68ljdllje6a4C6c94iPmIYafYA==}
     cpu: [x64]
     os: [darwin]
 
@@ -708,43 +708,43 @@ packages:
   '@libsql/isomorphic-ws@0.1.5':
     resolution: {integrity: sha512-DtLWIH29onUYR00i0GlQ3UdcTRC6EP4u9w/h9LxpUZJWRMARk6dQwZ6Jkd+QdwVpuAOrdxt18v0K2uIYR3fwFg==}
 
-  '@libsql/linux-arm-gnueabihf@0.5.11':
-    resolution: {integrity: sha512-znsVKbKgOerCNkIY0HjtvkioVGLskmGXZodZn3TMDRTmn1PIUt7/dnxU5moKMdKa1hKDSOC52dqF77nAdkn4UA==}
+  '@libsql/linux-arm-gnueabihf@0.5.13':
+    resolution: {integrity: sha512-UEW+VZN2r0mFkfztKOS7cqfS8IemuekbjUXbXCwULHtusww2QNCXvM5KU9eJCNE419SZCb0qaEWYytcfka8qeA==}
     cpu: [arm]
     os: [linux]
 
-  '@libsql/linux-arm-musleabihf@0.5.11':
-    resolution: {integrity: sha512-l4gJY6AvhQ4fUJRpjph3AW6pbiAUcVxJUH0oM5Pf/GnA9acpaDgLtle2hWMz16BSncg/Jl2jVpaJuyJsJ9E7YA==}
+  '@libsql/linux-arm-musleabihf@0.5.13':
+    resolution: {integrity: sha512-NMDgLqryYBv4Sr3WoO/m++XDjR5KLlw9r/JK4Ym6A1XBv2bxQQNhH0Lxx3bjLW8qqhBD4+0xfms4d2cOlexPyA==}
     cpu: [arm]
     os: [linux]
 
-  '@libsql/linux-arm64-gnu@0.5.11':
-    resolution: {integrity: sha512-axXEenVUnSKR25g0iqL/OH4z4qrPBNwdBhjTWZr613L9tnboDPAioP1kVEy77nN8C8CL/dyXh5X4vKuIwHrQpQ==}
+  '@libsql/linux-arm64-gnu@0.5.13':
+    resolution: {integrity: sha512-/wCxVdrwl1ee6D6LEjwl+w4SxuLm5UL9Kb1LD5n0bBGs0q+49ChdPPh7tp175iRgkcrTgl23emymvt1yj3KxVQ==}
     cpu: [arm64]
     os: [linux]
 
-  '@libsql/linux-arm64-musl@0.5.11':
-    resolution: {integrity: sha512-Pzz9dm2D78PQpy3pYKbvzBBOwdjg9c3yoQSu5QQQCGL4J5e1bZpa/p6Z3BoYBlvmdo1V36ljS6N4hRir/rnCxg==}
+  '@libsql/linux-arm64-musl@0.5.13':
+    resolution: {integrity: sha512-xnVAbZIanUgX57XqeI5sNaDnVilp0Di5syCLSEo+bRyBobe/1IAeehNZpyVbCy91U2N6rH1C/mZU7jicVI9x+A==}
     cpu: [arm64]
     os: [linux]
 
-  '@libsql/linux-x64-gnu@0.5.11':
-    resolution: {integrity: sha512-DxOU0MqG7soKZFVzOo7Zot5qDajZjjOgjf/sOjeJf/aeRBr3KkKiwgWKnmjDhuhitahqc8Nu2D92/dsAuDHJsA==}
+  '@libsql/linux-x64-gnu@0.5.13':
+    resolution: {integrity: sha512-/mfMRxcQAI9f8t7tU3QZyh25lXgXKzgin9B9TOSnchD73PWtsVhlyfA6qOCfjQl5kr4sHscdXD5Yb3KIoUgrpQ==}
     cpu: [x64]
     os: [linux]
 
-  '@libsql/linux-x64-musl@0.5.11':
-    resolution: {integrity: sha512-uRou4r+PiDA616t2USnsjbot88ennTrwKqhVUY7S6LTPI3RiKizZg6YESCwhzofPtk8Ualp/hMQGTGSoW9DUKw==}
+  '@libsql/linux-x64-musl@0.5.13':
+    resolution: {integrity: sha512-rdefPTpQCVwUjIQYbDLMv3qpd5MdrT0IeD0UZPGqhT9AWU8nJSQoj2lfyIDAWEz7PPOVCY4jHuEn7FS2sw9kRA==}
     cpu: [x64]
     os: [linux]
 
-  '@libsql/win32-x64-msvc@0.5.11':
-    resolution: {integrity: sha512-NES0P2pyx5XjveTYotTG03eoJwx0haJBYWXfqmcPLmbQ5u03Qmd7rxhLfWDdIRj4PrdhVProwdB0FA82ryLcKQ==}
+  '@libsql/win32-x64-msvc@0.5.13':
+    resolution: {integrity: sha512-aNcmDrD1Ws+dNZIv9ECbxBQumqB9MlSVEykwfXJpqv/593nABb8Ttg5nAGUPtnADyaGDTrGvPPP81d/KsKho4Q==}
     cpu: [x64]
     os: [win32]
 
-  '@mastra/core@0.10.3':
-    resolution: {integrity: sha512-F2fFaWP9aBcK/eUWdvncyN9qcG6XnJgY62jfBknwKwWPu9nd/awTh5VGZej/CWU4Pxm28ASeieqjRSdrfry9cA==}
+  '@mastra/core@0.10.5':
+    resolution: {integrity: sha512-Cm3ghshlrSS/zrPojz5aQziXxIEjXsXJbO+UI0WFe0hYEvyDa5Pue7wxxSkIehi55b19fwRHcfTOsv17/aotOA==}
     engines: {node: '>=20'}
     peerDependencies:
       zod: ^3.0.0
@@ -752,37 +752,43 @@ packages:
   '@mastra/fastembed@0.10.0':
     resolution: {integrity: sha512-sxOjb66XBdlOWSD2eZ4PN78ex35+Qalgzu6mqEhf4v2NSsh78Cm+r3pWFYLRKKu7qlFZcQk8AGUaXL4UxJrr+w==}
 
-  '@mastra/libsql@0.10.1':
-    resolution: {integrity: sha512-ZSeFd5vRQW/Qs8UNnR0UufXHKet295tl7/ObJbqslyyE1hX1vqD0LPiCzmIqoMCAFkKWkRnTwYKd3E6kLqhVeg==}
+  '@mastra/libsql@0.10.2':
+    resolution: {integrity: sha512-cDfkDsiRZetlhrw6IcEeuFKQMA4DSCEATvwpJ0W2UREG/Zu7Ax07Wa1qH8zJiGudHhHw4LutQAoQTNB2tX8FXg==}
     peerDependencies:
-      '@mastra/core': ^0.10.2-alpha.0
+      '@mastra/core': '>=0.10.4-0 <0.11.0'
 
-  '@mastra/mcp@0.10.2':
-    resolution: {integrity: sha512-y3hW8ral2OY9Yb6WDaK/x9LDQExly7ePRMHz8GvlTiFbjatSILtdFJ+ZUAHZN17pjVXebldq0WkwCi0b3Dv+yw==}
+  '@mastra/mcp@0.10.3':
+    resolution: {integrity: sha512-kFRypsAU3s84CQOEkU4ZFUxOJBxbFztgo+tliBfVlUp98XRYKXifol5aM8eVgKtC59LQq/Q15QjIwNaiNpb/ZQ==}
     peerDependencies:
       '@mastra/core': ^0.10.2-alpha.0
       zod: ^3.0.0
 
-  '@mastra/memory@0.10.2':
-    resolution: {integrity: sha512-7g8F+Q1aBPz4wq5YW6krWlee8wvJAnOmnes5toaiaSZo+yqkmqYuwmliBu2LXSXdnFBeDYscQRLkrg6E7yEI9w==}
+  '@mastra/memory@0.10.3':
+    resolution: {integrity: sha512-GEAF5mgajff2HPqvjkX8ZFZ98axU5zXhH2NuX2R8odjv21m6viuEAGIAZxQNqK5kspeqCefYdLfrCoq7arOMzA==}
     peerDependencies:
-      '@mastra/core': ^0.10.2-alpha.0
+      '@mastra/core': '>=0.10.4-0 <0.11.0'
 
-  '@mastra/pg@0.10.1':
-    resolution: {integrity: sha512-jZOAM/QdhaWXDoUGqFpBYgglh+1EkgaieR7EP3lzhM4DU1ZlCnZkv0O05JlPBTIbx9e6F7vy2227OpyIX0OVIw==}
+  '@mastra/pg@0.10.3':
+    resolution: {integrity: sha512-iQNXO+/mSuGfh+VEfG1wVEakTIpCBUrpN3YoaDhU/6QFbmhOHLJJfnyCQ1e7NfdQUiQyMuDQtzDs20OcqS/JOw==}
     peerDependencies:
-      '@mastra/core': ^0.10.2-alpha.0
+      '@mastra/core': '>=0.10.4-0 <0.11.0'
 
-  '@mastra/pinecone@0.10.1':
-    resolution: {integrity: sha512-VLYmWG8hBq2U5fweXsf6AcCu9iKq9MvJEqEl5TniUMxwxdR/qELK48jNfqqclEFoGDvwllXqfCmEAn9+MqdWaQ==}
+  '@mastra/pinecone@0.10.2':
+    resolution: {integrity: sha512-nSXIKtrjzyvjwILgJBpt8hp0ahmE6BY8u1Lyd3pa56xlpotdNn0rD8nn81rS3PSelGECL1lGzXLw7wHNa8Sx1A==}
     peerDependencies:
-      '@mastra/core': ^0.10.0-alpha.0
+      '@mastra/core': '>=0.10.4-0 <0.11.0'
 
-  '@mastra/rag@0.10.2':
-    resolution: {integrity: sha512-a6lgNFaCooYh/CibquCf19yHagsYXFXcBcECOt9kdFVbHmUK4Wc7Dv/1pjV7qWXoa6mv2kQ5yXQvtXjdex/ZKA==}
+  '@mastra/rag@0.10.3':
+    resolution: {integrity: sha512-4vOmsX+PAe8AS5O3gYjxpLBxbMWNQEG832LFSAH1WLefNp8PXCDJxP10K9KA/KNvRmYdvdkI8CaS3rL9qEJcfA==}
     peerDependencies:
       '@mastra/core': ^0.10.0-alpha.0
       ai: ^4.0.0
+
+  '@mastra/schema-compat@0.10.2':
+    resolution: {integrity: sha512-QCPnD0Jd7NJgfVdvNkLPJhqSjyNcA+eaa16N+3kwa+wTBMb6eziWZC1aQNQ6o4T1JVPoo5unVVtL1pqiIgV+tA==}
+    peerDependencies:
+      ai: ^4.0.0
+      zod: ^3.0.0
 
   '@modelcontextprotocol/sdk@1.12.1':
     resolution: {integrity: sha512-KG1CZhZfWg+u8pxeM/mByJDScJSrjjxLc8fwQqbsS8xCjBmQfMNEBTotYdNanKekepnfRI85GtgQlctLFpcYPw==}
@@ -2352,6 +2358,11 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  acorn@8.15.0:
+    resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+
   agent-base@7.1.3:
     resolution: {integrity: sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw==}
     engines: {node: '>= 14'}
@@ -2959,8 +2970,8 @@ packages:
     resolution: {integrity: sha512-ca9pw9fomFcKPvFLXhBKUK90ZvGibiGOvRJNbjljY7s7uq/5YO4BOzcYtJqExdx99rF6aAcnRxHmcUHcz6sQsg==}
     engines: {node: '>=0.10'}
 
-  esrap@1.4.7:
-    resolution: {integrity: sha512-0ZxW6guTF/AeKeKi7he93lmgv7Hx7giD1tBrOeVqkqsZGQJd2/kfnL7LdIsr9FT/AtkBK9XeDTov+gxprBqdEg==}
+  esrap@1.4.9:
+    resolution: {integrity: sha512-3OMlcd0a03UGuZpPeUC1HxR3nA23l+HEyCiZw3b3FumJIN9KphoGzDJKMXI1S72jVS1dsenDyQC0kJlO1U9E1g==}
 
   esrecurse@4.3.0:
     resolution: {integrity: sha512-KmfKL3b6G+RXvP8N1vr3Tq1kL/oCFgn2NYXEtqP8/L3pKapUA4G8cFVaoF3SU323CD4XypR/ffioHmkti6/Tag==}
@@ -3596,8 +3607,9 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  libsql@0.5.11:
-    resolution: {integrity: sha512-P2xY1nL2Jl7oM75LcguAEYqouVcevWhLWT8RU/p9ldaqQx5s/chF9t5ZFXPWP0x9myQQ4SguRqPO+FqdnCzKQg==}
+  libsql@0.5.13:
+    resolution: {integrity: sha512-5Bwoa/CqzgkTwySgqHA5TsaUDRrdLIbdM4egdPcaAnqO3aC+qAgS6BwdzuZwARA5digXwiskogZ8H7Yy4XfdOg==}
+    cpu: [x64, arm64, wasm32, arm]
     os: [darwin, linux, win32]
 
   lightningcss-darwin-arm64@1.30.1:
@@ -4194,8 +4206,8 @@ packages:
     resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.5.4:
-    resolution: {integrity: sha512-QSa9EBe+uwlGTFmHsPKokv3B/oEMQZxfqW0QqNCyhpa6mB1afzulwn8hihglqAb2pOw+BJgNlmXQ8la2VeHB7w==}
+  postcss@8.5.5:
+    resolution: {integrity: sha512-d/jtm+rdNT8tpXuHY5MMtcbJFBkhXE6593XVR9UoGCH8jSFGci7jGvMGH5RYd5PBJW+00NZQt6gf7CbagJCrhg==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres-array@2.0.0:
@@ -4959,6 +4971,9 @@ packages:
   zod@3.25.28:
     resolution: {integrity: sha512-/nt/67WYKnr5by3YS7LroZJbtcCBurDKKPBPWWzaxvVCGuG/NOsiKkrjoOhI8mJ+SQUXEbUzeB3S+6XDUEEj7Q==}
 
+  zod@3.25.64:
+    resolution: {integrity: sha512-hbP9FpSZf7pkS7hRVUrOjhwKJNyampPgtXKc3AN6DsWtoHsg2Sb4SQaS4Tcay380zSwd2VPo9G9180emBACp5g==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -4992,6 +5007,13 @@ snapshots:
       secure-json-parse: 2.7.0
       zod: 3.25.28
 
+  '@ai-sdk/provider-utils@2.2.8(zod@3.25.64)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      nanoid: 3.3.11
+      secure-json-parse: 2.7.0
+      zod: 3.25.64
+
   '@ai-sdk/provider@0.0.26':
     dependencies:
       json-schema: 0.4.0
@@ -5019,6 +5041,16 @@ snapshots:
       throttleit: 2.1.0
     optionalDependencies:
       zod: 3.25.28
+
+  '@ai-sdk/react@1.2.12(react@19.1.0)(zod@3.25.64)':
+    dependencies:
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.64)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.64)
+      react: 19.1.0
+      swr: 2.3.3(react@19.1.0)
+      throttleit: 2.1.0
+    optionalDependencies:
+      zod: 3.25.64
 
   '@ai-sdk/solid@0.0.54(zod@3.25.28)':
     dependencies:
@@ -5053,6 +5085,13 @@ snapshots:
       '@ai-sdk/provider-utils': 2.2.8(zod@3.25.28)
       zod: 3.25.28
       zod-to-json-schema: 3.24.5(zod@3.25.28)
+
+  '@ai-sdk/ui-utils@1.2.11(zod@3.25.64)':
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.64)
+      zod: 3.25.64
+      zod-to-json-schema: 3.24.5(zod@3.25.64)
 
   '@ai-sdk/vue@0.0.59(vue@3.5.15(typescript@5.8.3))(zod@3.25.28)':
     dependencies:
@@ -5768,25 +5807,25 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
-  '@libsql/client@0.15.7':
+  '@libsql/client@0.15.9':
     dependencies:
-      '@libsql/core': 0.15.7
+      '@libsql/core': 0.15.9
       '@libsql/hrana-client': 0.7.0
       js-base64: 3.7.7
-      libsql: 0.5.11
+      libsql: 0.5.13
       promise-limit: 2.7.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@libsql/core@0.15.7':
+  '@libsql/core@0.15.9':
     dependencies:
       js-base64: 3.7.7
 
-  '@libsql/darwin-arm64@0.5.11':
+  '@libsql/darwin-arm64@0.5.13':
     optional: true
 
-  '@libsql/darwin-x64@0.5.11':
+  '@libsql/darwin-x64@0.5.13':
     optional: true
 
   '@libsql/hrana-client@0.7.0':
@@ -5809,32 +5848,33 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@libsql/linux-arm-gnueabihf@0.5.11':
+  '@libsql/linux-arm-gnueabihf@0.5.13':
     optional: true
 
-  '@libsql/linux-arm-musleabihf@0.5.11':
+  '@libsql/linux-arm-musleabihf@0.5.13':
     optional: true
 
-  '@libsql/linux-arm64-gnu@0.5.11':
+  '@libsql/linux-arm64-gnu@0.5.13':
     optional: true
 
-  '@libsql/linux-arm64-musl@0.5.11':
+  '@libsql/linux-arm64-musl@0.5.13':
     optional: true
 
-  '@libsql/linux-x64-gnu@0.5.11':
+  '@libsql/linux-x64-gnu@0.5.13':
     optional: true
 
-  '@libsql/linux-x64-musl@0.5.11':
+  '@libsql/linux-x64-musl@0.5.13':
     optional: true
 
-  '@libsql/win32-x64-msvc@0.5.11':
+  '@libsql/win32-x64-msvc@0.5.13':
     optional: true
 
-  '@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)':
+  '@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)':
     dependencies:
       '@ai-sdk/provider': 1.1.3
       '@ai-sdk/provider-utils': 2.2.8(zod@3.25.28)
       '@ai-sdk/ui-utils': 1.2.11(zod@3.25.28)
+      '@mastra/schema-compat': 0.10.2(ai@4.3.16(react@19.1.0)(zod@3.25.28))(zod@3.25.28)
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/auto-instrumentations-node': 0.59.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@2.0.1(@opentelemetry/api@1.9.0))(encoding@0.1.13)
       '@opentelemetry/core': 2.0.1(@opentelemetry/api@1.9.0)
@@ -5863,8 +5903,6 @@ snapshots:
       sift: 17.1.3
       xstate: 5.19.3
       zod: 3.25.28
-      zod-from-json-schema: 0.0.5
-      zod-to-json-schema: 3.24.5(zod@3.25.28)
     transitivePeerDependencies:
       - '@hono/arktype-validator'
       - '@hono/effect-validator'
@@ -5896,17 +5934,17 @@ snapshots:
       - vue
       - zod
 
-  '@mastra/libsql@0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))':
+  '@mastra/libsql@0.10.2(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))':
     dependencies:
-      '@libsql/client': 0.15.7
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@libsql/client': 0.15.9
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@mastra/mcp@0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(zod@3.25.28)':
+  '@mastra/mcp@0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(zod@3.25.28)':
     dependencies:
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       '@modelcontextprotocol/sdk': 1.12.1
       date-fns: 4.1.0
       exit-hook: 4.0.0
@@ -5918,25 +5956,25 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mastra/memory@0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(react@19.1.0)':
+  '@mastra/memory@0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(react@19.1.0)':
     dependencies:
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       '@upstash/redis': 1.34.9
-      ai: 4.3.16(react@19.1.0)(zod@3.25.28)
+      ai: 4.3.16(react@19.1.0)(zod@3.25.64)
       js-tiktoken: 1.0.20
       pg: 8.16.0
       pg-pool: 3.10.0(pg@8.16.0)
       postgres: 3.4.7
       redis: 4.7.1
       xxhash-wasm: 1.1.0
-      zod: 3.25.28
+      zod: 3.25.64
     transitivePeerDependencies:
       - pg-native
       - react
 
-  '@mastra/pg@0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(pg-query-stream@4.8.1(pg@8.14.1))':
+  '@mastra/pg@0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(pg-query-stream@4.8.1(pg@8.14.1))':
     dependencies:
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       async-mutex: 0.5.0
       pg: 8.16.0
       pg-promise: 11.13.0(pg-query-stream@4.8.1(pg@8.14.1))
@@ -5945,21 +5983,29 @@ snapshots:
       - pg-native
       - pg-query-stream
 
-  '@mastra/pinecone@0.10.1(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))':
+  '@mastra/pinecone@0.10.2(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))':
     dependencies:
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       '@pinecone-database/pinecone': 3.0.3
 
-  '@mastra/rag@0.10.2(@mastra/core@0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(ai@4.3.16(react@19.1.0)(zod@3.25.28))':
+  '@mastra/rag@0.10.3(@mastra/core@0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28))(ai@4.3.16(react@19.1.0)(zod@3.25.28))':
     dependencies:
-      '@mastra/core': 0.10.3(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
+      '@mastra/core': 0.10.5(encoding@0.1.13)(openapi-types@12.1.3)(react@19.1.0)(zod@3.25.28)
       '@paralleldrive/cuid2': 2.2.2
       ai: 4.3.16(react@19.1.0)(zod@3.25.28)
       big.js: 7.0.1
       js-tiktoken: 1.0.20
       node-html-better-parser: 1.4.11
       pathe: 2.0.3
+      zod: 3.25.64
+
+  '@mastra/schema-compat@0.10.2(ai@4.3.16(react@19.1.0)(zod@3.25.28))(zod@3.25.28)':
+    dependencies:
+      ai: 4.3.16(react@19.1.0)(zod@3.25.28)
+      json-schema: 0.4.0
       zod: 3.25.28
+      zod-from-json-schema: 0.0.5
+      zod-to-json-schema: 3.24.5(zod@3.25.28)
 
   '@modelcontextprotocol/sdk@1.12.1':
     dependencies:
@@ -7426,9 +7472,9 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@sveltejs/acorn-typescript@1.0.5(acorn@8.14.1)':
+  '@sveltejs/acorn-typescript@1.0.5(acorn@8.15.0)':
     dependencies:
-      acorn: 8.14.1
+      acorn: 8.15.0
 
   '@swc/counter@0.1.3': {}
 
@@ -7783,7 +7829,7 @@ snapshots:
       '@vue/shared': 3.5.15
       estree-walker: 2.0.2
       magic-string: 0.30.17
-      postcss: 8.5.4
+      postcss: 8.5.5
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.15':
@@ -7834,6 +7880,8 @@ snapshots:
 
   acorn@8.14.1: {}
 
+  acorn@8.15.0: {}
+
   agent-base@7.1.3: {}
 
   ai@3.4.33(react@19.1.0)(sswr@2.2.0(svelte@5.33.4))(svelte@5.33.4)(vue@3.5.15(typescript@5.8.3))(zod@3.25.28):
@@ -7869,6 +7917,18 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
       zod: 3.25.28
+    optionalDependencies:
+      react: 19.1.0
+
+  ai@4.3.16(react@19.1.0)(zod@3.25.64):
+    dependencies:
+      '@ai-sdk/provider': 1.1.3
+      '@ai-sdk/provider-utils': 2.2.8(zod@3.25.64)
+      '@ai-sdk/react': 1.2.12(react@19.1.0)(zod@3.25.64)
+      '@ai-sdk/ui-utils': 1.2.11(zod@3.25.64)
+      '@opentelemetry/api': 1.9.0
+      jsondiffpatch: 0.6.0
+      zod: 3.25.64
     optionalDependencies:
       react: 19.1.0
 
@@ -8587,7 +8647,7 @@ snapshots:
     dependencies:
       estraverse: 5.3.0
 
-  esrap@1.4.7:
+  esrap@1.4.9:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
@@ -9231,20 +9291,20 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  libsql@0.5.11:
+  libsql@0.5.13:
     dependencies:
       '@neon-rs/load': 0.0.4
       detect-libc: 2.0.2
     optionalDependencies:
-      '@libsql/darwin-arm64': 0.5.11
-      '@libsql/darwin-x64': 0.5.11
-      '@libsql/linux-arm-gnueabihf': 0.5.11
-      '@libsql/linux-arm-musleabihf': 0.5.11
-      '@libsql/linux-arm64-gnu': 0.5.11
-      '@libsql/linux-arm64-musl': 0.5.11
-      '@libsql/linux-x64-gnu': 0.5.11
-      '@libsql/linux-x64-musl': 0.5.11
-      '@libsql/win32-x64-msvc': 0.5.11
+      '@libsql/darwin-arm64': 0.5.13
+      '@libsql/darwin-x64': 0.5.13
+      '@libsql/linux-arm-gnueabihf': 0.5.13
+      '@libsql/linux-arm-musleabihf': 0.5.13
+      '@libsql/linux-arm64-gnu': 0.5.13
+      '@libsql/linux-arm64-musl': 0.5.13
+      '@libsql/linux-x64-gnu': 0.5.13
+      '@libsql/linux-x64-musl': 0.5.13
+      '@libsql/win32-x64-msvc': 0.5.13
 
   lightningcss-darwin-arm64@1.30.1:
     optional: true
@@ -10041,7 +10101,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postcss@8.5.4:
+  postcss@8.5.5:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -10623,14 +10683,14 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.5.0
-      '@sveltejs/acorn-typescript': 1.0.5(acorn@8.14.1)
+      '@sveltejs/acorn-typescript': 1.0.5(acorn@8.15.0)
       '@types/estree': 1.0.8
-      acorn: 8.14.1
+      acorn: 8.15.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
       clsx: 2.1.1
       esm-env: 1.2.2
-      esrap: 1.4.7
+      esrap: 1.4.9
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.17
@@ -10980,6 +11040,12 @@ snapshots:
     dependencies:
       zod: 3.25.28
 
+  zod-to-json-schema@3.24.5(zod@3.25.64):
+    dependencies:
+      zod: 3.25.64
+
   zod@3.25.28: {}
+
+  zod@3.25.64: {}
 
   zwitch@2.0.4: {}
