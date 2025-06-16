@@ -2,6 +2,7 @@ import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
+import { threadMemory } from "../memory";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -332,4 +333,5 @@ Start each conversation with a friendly greeting and ask how you can assist them
     getTicketDetailsTool,
     offerStoreCreditTool,
   },
+  memory: threadMemory,
 });

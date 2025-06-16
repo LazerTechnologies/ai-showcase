@@ -1,5 +1,6 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
+import { threadMemory } from "../memory";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -11,4 +12,5 @@ export const delegateAgent = new Agent({
   Don't try to create your own output.
   Make sure to credit the agents that you delegate to.`,
   model: google("gemini-2.0-flash-exp"),
+  memory: threadMemory,
 });

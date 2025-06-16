@@ -3,6 +3,7 @@ import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { ALL_FILES } from "./mock-files";
+import { threadMemory } from "../memory";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -83,5 +84,6 @@ export function createAuthorizationAgent(userRole: "viewer" | "admin") {
     tools: {
       googleDriveTool,
     },
+    memory: threadMemory,
   });
 }

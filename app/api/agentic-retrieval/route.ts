@@ -6,6 +6,7 @@ import { PineconeVector } from "@mastra/pinecone";
 import { embed } from "ai";
 import { fastembed } from "@mastra/fastembed";
 import { PINECONE_INDEX_NAME } from "../../constants";
+import { threadMemory } from "../memory";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -325,6 +326,7 @@ const agenticRetrievalAgent = new Agent({
     keywordSearchTool,
     vectorSearchTool,
   },
+  memory: threadMemory,
 });
 
 export const maxDuration = 30;

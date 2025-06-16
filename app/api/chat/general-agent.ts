@@ -1,6 +1,7 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
 import { weatherTool } from "./weather-tool";
+import { threadMemory } from "../memory";
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -14,4 +15,5 @@ export const generalAgent = new Agent({
   tools: {
     weatherTool,
   },
+  memory: threadMemory,
 });
