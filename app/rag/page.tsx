@@ -5,6 +5,7 @@ import { useChat } from "@ai-sdk/react";
 import { ChatInterface } from "@/app/components/chat";
 import { DocumentUpload } from "./components/DocumentUpload";
 import { NamespaceInput } from "./components/NamespaceInput";
+import { createPrepareRequestBody } from "@/app/utils/message-utils";
 
 export default function RAGChat() {
   const [namespace, setNamespace] = useState("default-namespace");
@@ -13,6 +14,7 @@ export default function RAGChat() {
     useChat({
       api: "/api/rag",
       body: { namespace },
+      experimental_prepareRequestBody: createPrepareRequestBody("rag"),
     });
 
   const actions = (

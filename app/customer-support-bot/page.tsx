@@ -2,11 +2,13 @@
 
 import { useChat } from "@ai-sdk/react";
 import { ChatInterface } from "@/app/components/chat";
+import { createPrepareRequestBody } from "@/app/utils/message-utils";
 
 export default function CustomerSupportBotChat() {
   const { messages, input, handleInputChange, handleSubmit, setInput, status } =
     useChat({
       api: "/api/customer-support-bot",
+      experimental_prepareRequestBody: createPrepareRequestBody("support"),
     });
 
   return (

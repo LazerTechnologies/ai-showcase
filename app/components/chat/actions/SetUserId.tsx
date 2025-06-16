@@ -20,7 +20,7 @@ export function SetUserId() {
   return (
     <SingleFieldAction
       label="Set user ID"
-      description="Unique identifier for your user account"
+      description="Unique ID for your user profile (in a real application, this would be set via auth)"
       defaultValue={
         typeof window !== "undefined"
           ? localStorage.getItem(USER_ID_STORAGE_KEY) || ""

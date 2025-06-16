@@ -2,30 +2,13 @@
 
 import { ChatInterface } from "@/app/components/chat";
 import { useChat } from "@ai-sdk/react";
-import {
-  THREAD_ID_STORAGE_KEY,
-  USER_ID_STORAGE_KEY,
-} from "./constants/local-storage";
+import { createPrepareRequestBody } from "@/app/utils/message-utils";
 
 export default function GeneralChat() {
   const { messages, input, handleInputChange, handleSubmit, status, setInput } =
     useChat({
       api: "/api/chat",
-      experimental_prepareRequestBody: (request) => {
-        // useChat sends all messages to the API, but we only want to send the last message since Mastra
-        // is handling message persistence for us.
-        // See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
-        const lastMessage =
-          request.messages.length > 0
-            ? request.messages[request.messages.length - 1]
-            : null;
-
-        return {
-          message: lastMessage,
-          threadId: localStorage.getItem(THREAD_ID_STORAGE_KEY),
-          userId: localStorage.getItem(USER_ID_STORAGE_KEY),
-        };
-      },
+      experimental_prepareRequestBody: createPrepareRequestBody("general"),
     });
 
   return (

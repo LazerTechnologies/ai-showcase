@@ -2,11 +2,14 @@
 
 import { useChat } from "@ai-sdk/react";
 import { ChatInterface } from "@/app/components/chat";
+import { createPrepareRequestBody } from "@/app/utils/message-utils";
 
 export default function AgenticRetrievalChat() {
   const { messages, input, handleInputChange, handleSubmit, setInput, status } =
     useChat({
       api: "/api/agentic-retrieval",
+      experimental_prepareRequestBody:
+        createPrepareRequestBody("agentic-retrieval"),
     });
 
   return (
