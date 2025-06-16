@@ -16,7 +16,7 @@ export default function AuthorizationChat() {
     handleSubmit,
     isLoading,
     setInput,
-  } = useMultiAgentStream("/api/authorization", {
+  } = useMultiAgentStream("/api/authorization", "authorization", {
     // In a real-world application, this would be a JWT token or other authentication mechanism
     // that's decoded on the server-side to get the user and their role
     "x-user-role": role,

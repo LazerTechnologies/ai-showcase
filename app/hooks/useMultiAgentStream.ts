@@ -45,9 +45,14 @@ export interface UseMultiAgentStreamReturn {
 /**
  * A hook that allows for multi-agent streaming. It's very similar to the useChat hook, but each chunk is simply
  * also provided with a streamId to differentiate between messages from different agents.
+ *
+ * @param apiEndpoint - The API endpoint to send requests to
+ * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
+ * @param headers - Optional headers to include in requests
  */
 export function useMultiAgentStream(
   apiEndpoint: string,
+  threadPrefix: string,
   headers?: Record<string, string>
 ): UseMultiAgentStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
@@ -90,6 +95,11 @@ export function useMultiAgentStream(
       setIsLoading(true);
 
       try {
+        const baseThreadId = localStorage.getItem(THREAD_ID_STORAGE_KEY);
+        const prefixedThreadId = baseThreadId
+          ? `${threadPrefix}-${baseThreadId}`
+          : null;
+
         const response = await fetch(apiEndpoint, {
           method: "POST",
           headers: {
@@ -97,7 +107,11 @@ export function useMultiAgentStream(
             ...headers,
           },
           body: JSON.stringify({
-            messages: [...chatState.messages, userMessage].map((msg) => ({
+            // We only send the last message to the API since Mastra handles message persistence rather than
+            // maintaining the full conversation history locally. Map all messages if you want to store the full conversation history
+            // locally (but make sure to remove memory usage from the agent).
+            // See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
+            messages: [userMessage].map((msg) => ({
               role: msg.role,
               parts: msg.parts,
             })),
@@ -105,10 +119,7 @@ export function useMultiAgentStream(
               typeof window !== "undefined"
                 ? localStorage.getItem(USER_ID_STORAGE_KEY) ?? undefined
                 : undefined,
-            threadId:
-              typeof window !== "undefined"
-                ? localStorage.getItem(THREAD_ID_STORAGE_KEY) ?? undefined
-                : undefined,
+            threadId: prefixedThreadId,
           }),
         });
 
@@ -270,7 +281,7 @@ export function useMultiAgentStream(
         setIsLoading(false);
       }
     },
-    [input, isLoading, chatState.messages, apiEndpoint, headers]
+    [input, isLoading, chatState.messages, apiEndpoint, threadPrefix, headers]
   );
 
   // Combine messages and streaming messages, sorted by timestamp/streamStartedAt

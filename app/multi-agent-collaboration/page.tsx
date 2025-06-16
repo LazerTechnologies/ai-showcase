@@ -11,7 +11,7 @@ export default function GeneralChat() {
     handleSubmit,
     isLoading,
     setInput,
-  } = useMultiAgentStream("/api/multi-agent-collaboration");
+  } = useMultiAgentStream("/api/multi-agent-collaboration", "multi-agent");
 
   return (
     <ChatInterface

@@ -19,7 +19,8 @@ type PrepareRequestBodyRequest = Parameters<
 /**
  * Shared experimental_prepareRequestBody function for useChat
  * This sends only the last message to the API since Mastra handles message persistence rather than
- * maintaining the full conversation history locally.
+ * maintaining the full conversation history locally. Send all messages if you want to store the full conversation
+ * history locally (but make sure to remove memory usage from the agent).
  * See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
  *
  * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
