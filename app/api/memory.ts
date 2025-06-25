@@ -9,6 +9,8 @@ const database = process.env.POSTGRES_DB!;
 const password = process.env.POSTGRES_PASSWORD!;
 const connectionString = `postgresql://${user}:${password}@${host}:${port}/${database}?sslmode=require`;
 
+const schemaName = "mastra";
+
 const storage = new PostgresStore({
   host,
   port,
@@ -16,8 +18,9 @@ const storage = new PostgresStore({
   database,
   password,
   ssl: true,
+  schemaName,
 });
-const vector = new PgVector({ connectionString });
+const vector = new PgVector({ connectionString, schemaName });
 
 const createMemoryWithScope = (scope: "thread" | "resource") =>
   new Memory({
