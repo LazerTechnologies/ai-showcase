@@ -13,7 +13,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
 interface SingleFieldActionProps {
@@ -43,9 +42,6 @@ export function SingleFieldAction({
     onSubmit(data.value);
   };
 
-  const currentValue = form.watch("value");
-  const isValid = currentValue?.length > 0;
-
   return (
     <Form {...form}>
       <form
@@ -53,11 +49,11 @@ export function SingleFieldAction({
         className="flex items-end space-x-2"
       >
         <FormField
+          {...form.register("value", {
+            validate: validate,
+          })}
           control={form.control}
           name="value"
-          rules={{
-            validate: validate,
-          }}
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormLabel>{label}</FormLabel>
@@ -65,12 +61,11 @@ export function SingleFieldAction({
               <FormControl>
                 <Input {...field} placeholder={placeholder} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" size="icon" variant="outline" disabled={!isValid}>
+        <Button type="submit" size="icon" variant="outline">
           <Check className="h-4 w-4" />
           <span className="sr-only">Save {label}</span>
         </Button>

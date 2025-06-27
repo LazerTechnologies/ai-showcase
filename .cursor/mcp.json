@@ -3,6 +3,9 @@
     "mastra": {
       "command": "npx",
       "args": ["-y", "@mastra/mcp-docs-server@latest"]
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
     }
   }
 }

@@ -1,5 +1,43 @@
-import { pgTable, uuid } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+
+const timestamps = {
+  created_at: timestamp({ withTimezone: true, mode: "string" })
+    .default(sql`(now() AT TIME ZONE 'utc'::text)`)
+    .notNull(),
+  updated_at: timestamp({ withTimezone: true, mode: "string" })
+    .default(sql`(now() AT TIME ZONE 'utc'::text)`)
+    .notNull()
+    .$onUpdate(() => sql`(now() AT TIME ZONE 'utc'::text)`),
+};
 
 export const usersTable = pgTable("users", {
   id: uuid().primaryKey().defaultRandom(),
+});
+
+export const supportTicketsTable = pgTable("support_tickets", {
+  id: uuid().primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => usersTable.id),
+  description: text("description").notNull(),
+  status: text("status")
+    .notNull()
+    .$type<"open" | "in-progress" | "resolved" | "closed">(),
+  ...timestamps,
+});
+
+export const storeCreditTable = pgTable("store_credit", {
+  id: uuid().primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => usersTable.id),
+  ticketId: uuid("ticket_id")
+    .notNull()
+    .references(() => supportTicketsTable.id),
+  amount: text("amount").notNull(), // Store as string to avoid precision issues
+  reason: text("reason").notNull(),
+  expirationDate: timestamp("expiration_date").notNull(),
+  usedAt: timestamp("used_at"),
+  ...timestamps,
 });
