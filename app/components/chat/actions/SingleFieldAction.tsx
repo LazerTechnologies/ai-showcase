@@ -13,6 +13,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 
 interface SingleFieldActionProps {
@@ -36,7 +37,9 @@ export function SingleFieldAction({
     defaultValues: {
       value: defaultValue,
     },
+    mode: "onChange",
   });
+  const hasErrors = Object.keys(form.formState.errors).length > 0;
 
   const handleSubmit = (data: { value: string }) => {
     onSubmit(data.value);
@@ -65,11 +68,19 @@ export function SingleFieldAction({
           )}
         />
 
-        <Button type="submit" size="icon" variant="outline">
+        <Button
+          type="submit"
+          size="icon"
+          variant="outline"
+          disabled={hasErrors}
+        >
           <Check className="h-4 w-4" />
           <span className="sr-only">Save {label}</span>
         </Button>
       </form>
+      {hasErrors && (
+        <FormMessage>{form.formState.errors.value?.message}</FormMessage>
+      )}
     </Form>
   );
 }
