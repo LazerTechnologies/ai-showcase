@@ -17,16 +17,18 @@ const createSupportTicketTool = createTool({
     description: z
       .string()
       .describe("Detailed description of the customer's issue"),
-    userId: z.string().describe("User ID of the customer"),
   }),
   outputSchema: z.object({
     ticketId: z.string(),
     status: z.string(),
     message: z.string(),
   }),
-  execute: async ({ context }) => {
+  execute: async ({ context, runtimeContext }) => {
     try {
-      const userId = context.userId;
+      const userId = runtimeContext.get("userId") as string | undefined;
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
 
       const ticket = await SupportTicketService.createTicket({
         userId,
@@ -60,7 +62,6 @@ const fetchSupportTicketsTool = createTool({
       .enum(["all", "open", "in-progress", "resolved", "closed"])
       .optional()
       .describe("Filter tickets by status"),
-    userId: z.string().describe("User ID to fetch tickets for"),
   }),
   outputSchema: z.object({
     tickets: z.array(
@@ -74,9 +75,12 @@ const fetchSupportTicketsTool = createTool({
     ),
     totalCount: z.number(),
   }),
-  execute: async ({ context }) => {
+  execute: async ({ context, runtimeContext }) => {
     try {
-      const userId = context.userId;
+      const userId = runtimeContext.get("userId") as string | undefined;
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
 
       const tickets = await SupportTicketService.getTicketsByUser({
         requestingUserId: userId,
@@ -110,7 +114,6 @@ const getTicketDetailsTool = createTool({
   description: "Get detailed information about a specific support ticket",
   inputSchema: z.object({
     ticketId: z.string().describe("The ID of the ticket to retrieve"),
-    userId: z.string().describe("User ID to verify ownership"),
   }),
   outputSchema: z.object({
     ticket: z
@@ -125,9 +128,12 @@ const getTicketDetailsTool = createTool({
     found: z.boolean(),
     message: z.string(),
   }),
-  execute: async ({ context }) => {
+  execute: async ({ context, runtimeContext }) => {
     try {
-      const userId = context.userId;
+      const userId = runtimeContext.get("userId") as string | undefined;
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
 
       const ticket = await SupportTicketService.getTicketById({
         requestingUserId: userId,
@@ -169,7 +175,6 @@ const offerStoreCreditTool = createTool({
     amount: z.string().describe("Amount of store credit to offer (as string)"),
     reason: z.string().describe("Reason for offering the store credit"),
     ticketId: z.string().describe("Associated ticket ID (required)"),
-    userId: z.string().describe("User ID to offer credit to"),
   }),
   outputSchema: z.object({
     creditId: z.string(),
@@ -178,9 +183,12 @@ const offerStoreCreditTool = createTool({
     message: z.string(),
     success: z.boolean(),
   }),
-  execute: async ({ context }) => {
+  execute: async ({ context, runtimeContext }) => {
     try {
-      const userId = context.userId;
+      const userId = runtimeContext.get("userId") as string | undefined;
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
 
       const storeCredit = await StoreCreditService.createStoreCredit({
         requestingUserId: userId,
