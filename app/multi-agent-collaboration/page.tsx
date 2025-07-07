@@ -4,14 +4,8 @@ import { useMultiAgentStream } from "@/app/hooks/useMultiAgentStream";
 import { ChatInterface } from "@/app/components/chat";
 
 export default function GeneralChat() {
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    setInput,
-  } = useMultiAgentStream("/api/multi-agent-collaboration", "multi-agent");
+  const { messages, input, handleInputChange, handleSubmit, setInput, status } =
+    useMultiAgentStream("/api/multi-agent-collaboration", "multi-agent");
 
   return (
     <ChatInterface
@@ -19,7 +13,8 @@ export default function GeneralChat() {
       input={input}
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
-      isLoading={isLoading}
+      isLoading={status === "streaming"}
+      isResponseLoading={status === "submitted"}
       title="Multi-Agent Collaboration"
       description="Watch multiple AI agents work together in real-time, coordinating their responses and building on each other's insights to solve complex problems. In this particular example, try asking this chat to write some TypeScript code for you and see how the agent coordinates with a coder agent to do so."
       setInput={setInput}

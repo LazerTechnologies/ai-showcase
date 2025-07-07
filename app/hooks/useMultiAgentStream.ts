@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
 import { THREAD_ID_STORAGE_KEY } from "../constants/local-storage";
 import { Message as UIMessage } from "ai";
+import { useChat } from "@ai-sdk/react";
 
 /**
  * A wrapper around the UIMessage type that allows for a streamId to be added
@@ -29,6 +30,8 @@ interface ChatState {
   streamingMessages: Record<string, StreamingTextDelta>;
 }
 
+type UseChatStatus = ReturnType<typeof useChat>["status"];
+
 export interface UseMultiAgentStreamReturn {
   messages: MultiAgentUIMessage[];
   input: string;
@@ -39,7 +42,7 @@ export interface UseMultiAgentStreamReturn {
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  isLoading: boolean;
+  status: UseChatStatus;
 }
 
 /**
@@ -60,7 +63,7 @@ export function useMultiAgentStream(
     streamingMessages: {},
   });
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<UseChatStatus>("ready");
 
   const handleInputChange = useCallback(
     (
@@ -77,7 +80,7 @@ export function useMultiAgentStream(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      if (!input.trim() || isLoading) return;
+      if (!input.trim() || status === "streaming") return;
 
       const userMessage: MultiAgentUIMessage = {
         id: Date.now().toString(),
@@ -92,7 +95,7 @@ export function useMultiAgentStream(
         messages: [...prev.messages, userMessage],
       }));
       setInput("");
-      setIsLoading(true);
+      setStatus("submitted");
 
       try {
         const baseThreadId = localStorage.getItem(THREAD_ID_STORAGE_KEY);
@@ -134,6 +137,7 @@ export function useMultiAgentStream(
 
         const decoder = new TextDecoder();
         let buffer = "";
+        let hasStartedStreaming = false;
 
         while (true) {
           const { done, value } = await reader.read();
@@ -145,6 +149,11 @@ export function useMultiAgentStream(
 
           for (const line of lines) {
             if (line.startsWith("2:")) {
+              if (!hasStartedStreaming) {
+                setStatus("streaming");
+                hasStartedStreaming = true;
+              }
+
               try {
                 const jsonStr = line.slice(2);
                 const dataArray = JSON.parse(jsonStr);
@@ -261,6 +270,7 @@ export function useMultiAgentStream(
         }
       } catch (error) {
         console.error("Error in chat stream:", error);
+        setStatus("error");
         const errorMessage: MultiAgentUIMessage = {
           id: Date.now().toString(),
           role: "assistant",
@@ -278,10 +288,10 @@ export function useMultiAgentStream(
           messages: [...prev.messages, errorMessage],
         }));
       } finally {
-        setIsLoading(false);
+        setStatus("ready");
       }
     },
-    [input, isLoading, chatState.messages, apiEndpoint, threadPrefix, headers]
+    [input, status, apiEndpoint, threadPrefix, headers]
   );
 
   // Combine messages and streaming messages, sorted by timestamp/streamStartedAt
@@ -310,6 +320,6 @@ export function useMultiAgentStream(
     setInput,
     handleInputChange,
     handleSubmit,
-    isLoading,
+    status,
   };
 }

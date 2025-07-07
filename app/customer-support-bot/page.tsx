@@ -18,6 +18,7 @@ export default function CustomerSupportBotChat() {
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
       isLoading={status === "streaming"}
+      isResponseLoading={status === "submitted"}
       title="Customer Support Bot"
       description="This customer support agent can create tickets, check status, and offer store credit if the user is very unhappy. Try telling the agent why you are unhappy with an order."
       samplePrompts={[

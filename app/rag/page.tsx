@@ -31,6 +31,7 @@ export default function RAGChat() {
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
       isLoading={status === "streaming"}
+      isResponseLoading={status === "submitted"}
       title="RAG with Pinecone"
       description="Chat with your documents using Retrieval-Augmented Generation. Upload documents to create a knowledge base, then ask questions about the content. By default, the changelog for NextJS 15 has been uploaded to the namespace 'default-namespace'."
       actions={actions}

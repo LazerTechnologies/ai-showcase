@@ -14,6 +14,7 @@ import {
 interface MessagesContainerProps {
   isSingleAgent?: boolean;
   messages: (MultiAgentUIMessage | UIMessage)[];
+  isResponseLoading: boolean;
 }
 
 const supportedPartsSequence = ["tool-invocation", "text"];
@@ -52,9 +53,44 @@ const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
   return result;
 };
 
+function LoadingMessage({ messageColors }: { messageColors: MessageColors }) {
+  return (
+    <div className="flex gap-3 p-4 justify-start">
+      <div className="flex gap-3 max-w-[80%] flex-row">
+        <div className="flex flex-col items-center gap-1">
+          <div
+            className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${messageColors.avatarColor}`}
+          >
+            <Bot size={16} />
+          </div>
+        </div>
+        <div
+          className={`rounded-lg px-4 py-2 ${messageColors.streamColor} flex items-center`}
+        >
+          <div className="flex gap-1">
+            <div
+              className="w-1 h-1 bg-current rounded-full animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="w-1 h-1 bg-current rounded-full animate-bounce"
+              style={{ animationDelay: "150ms" }}
+            ></div>
+            <div
+              className="w-1 h-1 bg-current rounded-full animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function MessagesContainer({
   isSingleAgent = false,
   messages: messagesProp,
+  isResponseLoading,
 }: MessagesContainerProps) {
   const messages = useMemo(
     () => separateMessages(messagesProp),
@@ -123,6 +159,9 @@ export function MessagesContainer({
               />
             );
           })}
+          {isResponseLoading && (
+            <LoadingMessage messageColors={DEFAULT_MESSAGE_COLORS} />
+          )}
           <div ref={messagesEndRef} />
         </div>
       )}

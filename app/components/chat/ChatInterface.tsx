@@ -27,6 +27,7 @@ interface ChatInterfaceProps {
   ) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
+  isResponseLoading: boolean;
   title: string;
   description: string;
   actions?: React.ReactNode;
@@ -41,6 +42,7 @@ export function ChatInterface({
   handleInputChange,
   handleSubmit,
   isLoading,
+  isResponseLoading,
   title,
   description,
   actions,
@@ -84,6 +86,7 @@ export function ChatInterface({
           <MessagesContainer
             messages={messages}
             isSingleAgent={isSingleAgent}
+            isResponseLoading={isResponseLoading}
           />
 
           {/* Sample prompts */}

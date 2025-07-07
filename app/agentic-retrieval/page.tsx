@@ -19,6 +19,7 @@ export default function AgenticRetrievalChat() {
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
       isLoading={status === "streaming"}
+      isResponseLoading={status === "submitted"}
       title="Agentic Retrieval"
       description="An agent that automatically chooses the best search method for your request. It can search Google Drive files by exact name/ID, perform keyword searches, or use real vector search with Pinecone to find semantically related content."
       setInput={setInput}
