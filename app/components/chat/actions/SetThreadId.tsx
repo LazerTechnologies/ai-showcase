@@ -2,6 +2,8 @@
 
 import { SingleFieldAction } from "./SingleFieldAction";
 import { THREAD_ID_STORAGE_KEY } from "@/app/constants/local-storage";
+import { RefreshCcw } from "lucide-react";
+import { nanoid } from "nanoid";
 import { toast } from "sonner";
 
 export function SetThreadId() {
@@ -28,6 +30,18 @@ export function SetThreadId() {
       }
       validate={validateThreadId}
       onSubmit={handleSubmit}
+      additionalIconButtons={[
+        {
+          icon: <RefreshCcw className="h-4 w-4" />,
+          tooltip: "Generate new thread ID",
+          onClick: (form) => {
+            const newThreadId = nanoid();
+            localStorage.setItem(THREAD_ID_STORAGE_KEY, newThreadId);
+            form.setValue("value", newThreadId);
+            toast.success("New Thread ID generated");
+          },
+        },
+      ]}
     />
   );
 }

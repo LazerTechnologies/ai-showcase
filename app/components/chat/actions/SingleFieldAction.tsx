@@ -15,8 +15,60 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../../../components/ui/tooltip";
+import { UseFormReturn } from "react-hook-form";
+
+interface IconButtonProps {
+  icon: React.ReactNode;
+  tooltip: string;
+  onClick?: () => void;
+  type?: "button" | "submit";
+  disabled?: boolean;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+}
+
+function IconButton({
+  icon,
+  tooltip,
+  onClick,
+  type = "button",
+  disabled = false,
+}: IconButtonProps) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          type={type}
+          size="icon"
+          variant="outline"
+          onClick={onClick}
+          disabled={disabled}
+        >
+          {icon}
+          <span className="sr-only">{tooltip}</span>
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>{tooltip}</TooltipContent>
+    </Tooltip>
+  );
+}
 
 interface SingleFieldActionProps {
+  additionalIconButtons?: {
+    icon: React.ReactNode;
+    onClick: (form: UseFormReturn<{ value: string }>) => void;
+    tooltip: string;
+  }[];
   label: string;
   description: string;
   placeholder?: string;
@@ -26,6 +78,7 @@ interface SingleFieldActionProps {
 }
 
 export function SingleFieldAction({
+  additionalIconButtons,
   label,
   description,
   placeholder,
@@ -68,15 +121,25 @@ export function SingleFieldAction({
           )}
         />
 
-        <Button
+        {additionalIconButtons && (
+          <>
+            {additionalIconButtons.map((button) => (
+              <IconButton
+                key={button.tooltip}
+                icon={button.icon}
+                tooltip={button.tooltip}
+                onClick={() => button.onClick(form)}
+              />
+            ))}
+          </>
+        )}
+
+        <IconButton
+          icon={<Check className="h-4 w-4" />}
+          tooltip={`Save ${label}`}
           type="submit"
-          size="icon"
-          variant="outline"
           disabled={hasErrors}
-        >
-          <Check className="h-4 w-4" />
-          <span className="sr-only">Save {label}</span>
-        </Button>
+        />
       </form>
       {hasErrors && (
         <FormMessage>{form.formState.errors.value?.message}</FormMessage>
