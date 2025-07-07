@@ -39,8 +39,7 @@ export function ChatInput({
         ref={inputRef}
         value={input}
         onChange={handleInputChange}
-        placeholder="Type your message..."
-        disabled={isLoading}
+        placeholder="Type your message"
         className="flex-1"
       />
       <Button type="submit" disabled={isLoading || !input.trim()} size="icon">

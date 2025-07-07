@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
+import { SamplePrompts } from "./SamplePrompts";
 import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
 import { Message as UIMessage } from "ai";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -88,34 +89,11 @@ export function ChatInterface({
             isSingleAgent={isSingleAgent}
             isResponseLoading={isResponseLoading}
           />
-
-          {/* Sample prompts */}
-          {samplePrompts && samplePrompts.length > 0 && (
-            <div className="px-4 py-2 border-t">
-              <div className="flex justify-center">
-                <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full">
-                  {samplePrompts.map((prompt, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      className="whitespace-nowrap rounded-full px-4 py-2 text-sm flex-shrink-0"
-                      onClick={() => {
-                        setInput(prompt);
-                        setTimeout(() => {
-                          formRef.current?.requestSubmit();
-                        }, 1);
-                      }}
-                      disabled={isLoading}
-                    >
-                      {prompt}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
+          <SamplePrompts
+            samplePrompts={samplePrompts || []}
+            setInput={setInput}
+            onSubmit={() => formRef.current?.requestSubmit()}
+          />
           <ChatInput
             input={input}
             handleInputChange={handleInputChange}

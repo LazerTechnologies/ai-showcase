@@ -14,7 +14,6 @@ interface ChatMessageProps {
   messageColors: MessageColors;
 }
 
-// Helper function to check if message contains tool invocations
 function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
   return (
     message.parts?.some((part) => part.type === "tool-invocation") ?? false
