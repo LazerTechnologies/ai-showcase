@@ -33,6 +33,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="p-6 gap-4">
         <Scenario
+          title="Customer Support Bot"
+          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+          path="/customer-support-bot"
+          badges={["Tools", "Authorization"]}
+        />
+        <Scenario
           title="General Chat"
           description="General chat with a model: memory included"
           path="/"
@@ -114,17 +120,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             ]}
           />
         </WipOverlay>
-        <Scenario
-          title="Customer Support Bot"
-          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
-          path="/customer-support-bot"
-          badges={[
-            "Customer Service",
-            "Knowledge Base",
-            "Ticketing",
-            "Escalation",
-          ]}
-        />
         <WipOverlay>
           <Scenario
             title="Research Assistant"
