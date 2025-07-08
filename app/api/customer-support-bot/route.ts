@@ -1,16 +1,16 @@
 import { RuntimeContext } from "@mastra/core/runtime-context";
 import { customerSupportAgent } from "./agent";
+import { CustomerSupportRuntimeContextSchema } from "./shared";
+import { z } from "zod";
 
 export const maxDuration = 30;
-
-type CustomerSupportRuntimeContext = {
-  userId: string;
-};
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
 
-  const runtimeContext = new RuntimeContext<CustomerSupportRuntimeContext>();
+  const runtimeContext = new RuntimeContext<
+    z.infer<typeof CustomerSupportRuntimeContextSchema>
+  >();
   runtimeContext.set("userId", userId);
   const stream = await customerSupportAgent.stream(messages, {
     resourceId: userId,
