@@ -44,14 +44,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           path="/customer-support-bot"
           badges={["Authorization", "Tools"]}
         />
-        <WipOverlay>
-          <Scenario
-            title="MCP"
-            description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
-            path="/mcp"
-            badges={["MCP", "Tools"]}
-          />
-        </WipOverlay>
+        <Scenario
+          title="MCP"
+          description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
+          path="/mcp"
+          badges={["MCP", "Tools"]}
+        />
         <Scenario
           title="Authorization"
           description="This chat uses headers to pass authorization data during the request. This is then used to change the system prompt, which tools are available to the model, and configurations to pass to those tools."
@@ -71,11 +69,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           badges={["RAG", "Vector Search"]}
         />
         <Scenario
-          title="Multi-Agent Collaboration"
+          title="Multi-Agent Collaboration (via Tool Calling)"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
           path="/multi-agent-collaboration"
           badges={["Multi-Agent"]}
         />
+        <WipOverlay>
+          <Scenario
+            title="Multi-Agent Collaboration (via Agent Network)"
+            description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
+            path="/multi-agent-collaboration-network"
+            badges={["Multi-Agent"]}
+          />
+        </WipOverlay>
         <WipOverlay>
           <Scenario
             title="Research Assistant"
