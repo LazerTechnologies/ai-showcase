@@ -1,18 +1,14 @@
 "use server";
 
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { Agent } from "@mastra/core/agent";
+import { flash } from "../utils/models";
 
 export async function checkGeminiStatus() {
   try {
-    const google = createGoogleGenerativeAI({
-      apiKey: process.env.GEMINI_API_KEY!,
-    });
-
     const testAgent = new Agent({
       name: "test-agent",
       instructions: "Say exactly this when spoken to: 'hi'",
-      model: google("gemini-2.0-flash-exp"),
+      model: flash,
     });
 
     const result = await testAgent.generate([{ role: "user", content: "hi" }]);

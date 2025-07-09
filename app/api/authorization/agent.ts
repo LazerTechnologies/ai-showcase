@@ -1,13 +1,12 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { ALL_FILES } from "./mock-files";
 import { threadMemory } from "../memory";
+import { flash } from "../../utils/models";
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+
 
 // Create role-specific Google Drive tools
 const createMockGoogleDriveTool = (userRole: "viewer" | "admin") => {
@@ -77,10 +76,12 @@ export function createAuthorizationAgent(userRole: "viewer" | "admin") {
 
   const googleDriveTool = createMockGoogleDriveTool(userRole);
 
+  
+
   return new Agent({
     name: `authorization-agent-${userRole}`,
     instructions,
-    model: google("gemini-2.0-flash-exp"),
+    model: flash,
     tools: {
       googleDriveTool,
     },

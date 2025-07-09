@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { PineconeVector } from "@mastra/pinecone";
@@ -6,10 +6,9 @@ import { embed } from "ai";
 import { fastembed } from "@mastra/fastembed";
 import { z } from "zod";
 import { PINECONE_INDEX_NAME } from "../../constants";
+import { flash } from "../../utils/models";
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+
 
 function createCustomVectorSearchTool(namespace: string) {
   const store = new PineconeVector({
@@ -80,6 +79,8 @@ function createCustomVectorSearchTool(namespace: string) {
 export function createRAGAgent(namespace: string) {
   const vectorSearchTool = createCustomVectorSearchTool(namespace);
 
+  
+
   return new Agent({
     name: "rag-agent",
     instructions: `You are a RAG (Retrieval-Augmented Generation) agent. You have access to a knowledge base stored in a Pinecone vector database with index name "${PINECONE_INDEX_NAME}" and namespace "${namespace}". 
@@ -93,7 +94,7 @@ When answering questions:
 5. Be concise but comprehensive in your responses
 
 The knowledge base contains documents that have been chunked and embedded for semantic search.`,
-    model: google("gemini-2.0-flash-exp"),
+    model: flash,
     tools: {
       searchKnowledgeBase: vectorSearchTool,
     },

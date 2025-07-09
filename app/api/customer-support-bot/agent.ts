@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { Agent } from "@mastra/core/agent";
 import { threadMemory } from "../memory";
 import {
@@ -8,9 +8,9 @@ import {
   offerStoreCreditTool,
 } from "./tools";
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+
+
+import { flash } from "../../utils/models";
 
 export const customerSupportAgent = new Agent({
   name: "customer-support-agent",
@@ -40,7 +40,7 @@ export const customerSupportAgent = new Agent({
 - General product questions
 
 Start each conversation with a friendly greeting and ask how you can assist them today.`,
-  model: google("gemini-2.0-flash-exp"),
+  model: flash,
   tools: {
     createSupportTicketTool,
     fetchSupportTicketsTool,

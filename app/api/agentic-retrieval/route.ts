@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
@@ -8,9 +8,7 @@ import { fastembed } from "@mastra/fastembed";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+
 
 interface DriveFile {
   id: string;
@@ -317,10 +315,12 @@ const vectorSearchTool = createTool({
   },
 });
 
+import { flash } from "../../utils/models";
+
 const agenticRetrievalAgent = new Agent({
   name: "agentic-retrieval-agent",
   instructions: `You are an intelligent retrieval agent that helps users find information from Google Drive files. When the user asks for a file, you should use the most appropriate search method to find the file.`,
-  model: google("gemini-2.0-flash-exp"),
+  model: flash,
   tools: {
     retrieveByNameOrIdTool,
     keywordSearchTool,

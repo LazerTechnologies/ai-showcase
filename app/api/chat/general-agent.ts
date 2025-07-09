@@ -1,17 +1,17 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+
 import { Agent } from "@mastra/core/agent";
 import { weatherTool } from "./weather-tool";
 import { threadMemory } from "../memory";
 
-const google = createGoogleGenerativeAI({
-  apiKey: process.env.GEMINI_API_KEY!,
-});
+
+
+import { flash } from "../../utils/models";
 
 export const generalAgent = new Agent({
   name: "general-agent",
   instructions:
     "You are a general-purpose agent. You're able to use tools or respond without tools.",
-  model: google("gemini-2.0-flash-exp"),
+  model: flash,
   tools: {
     weatherTool,
   },
