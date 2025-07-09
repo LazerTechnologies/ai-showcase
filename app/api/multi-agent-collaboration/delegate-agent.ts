@@ -1,8 +1,5 @@
-
 import { Agent } from "@mastra/core/agent";
 import { threadMemory } from "../memory";
-
-
 
 import { flash } from "../../utils/models";
 

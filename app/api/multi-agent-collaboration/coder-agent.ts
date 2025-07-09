@@ -1,8 +1,4 @@
-
 import { Agent } from "@mastra/core/agent";
-
-
-
 import { flash } from "../../utils/models";
 
 export const coderAgent = new Agent({

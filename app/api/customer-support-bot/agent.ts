@@ -1,4 +1,3 @@
-
 import { Agent } from "@mastra/core/agent";
 import { threadMemory } from "../memory";
 import {
@@ -7,9 +6,6 @@ import {
   getTicketDetailsTool,
   offerStoreCreditTool,
 } from "./tools";
-
-
-
 import { flash } from "../../utils/models";
 
 export const customerSupportAgent = new Agent({

@@ -1,4 +1,3 @@
-
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { PineconeVector } from "@mastra/pinecone";
@@ -7,8 +6,6 @@ import { fastembed } from "@mastra/fastembed";
 import { z } from "zod";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { flash } from "../../utils/models";
-
-
 
 function createCustomVectorSearchTool(namespace: string) {
   const store = new PineconeVector({
@@ -78,8 +75,6 @@ function createCustomVectorSearchTool(namespace: string) {
 
 export function createRAGAgent(namespace: string) {
   const vectorSearchTool = createCustomVectorSearchTool(namespace);
-
-  
 
   return new Agent({
     name: "rag-agent",

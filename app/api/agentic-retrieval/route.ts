@@ -1,4 +1,3 @@
-
 import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
@@ -7,8 +6,7 @@ import { embed } from "ai";
 import { fastembed } from "@mastra/fastembed";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
-
-
+import { flash } from "../../utils/models";
 
 interface DriveFile {
   id: string;
@@ -314,8 +312,6 @@ const vectorSearchTool = createTool({
     }
   },
 });
-
-import { flash } from "../../utils/models";
 
 const agenticRetrievalAgent = new Agent({
   name: "agentic-retrieval-agent",

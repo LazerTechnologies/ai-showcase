@@ -1,10 +1,6 @@
-
 import { Agent } from "@mastra/core/agent";
 import { weatherTool } from "./weather-tool";
 import { threadMemory } from "../memory";
-
-
-
 import { flash } from "../../utils/models";
 
 export const generalAgent = new Agent({
