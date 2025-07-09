@@ -7,6 +7,7 @@ import { fastembed } from "@mastra/fastembed";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
 import { flash } from "../../utils/models";
+import { UserService } from "../../../services/user";
 
 interface DriveFile {
   id: string;
@@ -329,9 +330,10 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
+  const user = await UserService.createIfNotExists(userId);
 
   const agentStream = await agenticRetrievalAgent.stream(messages, {
-    resourceId: userId,
+    resourceId: user.id,
     threadId,
   });
 

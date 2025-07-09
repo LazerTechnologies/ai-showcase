@@ -8,7 +8,6 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
-
   const runtimeContext = new RuntimeContext<
     z.infer<typeof CustomerSupportRuntimeContextSchema>
   >();

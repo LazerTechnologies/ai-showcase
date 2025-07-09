@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createTool } from "@mastra/core/tools";
 import { Agent } from "@mastra/core/agent";
 import { makeSerializable } from "../../utils/serialization";
+import { UserService } from "../../../services/user";
 
 export const maxDuration = 30;
 
@@ -51,6 +52,7 @@ function createAgentTool(
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
+  const user = await UserService.createIfNotExists(userId);
 
   return createDataStreamResponse({
     execute: async (dataStream) => {
@@ -67,7 +69,7 @@ export async function POST(req: Request) {
             coder: coderTool,
           },
         },
-        resourceId: userId,
+        resourceId: user.id,
         threadId,
       });
 
