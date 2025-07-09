@@ -33,49 +33,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent className="p-6 gap-4">
         <Scenario
-          title="Customer Support Bot"
-          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
-          path="/customer-support-bot"
-          badges={["Tools", "Authorization"]}
-        />
-        <Scenario
           title="General Chat"
           description="General chat with a model: memory included"
           path="/"
           badges={[]}
+        />
+        <Scenario
+          title="Customer Support Bot"
+          description="Intelligent customer service agent with access to knowledge bases, ticketing systems, and escalation protocols."
+          path="/customer-support-bot"
+          badges={["Authorization", "Tools"]}
         />
         <WipOverlay>
           <Scenario
             title="MCP"
             description="Using Model Context Protocol for seamless AI model communication and context sharing across different systems."
             path="/mcp"
-            badges={["MCP", "Protocol", "Context Sharing", "Interoperability"]}
-          />
-        </WipOverlay>
-        <WipOverlay>
-          <Scenario
-            title="Tool Usage Agent"
-            description="Showcase an AI agent that can dynamically select and use various tools like calculators, web scrapers, and APIs."
-            path="/tool-usage-agent"
-            badges={[
-              "Tool Selection",
-              "API Integration",
-              "Dynamic Execution",
-              "Function Calling",
-            ]}
+            badges={["MCP", "Tools"]}
           />
         </WipOverlay>
         <Scenario
           title="Authorization"
           description="This chat uses headers to pass authorization data during the request. This is then used to change the system prompt, which tools are available to the model, and configurations to pass to those tools."
           path="/authorization"
-          badges={["Authorization", "Tool Selection"]}
+          badges={["Authorization", "Tools"]}
         />
         <Scenario
           title="RAG with Pinecone"
           description="Retrieval-Augmented Generation using Pinecone vector database. Upload documents, create embeddings, and chat with your data using semantic search."
           path="/rag"
-          badges={["RAG", "Pinecone", "Vector Search", "Document Upload"]}
+          badges={["RAG", "Pinecone", "Vector Search"]}
         />
         <Scenario
           title="Agentic Retrieval"
@@ -87,50 +74,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           title="Multi-Agent Collaboration"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
           path="/multi-agent-collaboration"
-          badges={[
-            "Multi-Agent",
-            "Coordination",
-            "Task Delegation",
-            "Distributed AI",
-          ]}
+          badges={["Multi-Agent"]}
         />
-        <WipOverlay>
-          <Scenario
-            title="Code Generation Assistant"
-            description="An AI agent specialized in generating, reviewing, and refactoring code across multiple programming languages."
-            path="/code-generation-assistant"
-            badges={[
-              "Code Generation",
-              "Code Review",
-              "Refactoring",
-              "Multi-Language",
-            ]}
-          />
-        </WipOverlay>
-        <WipOverlay>
-          <Scenario
-            title="Data Analysis Pipeline"
-            description="Automated data processing agent that can clean, analyze, and visualize datasets with minimal human intervention."
-            path="/data-analysis-pipeline"
-            badges={[
-              "Data Processing",
-              "Analytics",
-              "Visualization",
-              "Automation",
-            ]}
-          />
-        </WipOverlay>
         <WipOverlay>
           <Scenario
             title="Research Assistant"
             description="AI agent that can search, summarize, and synthesize information from multiple sources for research tasks."
             path="/research-assistant"
-            badges={[
-              "Research",
-              "Information Retrieval",
-              "Summarization",
-              "Synthesis",
-            ]}
+            badges={["Long-running tasks"]}
           />
         </WipOverlay>
       </SidebarContent>

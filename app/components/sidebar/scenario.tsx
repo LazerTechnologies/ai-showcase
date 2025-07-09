@@ -6,11 +6,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Route } from "@/app/routes";
 
+type Badge =
+  | "Tools"
+  | "Authorization"
+  | "MCP"
+  | "RAG"
+  | "Vector Search"
+  | "Multi-Agent"
+  | "Pinecone"
+  | "Long-running tasks";
+
 interface ScenarioProps {
   title: string;
   description: string;
   path: Route;
-  badges?: string[];
+  badges?: Badge[];
   className?: string;
 }
 
