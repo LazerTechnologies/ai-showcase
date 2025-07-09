@@ -1,7 +1,6 @@
 import { db } from "../app/db/db";
 import { supportTicketsTable } from "../app/db/schema";
 import { eq, and } from "drizzle-orm";
-import { UserService } from "./user";
 
 export type SupportTicket = typeof supportTicketsTable.$inferSelect;
 export type NewSupportTicket = typeof supportTicketsTable.$inferInsert;
@@ -22,13 +21,10 @@ export class SupportTicketService {
     ticketData: CreateTicketData;
   }): Promise<SupportTicket> {
     try {
-      const userService = new UserService();
-      const user = await userService.createIfNotExists(userId);
-
       const [newTicket] = await db
         .insert(supportTicketsTable)
         .values({
-          userId: user.id,
+          userId,
           description: ticketData.description,
           status: "open",
         })

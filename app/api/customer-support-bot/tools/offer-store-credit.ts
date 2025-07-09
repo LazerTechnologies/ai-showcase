@@ -2,6 +2,7 @@ import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { StoreCreditService } from "../../../../services/store-credit";
 import { validateRuntimeContext } from "../shared";
+import { UserService } from "../../../../services/user";
 
 export const offerStoreCreditTool = createTool({
   id: "offer-store-credit",
@@ -22,8 +23,9 @@ export const offerStoreCreditTool = createTool({
     try {
       const { userId } = validateRuntimeContext(runtimeContext);
 
+      const user = await UserService.createIfNotExists(userId);
       const storeCredit = await StoreCreditService.createStoreCredit({
-        requestingUserId: userId,
+        requestingUserId: user.id,
         creditData: {
           amount: context.amount,
           reason: context.reason,
