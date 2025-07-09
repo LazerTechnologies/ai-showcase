@@ -29,6 +29,7 @@ interface ChatInterfaceProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
   isResponseLoading: boolean;
+  isLoadingInitialMessages?: boolean;
   title: string;
   description: string;
   actions?: React.ReactNode;
@@ -44,6 +45,7 @@ export function ChatInterface({
   handleSubmit,
   isLoading,
   isResponseLoading,
+  isLoadingInitialMessages,
   title,
   description,
   actions,
@@ -84,11 +86,19 @@ export function ChatInterface({
       <div className="flex flex-1 gap-4">
         {/* Main chat area */}
         <div className="flex flex-col flex-1 border rounded-lg overflow-hidden bg-background">
-          <MessagesContainer
-            messages={messages}
-            isSingleAgent={isSingleAgent}
-            isResponseLoading={isResponseLoading}
-          />
+          {isLoadingInitialMessages ? (
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-muted-foreground animate-pulse">
+                Loading previous messages...
+              </p>
+            </div>
+          ) : (
+            <MessagesContainer
+              messages={messages}
+              isSingleAgent={isSingleAgent}
+              isResponseLoading={isResponseLoading}
+            />
+          )}
           <SamplePrompts
             samplePrompts={samplePrompts || []}
             setInput={setInput}
