@@ -12,6 +12,7 @@ export async function POST(req: Request) {
     z.infer<typeof CustomerSupportRuntimeContextSchema>
   >();
   runtimeContext.set("userId", userId);
+  console.log("threadId", threadId);
   const stream = await customerSupportAgent.stream(messages, {
     resourceId: userId,
     threadId,

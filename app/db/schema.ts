@@ -13,6 +13,7 @@ const timestamps = {
 
 export const usersTable = pgTable("users", {
   id: uuid().primaryKey().defaultRandom(),
+  uiId: text("ui_id").notNull().unique(), // In a real application, we would use the primary id rather than letting it be set in the user interface
 });
 
 export const supportTicketsTable = pgTable("support_tickets", {

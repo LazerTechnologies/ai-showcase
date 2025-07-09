@@ -17,6 +17,22 @@ type PrepareRequestBodyRequest = Parameters<
 >[0];
 
 /**
+ * Gets the thread ID from local storage and prefixes it.
+ * @param threadPrefix - The prefix for the thread ID.
+ * @returns The prefixed thread ID or null if not found.
+ */
+export function getPrefixedThreadId(threadPrefix: string): string | null {
+  const baseThreadId =
+    typeof window !== "undefined"
+      ? localStorage.getItem(THREAD_ID_STORAGE_KEY)
+      : null;
+  if (!baseThreadId) {
+    return null;
+  }
+  return `${threadPrefix}-${baseThreadId}`;
+}
+
+/**
  * Shared experimental_prepareRequestBody function for useChat
  * This sends only the last message to the API since Mastra handles message persistence rather than
  * maintaining the full conversation history locally. Send all messages if you want to store the full conversation
@@ -32,14 +48,9 @@ export function createPrepareRequestBody(threadPrefix: string) {
         ? request.messages[request.messages.length - 1]
         : null;
 
-    const baseThreadId = localStorage.getItem(THREAD_ID_STORAGE_KEY);
-    const prefixedThreadId = baseThreadId
-      ? `${threadPrefix}-${baseThreadId}`
-      : null;
-
     return {
       messages: lastMessage ? [lastMessage] : [],
-      threadId: prefixedThreadId,
+      threadId: getPrefixedThreadId(threadPrefix),
       userId: localStorage.getItem(USER_ID_STORAGE_KEY),
     };
   };

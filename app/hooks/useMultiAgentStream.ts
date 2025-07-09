@@ -53,13 +53,19 @@ export interface UseMultiAgentStreamReturn {
  * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
  * @param headers - Optional headers to include in requests
  */
-export function useMultiAgentStream(
-  apiEndpoint: string,
-  threadPrefix: string,
-  headers?: Record<string, string>
-): UseMultiAgentStreamReturn {
+export function useMultiAgentStream({
+  apiEndpoint,
+  threadPrefix,
+  headers,
+  initialMessages = [],
+}: {
+  apiEndpoint: string;
+  threadPrefix: string;
+  headers?: Record<string, string>;
+  initialMessages?: MultiAgentUIMessage[];
+}): UseMultiAgentStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
-    messages: [],
+    messages: initialMessages,
     streamingMessages: {},
   });
   const [input, setInput] = useState("");
