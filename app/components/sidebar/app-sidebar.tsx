@@ -71,11 +71,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           badges={["RAG", "Vector Search"]}
         />
         <Scenario
-          title="Multi-Agent Collaboration"
+          title="Multi-Agent Collaboration (via Tool Calling)"
           description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
           path="/multi-agent-collaboration"
           badges={["Multi-Agent"]}
         />
+        <WipOverlay>
+          <Scenario
+            title="Multi-Agent Collaboration (via Agent Network)"
+            description="Multiple AI agents working together to solve complex problems through coordination and task delegation."
+            path="/multi-agent-collaboration-network"
+            badges={["Multi-Agent"]}
+          />
+        </WipOverlay>
         <WipOverlay>
           <Scenario
             title="Research Assistant"
