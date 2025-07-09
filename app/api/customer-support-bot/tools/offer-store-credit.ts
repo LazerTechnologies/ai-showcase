@@ -2,7 +2,6 @@ import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { StoreCreditService } from "../../../../services/store-credit";
 import { validateRuntimeContext } from "../shared";
-import { UserService } from "../../../../services/user";
 
 export const offerStoreCreditTool = createTool({
   id: "offer-store-credit",
@@ -23,9 +22,23 @@ export const offerStoreCreditTool = createTool({
     try {
       const { userId } = validateRuntimeContext(runtimeContext);
 
-      const user = await UserService.createIfNotExists(userId);
+      const existingCredits = await StoreCreditService.getCreditsByTicket({
+        requestingUserId: userId,
+        ticketId: context.ticketId,
+      });
+
+      if (existingCredits.length > 0) {
+        return {
+          creditId: existingCredits[0].id,
+          amount: existingCredits[0].amount,
+          expirationDate: existingCredits[0].expirationDate.toISOString(),
+          message: `A store credit of ${existingCredits[0].amount} has already been issued for ticket ${context.ticketId}. Please check your account for details.`,
+          success: false,
+        };
+      }
+
       const storeCredit = await StoreCreditService.createStoreCredit({
-        requestingUserId: user.id,
+        requestingUserId: userId,
         creditData: {
           amount: context.amount,
           reason: context.reason,
