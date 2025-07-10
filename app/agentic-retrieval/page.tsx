@@ -12,8 +12,7 @@ export default function AgenticRetrievalChat() {
   const { messages, input, handleInputChange, handleSubmit, setInput, status } =
     useChat({
       api: "/api/agentic-retrieval",
-      experimental_prepareRequestBody:
-        createPrepareRequestBody(THREAD_PREFIX),
+      experimental_prepareRequestBody: createPrepareRequestBody(THREAD_PREFIX),
       initialMessages: thread?.messages,
     });
 
@@ -31,7 +30,6 @@ export default function AgenticRetrievalChat() {
       setInput={setInput}
       samplePrompts={[
         "Find the file called 'Q4 Marketing Strategy'",
-        "Show me the file with ID 1a2b3c4d",
         "What files discuss product development?",
       ]}
       isSingleAgent
