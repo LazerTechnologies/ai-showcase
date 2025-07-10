@@ -3,10 +3,9 @@ import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { PineconeVector } from "@mastra/pinecone";
 import { embed } from "ai";
-import { fastembed } from "@mastra/fastembed";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
-import { flash } from "../../utils/models";
+import { flash, textEmbedding } from "../../utils/models";
 import { UserService } from "../../../services/user";
 
 interface DriveFile {
@@ -277,7 +276,7 @@ const vectorSearchTool = createTool({
       });
 
       const { embedding: queryVector } = await embed({
-        model: fastembed,
+        model: textEmbedding,
         value: query,
       });
 

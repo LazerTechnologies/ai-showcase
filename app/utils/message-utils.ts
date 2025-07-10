@@ -41,7 +41,10 @@ export function getPrefixedThreadId(threadPrefix: string): string | null {
  *
  * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
  */
-export function createPrepareRequestBody(threadPrefix: string) {
+export function createPrepareRequestBody(
+  threadPrefix: string,
+  requestBody?: Record<string, unknown>
+) {
   return (request: PrepareRequestBodyRequest) => {
     const lastMessage =
       request.messages.length > 0
@@ -49,6 +52,7 @@ export function createPrepareRequestBody(threadPrefix: string) {
         : null;
 
     return {
+      ...(requestBody || {}),
       messages: lastMessage ? [lastMessage] : [],
       threadId: getPrefixedThreadId(threadPrefix),
       userId: localStorage.getItem(USER_ID_STORAGE_KEY),
