@@ -17,8 +17,9 @@ export default function RAGChat() {
   const { messages, input, handleInputChange, handleSubmit, setInput, status } =
     useChat({
       api: "/api/rag",
-      body: { namespace },
-      experimental_prepareRequestBody: createPrepareRequestBody(THREAD_PREFIX),
+      experimental_prepareRequestBody: createPrepareRequestBody(THREAD_PREFIX, {
+        namespace,
+      }),
       initialMessages: thread?.messages,
     });
 

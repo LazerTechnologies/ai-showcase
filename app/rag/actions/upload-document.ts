@@ -1,10 +1,10 @@
 "use server";
 
 import { embedMany } from "ai";
-import { fastembed } from "@mastra/fastembed";
 import { MDocument } from "@mastra/rag";
 import { PineconeVector } from "@mastra/pinecone";
 import { PINECONE_INDEX_NAME } from "../../constants";
+import { textEmbedding } from "../../utils/models";
 
 export async function uploadDocument(namespace: string, document: string) {
   try {
@@ -24,7 +24,7 @@ export async function uploadDocument(namespace: string, document: string) {
 
     // Generate embeddings
     const { embeddings } = await embedMany({
-      model: fastembed,
+      model: textEmbedding,
       values: chunks.map((chunk) => chunk.text),
     });
 

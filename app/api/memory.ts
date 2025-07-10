@@ -1,6 +1,6 @@
 import { Memory } from "@mastra/memory";
 import { PostgresStore, PgVector } from "@mastra/pg";
-import { fastembed } from "@mastra/fastembed";
+import { textEmbedding } from "../utils/models";
 
 const host = process.env.POSTGRES_HOST!;
 const port = 5432;
@@ -24,7 +24,7 @@ const vector = new PgVector({ connectionString, schemaName });
 
 const createMemoryWithScope = (scope: "thread" | "resource") =>
   new Memory({
-    embedder: fastembed,
+    embedder: textEmbedding,
     storage,
     vector,
     options: {

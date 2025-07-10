@@ -2,10 +2,9 @@ import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { PineconeVector } from "@mastra/pinecone";
 import { embed } from "ai";
-import { fastembed } from "@mastra/fastembed";
 import { z } from "zod";
 import { PINECONE_INDEX_NAME } from "../../constants";
-import { flash } from "../../utils/models";
+import { flash, textEmbedding } from "../../utils/models";
 
 function createCustomVectorSearchTool(namespace: string) {
   const store = new PineconeVector({
@@ -33,7 +32,7 @@ function createCustomVectorSearchTool(namespace: string) {
       try {
         // Generate embedding for the query text using the same model used for document chunks
         const { embedding: queryVector } = await embed({
-          model: fastembed,
+          model: textEmbedding,
           value: query,
         });
 
