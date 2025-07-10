@@ -74,7 +74,7 @@ export function ChatInterface({
   );
 
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)] max-w-6xl mx-auto gap-2">
+    <div className="flex flex-col h-full max-w-6xl mx-auto gap-2">
       <div className="mb-4 flex flex-col gap-2">
         <h1 className="text-2xl font-bold">{title}</h1>
         <p className="text-muted-foreground">{description}</p>
@@ -83,9 +83,9 @@ export function ChatInterface({
         {isMobile && actions && mobileActionsSheet}
       </div>
 
-      <div className="flex flex-1 gap-4">
+      <div className="flex flex-1 gap-4 min-h-0">
         {/* Main chat area */}
-        <div className="flex flex-col flex-1 border rounded-lg overflow-hidden bg-background">
+        <div className="flex flex-col flex-1 border rounded-lg bg-background">
           {isLoadingInitialMessages ? (
             <div className="flex-1 flex items-center justify-center">
               <p className="text-muted-foreground animate-pulse">

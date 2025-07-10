@@ -133,7 +133,7 @@ export function MessagesContainer({
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="flex-1 overflow-auto">
       {messages.length === 0 ? (
         <div className="flex items-center justify-center h-full text-muted-foreground">
           <div className="text-center">

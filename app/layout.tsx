@@ -38,9 +38,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="h-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
         <InitializeLocalStorage />
         <QueryProvider>
@@ -50,7 +50,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <SidebarProvider>
+            <SidebarProvider className="h-full">
               <AppSidebar />
               <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 w-full">
@@ -63,7 +63,9 @@ export default function RootLayout({
                     <SettingsDropdown />
                   </div>
                 </header>
-                <div className="p-6">{children}</div>
+                <div className="flex-1 min-h-0 overflow-auto p-6">
+                  {children}
+                </div>
               </SidebarInset>
             </SidebarProvider>
             <Toaster />
