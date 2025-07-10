@@ -10,8 +10,8 @@ export async function POST(req: Request) {
   console.log("threadId", threadId);
 
   const generalStream = await generalAgent.stream(messages, {
-    // resourceId: user.id,
-    // threadId,
+    resourceId: user.id,
+    threadId,
   });
 
   return generalStream.toDataStreamResponse();
