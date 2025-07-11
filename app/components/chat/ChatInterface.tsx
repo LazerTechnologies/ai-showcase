@@ -60,7 +60,7 @@ export function ChatInterface({
   const fullscreenEnabled = isMobile && isFullscreen;
   const formRef = useRef<HTMLFormElement>(null);
 
-  const actionToShow = (
+  const actionsToShow = (
     <>
       <SetUserId />
       <SetThreadId />
@@ -79,9 +79,28 @@ export function ChatInterface({
         <SheetHeader>
           <SheetTitle>Actions</SheetTitle>
         </SheetHeader>
-        <div className="p-4 flex flex-col gap-5">{actionToShow}</div>
+        <div className="p-4 flex flex-col gap-5">{actionsToShow}</div>
       </SheetContent>
     </Sheet>
+  );
+
+  const mobileTopBar = (
+    <div className="flex items-center justify-end p-2 border-b sticky top-0">
+      <div className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => setIsFullscreen(!isFullscreen)}
+        >
+          {isFullscreen ? (
+            <Minimize className="w-4 h-4" />
+          ) : (
+            <Fullscreen className="w-4 h-4" />
+          )}
+        </Button>
+        {mobileActionsSheet}
+      </div>
+    </div>
   );
 
   return (
@@ -104,24 +123,7 @@ export function ChatInterface({
       <div className="flex flex-1 gap-4 min-h-0">
         {/* Main chat area */}
         <div className="flex flex-col flex-1 border rounded-lg bg-background min-w-0 relative">
-          {isMobile && (
-            <div className="flex items-center justify-end p-2 border-b sticky top-0">
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setIsFullscreen(!isFullscreen)}
-                >
-                  {isFullscreen ? (
-                    <Minimize className="w-4 h-4" />
-                  ) : (
-                    <Fullscreen className="w-4 h-4" />
-                  )}
-                </Button>
-                {mobileActionsSheet}
-              </div>
-            </div>
-          )}
+          {isMobile && mobileTopBar}
 
           {isLoadingInitialMessages ? (
             <div className="flex-1 flex items-center justify-center">
@@ -151,12 +153,10 @@ export function ChatInterface({
         </div>
 
         {/* Desktop actions panel */}
-        {!isMobile && (
-          <div className="w-80 border rounded-lg bg-background p-4">
-            <h2 className="text-lg font-semibold mb-6">Actions</h2>
-            <div className="flex flex-col gap-5">{actionToShow}</div>
-          </div>
-        )}
+        <div className="w-80 border rounded-lg bg-background p-4 hidden md:block">
+          <h2 className="text-lg font-semibold mb-6">Actions</h2>
+          <div className="flex flex-col gap-5">{actionsToShow}</div>
+        </div>
       </div>
     </div>
   );
