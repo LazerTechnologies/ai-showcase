@@ -56,6 +56,13 @@ export function ChatInterface({
   const isMobile = useIsMobile();
   const [isActionsOpen, setIsActionsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const actionToShow = (
+    <>
+      <SetUserId />
+      <SetThreadId />
+      {actions}
+    </>
+  );
 
   const mobileActionsSheet = (
     <Sheet open={isActionsOpen} onOpenChange={setIsActionsOpen}>
@@ -68,7 +75,7 @@ export function ChatInterface({
         <SheetHeader>
           <SheetTitle>Actions</SheetTitle>
         </SheetHeader>
-        <div className="p-4">{actions}</div>
+        <div className="p-4 flex flex-col gap-5">{actionToShow}</div>
       </SheetContent>
     </Sheet>
   );
@@ -80,7 +87,7 @@ export function ChatInterface({
         <p className="text-muted-foreground">{description}</p>
 
         {/* Mobile actions button */}
-        {isMobile && actions && mobileActionsSheet}
+        {isMobile && mobileActionsSheet}
       </div>
 
       <div className="flex flex-1 gap-4 min-h-0">
@@ -117,11 +124,7 @@ export function ChatInterface({
         {!isMobile && (
           <div className="w-80 border rounded-lg bg-background p-4">
             <h2 className="text-lg font-semibold mb-6">Actions</h2>
-            <div className="flex flex-col gap-5">
-              <SetUserId />
-              <SetThreadId />
-              {actions}
-            </div>
+            <div className="flex flex-col gap-5">{actionToShow}</div>
           </div>
         )}
       </div>
