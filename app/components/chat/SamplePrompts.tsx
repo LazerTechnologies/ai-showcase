@@ -26,20 +26,18 @@ export function SamplePrompts({
 
   return (
     <div className="px-4 py-2 border-t">
-      <div className="flex justify-center">
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full">
-          {samplePrompts.map((prompt, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="sm"
-              className="whitespace-nowrap rounded-full px-4 py-2 text-sm flex-shrink-0"
-              onClick={() => handlePromptClick(prompt)}
-            >
-              {prompt}
-            </Button>
-          ))}
-        </div>
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full">
+        {samplePrompts.map((prompt, index) => (
+          <Button
+            key={index}
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap rounded-full px-4 py-2 text-sm flex-shrink-0"
+            onClick={() => handlePromptClick(prompt)}
+          >
+            {prompt}
+          </Button>
+        ))}
       </div>
     </div>
   );

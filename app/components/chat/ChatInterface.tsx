@@ -85,7 +85,7 @@ export function ChatInterface({
 
       <div className="flex flex-1 gap-4 min-h-0">
         {/* Main chat area */}
-        <div className="flex flex-col flex-1 border rounded-lg bg-background">
+        <div className="flex flex-col flex-1 border rounded-lg bg-background min-w-0">
           {isLoadingInitialMessages ? (
             <div className="flex-1 flex items-center justify-center">
               <p className="text-muted-foreground animate-pulse">
