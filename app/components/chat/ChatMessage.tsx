@@ -88,8 +88,8 @@ function MessageContent({
   }
 
   return (
-    <div className={`rounded-lg px-4 py-2 ${containerColor}`}>
-      <div className="text-sm whitespace-pre-wrap">
+    <div className={`rounded-lg px-4 py-2 ${containerColor} overflow-x-auto`}>
+      <div className="text-sm whitespace-pre-wrap break-words">
         <Markdown
           components={{
             code: ({ node, ...props }) => <Codeblock node={node} {...props} />,
