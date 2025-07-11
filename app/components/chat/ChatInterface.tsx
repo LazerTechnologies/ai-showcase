@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { SetUserId } from "./actions/SetUserId";
 import { SetThreadId } from "./actions/SetThreadId";
+import { EllipsisVertical, Fullscreen, Minimize } from "lucide-react";
 
 interface ChatInterfaceProps {
   messages: MultiAgentUIMessage[] | UIMessage[];
@@ -55,7 +56,10 @@ export function ChatInterface({
 }: ChatInterfaceProps) {
   const isMobile = useIsMobile();
   const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const fullscreenEnabled = isMobile && isFullscreen;
   const formRef = useRef<HTMLFormElement>(null);
+
   const actionToShow = (
     <>
       <SetUserId />
@@ -67,8 +71,8 @@ export function ChatInterface({
   const mobileActionsSheet = (
     <Sheet open={isActionsOpen} onOpenChange={setIsActionsOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="w-fit">
-          Open actions
+        <Button variant="outline" size="icon">
+          <EllipsisVertical className="w-4 h-4" />
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -81,20 +85,44 @@ export function ChatInterface({
   );
 
   return (
-    <div className="flex flex-col h-full max-w-6xl mx-auto gap-2">
-      <div className="mb-4 flex flex-col gap-2">
-        <h1 className="text-xl font-bold md:text-2xl">{title}</h1>
-        <p className="text-muted-foreground text-sm md:text-base">
-          {description}
-        </p>
-
-        {/* Mobile actions button */}
-        {isMobile && mobileActionsSheet}
-      </div>
+    <div
+      className={`flex flex-col h-full gap-2 ${
+        fullscreenEnabled
+          ? "fixed inset-0 z-50 bg-background p-2 max-w-none"
+          : "max-w-6xl mx-auto"
+      }`}
+    >
+      {!fullscreenEnabled && (
+        <div className="mb-4 flex flex-col gap-2">
+          <h1 className="text-xl font-bold md:text-2xl">{title}</h1>
+          <p className="text-muted-foreground text-sm md:text-base">
+            {description}
+          </p>
+        </div>
+      )}
 
       <div className="flex flex-1 gap-4 min-h-0">
         {/* Main chat area */}
-        <div className="flex flex-col flex-1 border rounded-lg bg-background min-w-0">
+        <div className="flex flex-col flex-1 border rounded-lg bg-background min-w-0 relative">
+          {isMobile && (
+            <div className="flex items-center justify-end p-2 border-b sticky top-0">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setIsFullscreen(!isFullscreen)}
+                >
+                  {isFullscreen ? (
+                    <Minimize className="w-4 h-4" />
+                  ) : (
+                    <Fullscreen className="w-4 h-4" />
+                  )}
+                </Button>
+                {mobileActionsSheet}
+              </div>
+            </div>
+          )}
+
           {isLoadingInitialMessages ? (
             <div className="flex-1 flex items-center justify-center">
               <p className="text-muted-foreground animate-pulse">

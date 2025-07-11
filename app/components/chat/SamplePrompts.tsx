@@ -32,7 +32,7 @@ export function SamplePrompts({
             key={index}
             variant="outline"
             size="sm"
-            className="whitespace-nowrap rounded-full px-4 py-2 text-sm flex-shrink-0"
+            className="whitespace-nowrap rounded-full px-4 py-2 text-xs md:text-sm flex-shrink-0"
             onClick={() => handlePromptClick(prompt)}
           >
             {prompt}

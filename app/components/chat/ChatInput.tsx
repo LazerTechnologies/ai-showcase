@@ -30,17 +30,13 @@ export function ChatInput({
   };
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={onSubmit}
-      className="flex gap-2 p-4 border-t bg-background"
-    >
+    <form ref={formRef} onSubmit={onSubmit} className="flex gap-2 p-4 border-t">
       <Input
         ref={inputRef}
         value={input}
         onChange={handleInputChange}
         placeholder="Type your message"
-        className="flex-1"
+        className="flex-1 text-sm md:text-base"
       />
       <Button type="submit" disabled={isLoading || !input.trim()} size="icon">
         <Send size={16} />
