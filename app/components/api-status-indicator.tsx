@@ -46,7 +46,7 @@ export function ApiStatusIndicator() {
                 finalStatus?.success ? "bg-green-500" : "bg-red-500"
               }`}
             ></div>
-            <span className="text-sm">
+            <span className="text-sm hidden md:block">
               {finalStatus?.success ? "Connected" : "Gemini is down"}
             </span>
           </div>

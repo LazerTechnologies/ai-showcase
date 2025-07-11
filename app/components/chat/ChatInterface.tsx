@@ -83,8 +83,10 @@ export function ChatInterface({
   return (
     <div className="flex flex-col h-full max-w-6xl mx-auto gap-2">
       <div className="mb-4 flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-muted-foreground">{description}</p>
+        <h1 className="text-xl font-bold md:text-2xl">{title}</h1>
+        <p className="text-muted-foreground text-sm md:text-base">
+          {description}
+        </p>
 
         {/* Mobile actions button */}
         {isMobile && mobileActionsSheet}
