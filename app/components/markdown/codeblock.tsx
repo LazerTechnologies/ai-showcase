@@ -84,19 +84,21 @@ export default function Codeblock({
     }
   };
   return hasLang ? (
-    <SyntaxHighlighter
-      style={syntaxTheme}
-      language={hasLang[1]}
-      PreTag="div"
-      className="codeStyle"
-      showLineNumbers={true}
-      wrapLines={Boolean(hasMeta)}
-      useInlineStyles={true}
-      lineProps={applyHighlights}
-    >
-      {String(props.children)}
-    </SyntaxHighlighter>
+    <div className="overflow-x-auto">
+      <SyntaxHighlighter
+        style={syntaxTheme}
+        language={hasLang[1]}
+        PreTag="div"
+        className="codeStyle"
+        showLineNumbers={true}
+        wrapLines={Boolean(hasMeta)}
+        useInlineStyles={true}
+        lineProps={applyHighlights}
+      >
+        {String(props.children)}
+      </SyntaxHighlighter>
+    </div>
   ) : (
-    <code className={className} {...props} />
+    <code className={`${className} break-words`} {...props} />
   );
 }
