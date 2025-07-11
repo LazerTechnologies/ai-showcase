@@ -151,9 +151,14 @@ export function MessagesContainer({
               ? streamColorMap.get(streamId)
               : DEFAULT_MESSAGE_COLORS;
 
+            let messageKey = `${message.id}-${message.role}`;
+            if (message.parts?.[0]?.type === "tool-invocation") {
+              messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
+            }
+
             return (
               <ChatMessage
-                key={`${message.id}-${message.parts?.[0]?.type}`}
+                key={messageKey}
                 message={message}
                 messageColors={messageColors || DEFAULT_MESSAGE_COLORS}
               />
