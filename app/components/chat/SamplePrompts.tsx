@@ -26,7 +26,7 @@ export function SamplePrompts({
 
   return (
     <div className="px-4 py-2 border-t">
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full">
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide max-w-full md:justify-center">
         {samplePrompts.map((prompt, index) => (
           <Button
             key={index}
