@@ -40,6 +40,7 @@ export function getPrefixedThreadId(threadPrefix: string): string | null {
  * See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
  *
  * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
+ * @param requestBody - Additional request body to include in the request
  */
 export function createPrepareRequestBody(
   threadPrefix: string,
