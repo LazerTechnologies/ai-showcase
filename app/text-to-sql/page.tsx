@@ -35,7 +35,7 @@ export default function TextToSqlChat() {
       title="Text To SQL"
       description="Convert natural language queries into SQL statements. This agent can analyze database schemas, generate optimized queries, execute them against your databases, and provide intelligent summaries of the results."
       setInput={setInput}
-      samplePrompts={["Show me all customers who made orders last month"]}
+      samplePrompts={["Fetch all store credits over $30"]}
       actions={actions}
       isSingleAgent
     />

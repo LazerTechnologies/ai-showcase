@@ -7,7 +7,11 @@ export const offerStoreCreditTool = createTool({
   id: "offer-store-credit",
   description: "Offer store credit to a dissatisfied customer as compensation",
   inputSchema: z.object({
-    amount: z.string().describe("Amount of store credit to offer (as string)"),
+    amount: z
+      .string()
+      .describe(
+        "Amount of store credit to offer (as string, not including $ or other currency symbols)"
+      ),
     reason: z.string().describe("Reason for offering the store credit"),
     ticketId: z.string().describe("Associated ticket ID (required)"),
   }),

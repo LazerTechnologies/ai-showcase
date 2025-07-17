@@ -5,7 +5,6 @@ import { eq, and, isNull } from "drizzle-orm";
 export type StoreCredit = typeof storeCreditTable.$inferSelect;
 export type NewStoreCredit = typeof storeCreditTable.$inferInsert;
 
-// Use Pick to create the type for store credit creation data
 export type CreateStoreCreditData = Pick<
   NewStoreCredit,
   "amount" | "reason" | "ticketId"
