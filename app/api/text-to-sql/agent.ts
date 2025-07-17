@@ -66,7 +66,6 @@ const executeQuery = createTool({
         }),
       }
     );
-    console.log(maliciousIntent.object);
 
     if (maliciousIntent.object.safetyLevel === "malicious") {
       throw new Error(maliciousIntent.object.explanation);
