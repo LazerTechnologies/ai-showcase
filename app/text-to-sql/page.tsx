@@ -4,6 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { ChatInterface } from "@/app/components/chat";
 import { createPrepareRequestBody } from "@/app/utils/message-utils";
 import { useThreadQuery } from "@/app/hooks/use-thread-query";
+import { DatabaseSchemaDialog } from "./components/DatabaseSchemaDialog";
 
 const THREAD_PREFIX = "text-to-sql";
 
@@ -15,6 +16,12 @@ export default function TextToSqlChat() {
       experimental_prepareRequestBody: createPrepareRequestBody(THREAD_PREFIX),
       initialMessages: thread?.messages,
     });
+
+  const actions = (
+    <div className="space-y-4">
+      <DatabaseSchemaDialog />
+    </div>
+  );
 
   return (
     <ChatInterface
@@ -29,6 +36,7 @@ export default function TextToSqlChat() {
       description="Convert natural language queries into SQL statements. This agent can analyze database schemas, generate optimized queries, execute them against your databases, and provide intelligent summaries of the results."
       setInput={setInput}
       samplePrompts={["Show me all customers who made orders last month"]}
+      actions={actions}
       isSingleAgent
     />
   );
