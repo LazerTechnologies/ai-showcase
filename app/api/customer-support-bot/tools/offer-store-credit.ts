@@ -13,7 +13,7 @@ export const offerStoreCreditTool = createTool({
         "Amount of store credit to offer (as string, not including $ or other currency symbols)"
       ),
     reason: z.string().describe("Reason for offering the store credit"),
-    ticketId: z.string().describe("Associated ticket ID (required)"),
+    ticketId: z.string().describe("Associated ticket ID"),
   }),
   outputSchema: z.object({
     creditId: z.string(),
