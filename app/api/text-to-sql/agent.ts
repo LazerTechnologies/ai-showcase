@@ -51,7 +51,6 @@ const executeQuery = createTool({
     }
 
     const results = await db.execute(sql.raw(context.query));
-    console.log(results);
     return { results: results.rows };
   },
 });
