@@ -11,6 +11,7 @@ export const routes = {
   authorization: "/authorization",
   rag: "/rag",
   agenticRetrieval: "/agentic-retrieval",
+  textToSql: "/text-to-sql",
 } as const;
 
 export type Route = (typeof routes)[keyof typeof routes];
@@ -29,4 +30,5 @@ export const routeTitles: Record<Route, string> = {
   "/authorization": "Authorization",
   "/rag": "RAG with Pinecone",
   "/agentic-retrieval": "Agentic Retrieval",
+  "/text-to-sql": "Text To SQL",
 } as const;

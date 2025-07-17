@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, uuid, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, numeric } from "drizzle-orm/pg-core";
 
 const timestamps = {
   created_at: timestamp({ withTimezone: true, mode: "string" })
@@ -36,7 +36,7 @@ export const storeCreditTable = pgTable("store_credit", {
   ticketId: uuid("ticket_id")
     .notNull()
     .references(() => supportTicketsTable.id),
-  amount: text("amount").notNull(), // Store as string to avoid precision issues
+  amount: numeric("amount").notNull(),
   reason: text("reason").notNull(),
   expirationDate: timestamp("expiration_date").notNull(),
   usedAt: timestamp("used_at"),

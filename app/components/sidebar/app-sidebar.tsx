@@ -74,6 +74,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           path="/multi-agent-collaboration"
           badges={["Multi-Agent"]}
         />
+        <Scenario
+          title="Text To SQL"
+          description="Natural language to SQL conversion agent that analyzes database schemas, generates optimized queries, executes them, and provides intelligent summaries of the results."
+          path="/text-to-sql"
+          badges={["Tools"]}
+        />
         <WipOverlay>
           <Scenario
             title="Multi-Agent Collaboration (via Agent Network)"
