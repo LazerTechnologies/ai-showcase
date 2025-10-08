@@ -153,6 +153,7 @@ export function MessagesContainer({
 
             let messageKey = `${message.id}-${message.role}`;
             if (message.parts?.[0]?.type === "tool-invocation") {
+              // TODO: figure this out
               // messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
               messageKey += `-tool-invocation`;
             }

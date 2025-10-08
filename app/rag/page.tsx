@@ -14,15 +14,18 @@ const THREAD_PREFIX = "rag";
 
 export default function RAGChat() {
   const [namespace, setNamespace] = useState("default-namespace");
-  const { data: thread, isFetched } = useThreadQuery(THREAD_PREFIX);
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat({
-    messages: thread?.messages ?? [],
+  const { messages, setMessages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/rag",
       // credentials: 'include',
       // headers: { 'Custom-Header': 'value' },
     }),
+  });
+  const { isFetched } = useThreadQuery(THREAD_PREFIX, (thread) => {
+    if (thread?.messages) {
+      setMessages(thread.messages);
+    }
   });
 
   const actions = (

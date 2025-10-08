@@ -11,15 +11,18 @@ import { USER_ID_STORAGE_KEY } from "./constants/local-storage";
 const THREAD_PREFIX = "general";
 
 export default function GeneralChat() {
-  const { data: thread, isFetched } = useThreadQuery(THREAD_PREFIX);
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat({
-    messages: thread?.messages ?? [],
+  const { messages, setMessages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
       // credentials: 'include',
       // headers: { 'Custom-Header': 'value' },
     }),
+  });
+  const { isFetched } = useThreadQuery(THREAD_PREFIX, (thread) => {
+    if (thread?.messages) {
+      setMessages(thread.messages);
+    }
   });
 
   return (

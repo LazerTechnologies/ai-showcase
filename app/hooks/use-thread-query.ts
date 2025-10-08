@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchThread } from "@/app/actions/fetch-thread";
 import {
   THREAD_ID_STORAGE_KEY,
@@ -9,9 +9,14 @@ import {
 } from "@/app/constants/local-storage";
 import { getPrefixedThreadId } from "@/app/utils/message-utils";
 
-export function useThreadQuery(threadPrefix: string) {
+export function useThreadQuery(threadPrefix: string, onDataFetched?: (thread: Awaited<ReturnType<typeof fetchThread>>) => void) {
   const [userId, setUserId] = useState<string | null>(null);
   const [prefixedThreadId, setPrefixedThreadId] = useState<string | null>(null);
+  
+  const onDataFetchedRef = useRef(onDataFetched);
+  useEffect(() => {
+    onDataFetchedRef.current = onDataFetched;
+  }, [onDataFetched]);
 
   useEffect(() => {
     const updateState = () => {
@@ -48,6 +53,12 @@ export function useThreadQuery(threadPrefix: string) {
     },
     enabled: !!prefixedThreadId && !!userId,
   });
+
+  useEffect(() => {
+    if (onDataFetchedRef.current && query.data) {
+      onDataFetchedRef.current(query.data);
+    }
+  }, [query.data]);
 
   return query;
 }
