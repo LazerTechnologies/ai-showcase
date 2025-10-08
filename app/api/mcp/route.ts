@@ -8,8 +8,11 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
   const mcpAgentInstance = await createMCPAgent();
   const stream = await mcpAgentInstance.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
+    format: "aisdk",
   });
-  return stream.toDataStreamResponse();
+  return stream.toUIMessageStreamResponse();
 }

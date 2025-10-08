@@ -14,10 +14,13 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
   runtimeContext.set("userId", user.id);
   const stream = await customerSupportAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
     runtimeContext,
+    format: "aisdk",
   });
 
-  return stream.toDataStreamResponse();
+  return stream.toUIMessageStreamResponse();
 }

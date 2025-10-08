@@ -2,7 +2,7 @@ import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
 import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
-import { Message as UIMessage } from "ai";
+import { UIMessage } from "ai";
 import { partsToString } from "@/app/utils/message-utils";
 import {
   MessageColors,

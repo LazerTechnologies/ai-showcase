@@ -332,9 +332,12 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
 
   const agentStream = await agenticRetrievalAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
+    format: "aisdk",
   });
 
-  return agentStream.toDataStreamResponse();
+  return agentStream.toUIMessageStreamResponse();
 }

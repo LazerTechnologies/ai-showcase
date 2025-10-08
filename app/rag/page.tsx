@@ -1,27 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { DefaultChatTransport } from "ai";
 import { useChat } from "@ai-sdk/react";
 import { ChatInterface } from "@/app/components/chat";
 import { DocumentUpload } from "./components/DocumentUpload";
 import { NamespaceInput } from "./components/NamespaceInput";
-import { createPrepareRequestBody } from "@/app/utils/message-utils";
+import { getPrefixedThreadId } from "@/app/utils/message-utils";
 import { useThreadQuery } from "@/app/hooks/use-thread-query";
+import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
 
 const THREAD_PREFIX = "rag";
 
 export default function RAGChat() {
   const [namespace, setNamespace] = useState("default-namespace");
   const { data: thread, isFetched } = useThreadQuery(THREAD_PREFIX);
-
-  const { messages, input, handleInputChange, handleSubmit, setInput, status } =
-    useChat({
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status } = useChat({
+    messages: thread?.messages ?? [],
+    transport: new DefaultChatTransport({
       api: "/api/rag",
-      experimental_prepareRequestBody: createPrepareRequestBody(THREAD_PREFIX, {
-        namespace,
-      }),
-      initialMessages: thread?.messages,
-    });
+      // credentials: 'include',
+      // headers: { 'Custom-Header': 'value' },
+    }),
+  });
 
   const actions = (
     <div className="space-y-6">
@@ -34,8 +36,22 @@ export default function RAGChat() {
     <ChatInterface
       messages={messages}
       input={input}
-      handleInputChange={handleInputChange}
-      handleSubmit={handleSubmit}
+      handleInputChange={(e) => setInput(e.target.value)}
+      handleSubmit={(e) => {
+        e.preventDefault();
+        sendMessage(
+          {
+            text: input,
+          },
+          {
+            body: {
+              threadId: getPrefixedThreadId(THREAD_PREFIX),
+              userId: localStorage.getItem(USER_ID_STORAGE_KEY),
+              namespace,
+            },
+          }
+        );
+      }}
       isLoading={status === "streaming"}
       isResponseLoading={status === "submitted"}
       isLoadingInitialMessages={!isFetched}

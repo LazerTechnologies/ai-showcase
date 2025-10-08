@@ -8,9 +8,12 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
 
   const stream = await textToSqlAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
+    format: "aisdk",
   });
 
-  return stream.toDataStreamResponse();
+  return stream.toUIMessageStreamResponse();
 }

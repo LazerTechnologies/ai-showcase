@@ -1,4 +1,4 @@
-import { createDataStreamResponse, type JSONValue } from "ai";
+import { createUIMessageStream, createUIMessageStreamResponse, UIMessageStreamWriter  } from "ai";
 import { delegateAgent } from "./delegate-agent";
 import { coderAgent } from "./coder-agent";
 import { z } from "zod";
@@ -9,15 +9,11 @@ import { UserService } from "../../../services/user";
 
 export const maxDuration = 30;
 
-interface DataStream {
-  writeData: (value: JSONValue) => void;
-}
-
 function createAgentTool(
   agent: Agent,
   streamId: string,
   description: string,
-  dataStream: DataStream
+  writer: UIMessageStreamWriter
 ) {
   return createTool({
     id: streamId,
@@ -35,9 +31,12 @@ function createAgentTool(
 
       for await (const chunk of agentStream.fullStream) {
         const serializableChunk = makeSerializable(chunk);
-        dataStream.writeData({
-          streamId,
+        writer.write({
+          type: `data-test`,
           ...serializableChunk,
+          data: {
+            streamId,
+          }
         });
       }
 
@@ -54,32 +53,43 @@ export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
   const user = await UserService.createIfNotExists(userId);
 
-  return createDataStreamResponse({
-    execute: async (dataStream) => {
-      const coderTool = createAgentTool(
-        coderAgent,
-        "coder-agent",
-        "Coder agent",
-        dataStream
-      );
+  const stream = createUIMessageStream({
+      execute: async ({ writer }) => {
 
-      const delegateStream = await delegateAgent.stream(messages, {
-        toolsets: {
-          agents: {
-            coder: coderTool,
+        const coderTool = createAgentTool(
+          coderAgent,
+          "coder-agent",
+          "Coder agent",
+          writer
+        );
+  
+        const delegateStream = await delegateAgent.stream(messages, {
+          toolsets: {
+            agents: {
+              coder: coderTool,
+            },
           },
-        },
-        resourceId: user.id,
-        threadId,
-      });
-
-      for await (const chunk of delegateStream.fullStream) {
-        const serializableChunk = makeSerializable(chunk);
-        dataStream.writeData({
-          streamId: "delegate-agent",
-          ...serializableChunk,
+          memory: {
+            resource: user.id,
+            thread: threadId,
+          },
         });
-      }
+
+        for await (const chunk of delegateStream.fullStream) {
+          const serializableChunk = makeSerializable(chunk);
+          console.log(chunk, serializableChunk)
+          writer.write({
+            type: `data-test-2`,
+            ...serializableChunk,
+            data: {
+              streamId: "delegate-agent",
+            }
+          });
+        }
+
+      // writer.merge(result.toUIMessageStream());
     },
   });
+
+  return createUIMessageStreamResponse({ stream });
 }

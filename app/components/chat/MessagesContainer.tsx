@@ -4,7 +4,7 @@ import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
 import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
-import { Message as UIMessage } from "ai";
+import { UIMessage } from "ai";
 import {
   DEFAULT_MESSAGE_COLORS,
   MESSAGE_COLOR_SETS,
@@ -153,7 +153,8 @@ export function MessagesContainer({
 
             let messageKey = `${message.id}-${message.role}`;
             if (message.parts?.[0]?.type === "tool-invocation") {
-              messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
+              // messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
+              messageKey += `-tool-invocation`;
             }
 
             return (

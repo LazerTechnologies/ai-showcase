@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { USER_ID_STORAGE_KEY } from "../constants/local-storage";
 import { THREAD_ID_STORAGE_KEY } from "../constants/local-storage";
-import { Message as UIMessage } from "ai";
+import {  UIMessage } from "ai";
 import { useChat } from "@ai-sdk/react";
 
 /**
@@ -9,6 +9,7 @@ import { useChat } from "@ai-sdk/react";
  * to differentiate between messages from different agents.
  */
 export interface MultiAgentUIMessage extends UIMessage {
+  createdAt?: Date;
   streamId?: string;
 }
 
@@ -57,15 +58,15 @@ export function useMultiAgentStream({
   apiEndpoint,
   threadPrefix,
   headers,
-  initialMessages = [],
+  messages = [],
 }: {
   apiEndpoint: string;
   threadPrefix: string;
   headers?: Record<string, string>;
-  initialMessages?: MultiAgentUIMessage[];
+  messages?: MultiAgentUIMessage[];
 }): UseMultiAgentStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
-    messages: initialMessages,
+    messages,
     streamingMessages: {},
   });
   const [input, setInput] = useState("");
@@ -91,7 +92,6 @@ export function useMultiAgentStream({
       const userMessage: MultiAgentUIMessage = {
         id: Date.now().toString(),
         role: "user",
-        content: input.trim(),
         parts: [{ type: "text", text: input.trim() }],
         createdAt: new Date(),
       };
@@ -167,28 +167,29 @@ export function useMultiAgentStream({
                 for (const data of dataArray) {
                   switch (data.type) {
                     case "tool-call":
-                      const toolMessage: MultiAgentUIMessage = {
-                        id: `${Date.now()}-tool-${data.toolCallId}`,
-                        role: "assistant",
-                        content: `Using tool: ${data.toolName}`,
-                        parts: [
-                          {
-                            type: "tool-invocation",
-                            toolInvocation: {
-                              toolCallId: data.toolCallId,
-                              toolName: data.toolName,
-                              args: data.args || {},
-                              state: "call",
-                            },
-                          },
-                        ],
-                        createdAt: new Date(),
-                        streamId: data.streamId,
-                      };
-                      setChatState((prev) => ({
-                        ...prev,
-                        messages: [...prev.messages, toolMessage],
-                      }));
+                      throw new Error("Tool call not supported", data);
+                      // const toolMessage: MultiAgentUIMessage = {
+                      //   id: `${Date.now()}-tool-${data.toolCallId}`,
+                      //   role: "assistant",
+                      //   content: `Using tool: ${data.toolName}`,
+                      //   parts: [
+                      //     {
+                      //       type: "tool-invocation",
+                      //       toolInvocation: {
+                      //         toolCallId: data.toolCallId,
+                      //         toolName: data.toolName,
+                      //         args: data.args || {},
+                      //         state: "call",
+                      //       },
+                      //     },
+                      //   ],
+                      //   createdAt: new Date(),
+                      //   streamId: data.streamId,
+                      // };
+                      // setChatState((prev) => ({
+                      //   ...prev,
+                      //   messages: [...prev.messages, toolMessage],
+                      // }));
                       break;
 
                     case "text-delta":
@@ -231,7 +232,6 @@ export function useMultiAgentStream({
                           const completedMessage: MultiAgentUIMessage = {
                             id: `${Date.now()}-${data.streamId}`,
                             role: "assistant",
-                            content: streamingMessage.text,
                             parts: [
                               { type: "text", text: streamingMessage.text },
                             ],
@@ -280,7 +280,6 @@ export function useMultiAgentStream({
         const errorMessage: MultiAgentUIMessage = {
           id: Date.now().toString(),
           role: "assistant",
-          content: "Sorry, there was an error processing your request.",
           parts: [
             {
               type: "text",

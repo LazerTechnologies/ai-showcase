@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   const ragAgent = createRAGAgent(namespace);
   const stream = await ragAgent.stream(messages, {
-    toolCallStreaming: true,
+    format: "aisdk",
   });
-  return stream.toDataStreamResponse();
+  return stream.toUIMessageStreamResponse();
 }

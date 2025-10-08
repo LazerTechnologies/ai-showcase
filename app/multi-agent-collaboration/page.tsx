@@ -12,7 +12,7 @@ export default function GeneralChat() {
     useMultiAgentStream({
       apiEndpoint: "/api/multi-agent-collaboration",
       threadPrefix: THREAD_PREFIX,
-      initialMessages: thread?.messages,
+      messages: thread?.messages ?? [],
     });
 
   return (

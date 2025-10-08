@@ -1,20 +1,9 @@
 "use client";
 
-import { Message as UIMessage } from "ai";
-import { useChat } from "@ai-sdk/react";
+import { UIMessage } from "ai";
 import {
   THREAD_ID_STORAGE_KEY,
-  USER_ID_STORAGE_KEY,
 } from "../constants/local-storage";
-
-// Extract the type of the request parameter from useChat's experimental_prepareRequestBody
-type PrepareRequestBodyRequest = Parameters<
-  NonNullable<
-    NonNullable<
-      Parameters<typeof useChat>[0]
-    >["experimental_prepareRequestBody"]
-  >
->[0];
 
 /**
  * Gets the thread ID from local storage and prefixes it.
@@ -30,35 +19,6 @@ export function getPrefixedThreadId(threadPrefix: string): string | null {
     return null;
   }
   return `${threadPrefix}-${baseThreadId}`;
-}
-
-/**
- * Shared experimental_prepareRequestBody function for useChat
- * This sends only the last message to the API since Mastra handles message persistence rather than
- * maintaining the full conversation history locally. Send all messages if you want to store the full conversation
- * history locally (but make sure to remove memory usage from the agent).
- * See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
- *
- * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
- * @param requestBody - Additional request body to include in the request
- */
-export function createPrepareRequestBody(
-  threadPrefix: string,
-  requestBody?: Record<string, unknown>
-) {
-  return (request: PrepareRequestBodyRequest) => {
-    const lastMessage =
-      request.messages.length > 0
-        ? request.messages[request.messages.length - 1]
-        : null;
-
-    return {
-      ...(requestBody || {}),
-      messages: lastMessage ? [lastMessage] : [],
-      threadId: getPrefixedThreadId(threadPrefix),
-      userId: localStorage.getItem(USER_ID_STORAGE_KEY),
-    };
-  };
 }
 
 /**
