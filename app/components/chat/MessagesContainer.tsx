@@ -41,17 +41,7 @@ const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
     if (message.parts.length === 1) {
       result.push(message);
     } else {
-      // Tools go above text
-      const sortedParts = message.parts.sort((a, b) => {
-        if (a.type.startsWith("tool-")) {
-          return -1;
-        }
-        if (b.type.startsWith("tool-")) {
-          return 1;
-        }
-        return 0;
-      });
-      sortedParts.forEach((part) => {
+      message.parts.forEach((part) => {
         if (isPartSupported(part)) {
           result.push({ ...message, parts: [part] });
         }
@@ -163,6 +153,8 @@ export function MessagesContainer({
             const part = message.parts?.[0];
             if (part?.type.startsWith("tool-") && "toolCallId" in part) {
               messageKey += `-${part.toolCallId}`;
+            } else if (part?.type === "text") {
+              messageKey += `-${part.text.length}`;
             }
 
             return (
