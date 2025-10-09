@@ -6,14 +6,24 @@ import { useThreadQuery } from "@/app/hooks/use-thread-query";
 
 const THREAD_PREFIX = "multi-agent";
 
-export default function GeneralChat() {
-  const { data: thread, isFetched } = useThreadQuery(THREAD_PREFIX);
-  const { messages, input, handleInputChange, handleSubmit, setInput, status } =
-    useMultiAgentStream({
-      apiEndpoint: "/api/multi-agent-collaboration",
-      threadPrefix: THREAD_PREFIX,
-      messages: thread?.messages ?? [],
-    });
+export default function MultiAgentChat() {
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    setInput,
+    setMessages,
+    status,
+  } = useMultiAgentStream({
+    apiEndpoint: "/api/multi-agent-collaboration",
+    threadPrefix: THREAD_PREFIX,
+  });
+  const { isFetched } = useThreadQuery(THREAD_PREFIX, (thread) => {
+    if (thread?.messages) {
+      setMessages(thread.messages);
+    }
+  });
 
   return (
     <ChatInterface

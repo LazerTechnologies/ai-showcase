@@ -15,9 +15,7 @@ interface ChatMessageProps {
 }
 
 function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
-  return (
-    message.parts?.some((part) => part.type === "tool-invocation") ?? false
-  );
+  return message.parts?.some((part) => part.type.startsWith("tool-")) ?? false;
 }
 
 interface AvatarProps {

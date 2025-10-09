@@ -35,6 +35,14 @@ export function partsToString(parts: UIMessage["parts"]): string {
 
       const typedPart = part as { type: string; [key: string]: unknown };
 
+      if (typedPart.type.startsWith("tool-")) {
+        const toolToStringify = {
+          type: typedPart.type.split("tool-")[1],
+          input: typedPart.input,
+        }
+        return `Tool: ${JSON.stringify(toolToStringify)}`;
+      }
+
       switch (typedPart.type) {
         case "text":
           return (typedPart as unknown as { text: string }).text || "";
@@ -42,18 +50,6 @@ export function partsToString(parts: UIMessage["parts"]): string {
           return (
             (typedPart as unknown as { reasoning: string }).reasoning || ""
           );
-        case "tool-invocation":
-          const toolInvocation = typedPart.toolInvocation as unknown;
-          if (
-            toolInvocation &&
-            typeof toolInvocation === "object" &&
-            "toolName" in toolInvocation
-          ) {
-            return `Using tool: ${
-              (toolInvocation as { toolName: string }).toolName
-            }`;
-          }
-          return `Tool: ${JSON.stringify(typedPart.toolInvocation)}`;
         case "source":
           return `Source: ${JSON.stringify(typedPart.source)}`;
         case "file":

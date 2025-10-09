@@ -37,6 +37,7 @@ export interface UseMultiAgentStreamReturn {
   messages: MultiAgentUIMessage[];
   input: string;
   setInput: (value: string) => void;
+  setMessages: (messages: MultiAgentUIMessage[]) => void;
   handleInputChange: (
     e:
       | React.ChangeEvent<HTMLInputElement>
@@ -58,19 +59,24 @@ export function useMultiAgentStream({
   apiEndpoint,
   threadPrefix,
   headers,
-  messages = [],
 }: {
   apiEndpoint: string;
   threadPrefix: string;
   headers?: Record<string, string>;
-  messages?: MultiAgentUIMessage[];
 }): UseMultiAgentStreamReturn {
   const [chatState, setChatState] = useState<ChatState>({
-    messages,
+    messages: [],
     streamingMessages: {},
   });
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<UseChatStatus>("ready");
+
+  const setMessages = useCallback((messages: MultiAgentUIMessage[]) => {
+    setChatState((prev) => ({
+      ...prev,
+      messages,
+    }));
+  }, []);
 
   const handleInputChange = useCallback(
     (
@@ -323,6 +329,7 @@ export function useMultiAgentStream({
     messages: allMessages,
     input,
     setInput,
+    setMessages,
     handleInputChange,
     handleSubmit,
     status,

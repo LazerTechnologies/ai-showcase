@@ -17,7 +17,15 @@ interface MessagesContainerProps {
   isResponseLoading: boolean;
 }
 
-const supportedPartsSequence = ["tool-invocation", "text"];
+const isPartSupported = (part: UIMessage["parts"][number]) => {
+  if (part.type === "text") {
+    return true;
+  }
+  if (part.type.startsWith("tool-")) {
+    return true;
+  }
+  return false;
+};
 
 /**
  * Re-arrange messages so that they only have one part for UI purposes.
@@ -35,16 +43,16 @@ const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
     } else {
       // Tools go above text
       const sortedParts = message.parts.sort((a, b) => {
-        if (a.type === "tool-invocation") {
+        if (a.type.startsWith("tool-")) {
           return -1;
         }
-        if (b.type === "tool-invocation") {
+        if (b.type.startsWith("tool-")) {
           return 1;
         }
         return 0;
       });
       sortedParts.forEach((part) => {
-        if (supportedPartsSequence.includes(part.type)) {
+        if (isPartSupported(part)) {
           result.push({ ...message, parts: [part] });
         }
       });
@@ -152,10 +160,9 @@ export function MessagesContainer({
               : DEFAULT_MESSAGE_COLORS;
 
             let messageKey = `${message.id}-${message.role}`;
-            if (message.parts?.[0]?.type === "tool-invocation") {
-              // TODO: figure this out
-              // messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
-              messageKey += `-tool-invocation`;
+            const part = message.parts?.[0];
+            if (part?.type.startsWith("tool-") && "toolCallId" in part) {
+              messageKey += `-${part.toolCallId}`;
             }
 
             return (
