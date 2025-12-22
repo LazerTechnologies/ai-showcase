@@ -4,6 +4,7 @@ import { UIMessage } from "ai";
 import {
   THREAD_ID_STORAGE_KEY,
 } from "../constants/local-storage";
+import type { AgentDataPart } from "@mastra/ai-sdk";
 
 /**
  * Gets the thread ID from local storage and prefixes it.
@@ -19,6 +20,23 @@ export function getPrefixedThreadId(threadPrefix: string): string | null {
     return null;
   }
   return `${threadPrefix}-${baseThreadId}`;
+}
+
+/**
+ * Type guard to check if a part is a tool agent part with an id
+ */
+export function isToolAgentPart(
+  part: UIMessage["parts"][number]
+): part is AgentDataPart & { data: { id: string } } {
+  return part.type === "data-tool-agent";
+}
+
+/**
+ * Extracts the streamId from a message's first part if it's a tool agent part
+ */
+export function getStreamIdFromMessage(message: UIMessage): string | undefined {
+  const part = message.parts?.[0];
+  return part && isToolAgentPart(part) ? part.data.id : undefined;
 }
 
 /**

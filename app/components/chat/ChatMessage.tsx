@@ -1,28 +1,20 @@
 import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
-import { MultiAgentUIMessage } from "./types";
 import { UIMessage } from "ai";
-import { partsToString } from "@/app/utils/message-utils";
+import { partsToString, isToolAgentPart } from "@/app/utils/message-utils";
 import {
   MessageColors,
   USER_MESSAGE_COLORS,
 } from "@/app/constants/message-colors";
-import type { AgentDataPart } from "@mastra/ai-sdk";
 
 interface ChatMessageProps {
-  message: MultiAgentUIMessage | UIMessage;
+  message: UIMessage;
   messageColors: MessageColors;
 }
 
 function isToolPart(part: UIMessage["parts"][number]): boolean {
   return part.type.startsWith("tool-");
-}
-
-function isToolAgentPart(
-  part: UIMessage["parts"][number]
-): part is AgentDataPart & { data: { id: string } } {
-  return part.type === "data-tool-agent";
 }
 
 interface AvatarProps {
@@ -62,7 +54,7 @@ function Avatar({ isUser, isTool, streamId, messageColors }: AvatarProps) {
 }
 
 interface MessageContentProps {
-  message: MultiAgentUIMessage | UIMessage;
+  message: UIMessage;
   isUser: boolean;
   isTool: boolean;
   messageColors?: MessageColors;

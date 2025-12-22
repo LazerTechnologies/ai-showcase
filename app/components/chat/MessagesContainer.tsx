@@ -3,17 +3,17 @@
 import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
-import { MultiAgentUIMessage } from "./types";
 import { UIMessage } from "ai";
 import {
   DEFAULT_MESSAGE_COLORS,
   MESSAGE_COLOR_SETS,
   MessageColors,
 } from "@/app/constants/message-colors";
+import { getStreamIdFromMessage } from "@/app/utils/message-utils";
 
 interface MessagesContainerProps {
   isSingleAgent?: boolean;
-  messages: (MultiAgentUIMessage | UIMessage)[];
+  messages: UIMessage[];
   isResponseLoading: boolean;
 }
 
@@ -34,9 +34,7 @@ const isPartSupported = (part: UIMessage["parts"][number]) => {
 /**
  * Re-arrange messages so that they only have one part for UI purposes.
  */
-const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
-  messages: T[]
-): T[] => {
+const separateMessages = <T extends UIMessage>(messages: T[]): T[] => {
   const result: T[] = [];
   for (const message of messages) {
     if (!message.parts) {
@@ -108,8 +106,9 @@ export function MessagesContainer({
     const uniqueStreams = new Set<string>();
 
     messages.forEach((message) => {
-      if ("streamId" in message && message.streamId) {
-        uniqueStreams.add(message.streamId);
+      const streamId = getStreamIdFromMessage(message);
+      if (streamId) {
+        uniqueStreams.add(streamId);
       }
     });
 
@@ -147,8 +146,7 @@ export function MessagesContainer({
       ) : (
         <div className="space-y-1">
           {messages.map((message) => {
-            const streamId =
-              "streamId" in message ? message.streamId : undefined;
+            const streamId = getStreamIdFromMessage(message);
             const messageColors = streamId
               ? streamColorMap.get(streamId)
               : DEFAULT_MESSAGE_COLORS;

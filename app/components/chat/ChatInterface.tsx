@@ -4,7 +4,6 @@ import { useState, useRef } from "react";
 import { MessagesContainer } from "./MessagesContainer";
 import { ChatInput } from "./ChatInput";
 import { SamplePrompts } from "./SamplePrompts";
-import { MultiAgentUIMessage } from "./types";
 import { UIMessage } from "ai";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ import { SetThreadId } from "./actions/SetThreadId";
 import { EllipsisVertical, Fullscreen, Minimize } from "lucide-react";
 
 interface ChatInterfaceProps {
-  messages: MultiAgentUIMessage[] | UIMessage[];
+  messages: UIMessage[];
   input: string;
   handleInputChange: (
     e:
