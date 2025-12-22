@@ -159,10 +159,15 @@ export function MessagesContainer({
               messageKey += `-${part.text.length}`;
             }
 
+            if (!part) {
+              return null;
+            }
+
             return (
               <ChatMessage
                 key={messageKey}
-                message={message}
+                part={part}
+                role={message.role === "system" ? "assistant" : message.role}
                 messageColors={messageColors || DEFAULT_MESSAGE_COLORS}
               />
             );
