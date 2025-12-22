@@ -52,6 +52,8 @@ export function partsToString(parts: UIMessage["parts"]): string {
           );
         case "source":
           return `Source: ${JSON.stringify(typedPart.source)}`;
+        case "data-tool-agent":
+          return `Tool Agent: ${JSON.stringify(typedPart.data)}`;
         case "file":
           return `File: ${
             (typedPart as unknown as { mimeType: string }).mimeType

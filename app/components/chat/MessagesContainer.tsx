@@ -3,7 +3,7 @@
 import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
-import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
+import { MultiAgentUIMessage } from "./types";
 import { UIMessage } from "ai";
 import {
   DEFAULT_MESSAGE_COLORS,
@@ -19,6 +19,10 @@ interface MessagesContainerProps {
 
 const isPartSupported = (part: UIMessage["parts"][number]) => {
   if (part.type === "text") {
+    return true;
+  }
+  if (part.type === "data-tool-agent") {
+    // Sub-agent messages
     return true;
   }
   if (part.type.startsWith("tool-")) {

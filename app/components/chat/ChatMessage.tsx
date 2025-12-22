@@ -1,21 +1,28 @@
 import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
-import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
+import { MultiAgentUIMessage } from "./types";
 import { UIMessage } from "ai";
 import { partsToString } from "@/app/utils/message-utils";
 import {
   MessageColors,
   USER_MESSAGE_COLORS,
 } from "@/app/constants/message-colors";
+import type { AgentDataPart } from "@mastra/ai-sdk";
 
 interface ChatMessageProps {
   message: MultiAgentUIMessage | UIMessage;
   messageColors: MessageColors;
 }
 
-function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
-  return message.parts?.some((part) => part.type.startsWith("tool-")) ?? false;
+function isToolPart(part: UIMessage["parts"][number]): boolean {
+  return part.type.startsWith("tool-");
+}
+
+function isToolAgentPart(
+  part: UIMessage["parts"][number]
+): part is AgentDataPart & { data: { id: string } } {
+  return part.type === "data-tool-agent";
 }
 
 interface AvatarProps {
@@ -102,8 +109,15 @@ function MessageContent({
 
 export function ChatMessage({ message, messageColors }: ChatMessageProps) {
   const isUser = message.role === "user";
-  const isTool = isToolMessage(message);
-  const streamId = "streamId" in message ? message.streamId : undefined;
+
+  const part = message.parts?.[0];
+
+  if (!part) {
+    return null;
+  }
+
+  const isTool = isToolPart(part);
+  const streamId = isToolAgentPart(part) ? part.data.id : undefined;
 
   return (
     <div

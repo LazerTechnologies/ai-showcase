@@ -14,6 +14,7 @@ const textEmbeddingGoogle = wrapProvider({
       params.providerOptions = {
         google: {
           outputDimensionality: 384,
+          taskType: "SEMANTIC_SIMILARITY"
         }
       };
       return params;
@@ -21,5 +22,5 @@ const textEmbeddingGoogle = wrapProvider({
   }
 });
 
-export const flash = google("gemini-2.5-flash");
+export const flash = google("gemini-3-flash-preview");
 export const textEmbedding = textEmbeddingGoogle.textEmbeddingModel("text-embedding-004");
