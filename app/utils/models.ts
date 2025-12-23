@@ -1,5 +1,10 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGroq } from "@ai-sdk/groq";
 import { wrapProvider } from "ai";
+
+const groq = createGroq({
+  apiKey: process.env.GROQ_API_KEY!,
+});
 
 const google = createGoogleGenerativeAI({
   apiKey: process.env.GEMINI_API_KEY!,
@@ -22,5 +27,5 @@ const textEmbeddingGoogle = wrapProvider({
   }
 });
 
-export const flash = google("gemini-3-flash-preview");
+export const flash = groq("openai/gpt-oss-20b");
 export const textEmbedding = textEmbeddingGoogle.textEmbeddingModel("text-embedding-004");

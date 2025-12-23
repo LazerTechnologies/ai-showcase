@@ -3,6 +3,8 @@ import { customerSupportAgent } from "./agent";
 import { CustomerSupportRuntimeContextSchema } from "./shared";
 import { z } from "zod";
 import { UserService } from "../../../services/user";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkFormat } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
@@ -19,8 +21,15 @@ export async function POST(req: Request) {
       thread: threadId,
     },
     runtimeContext,
-    format: "aisdk",
   });
 
-  return stream.toUIMessageStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkFormat(stream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

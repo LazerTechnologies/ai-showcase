@@ -2,11 +2,12 @@ import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { PineconeVector } from "@mastra/pinecone";
-import { embed } from "ai";
+import { embed, createUIMessageStream, createUIMessageStreamResponse } from "ai";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
 import { flash, textEmbedding } from "../../utils/models";
 import { UserService } from "../../../services/user";
+import { toAISdkFormat } from "@mastra/ai-sdk";
 
 interface DriveFile {
   id: string;
@@ -336,8 +337,15 @@ export async function POST(req: Request) {
       resource: user.id,
       thread: threadId,
     },
-    format: "aisdk",
   });
 
-  return agentStream.toUIMessageStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkFormat(agentStream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

@@ -1,4 +1,6 @@
 import { createRAGAgent } from "./agent";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkFormat } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
@@ -10,8 +12,15 @@ export async function POST(req: Request) {
   }
 
   const ragAgent = createRAGAgent(namespace);
-  const stream = await ragAgent.stream(messages, {
-    format: "aisdk",
+  const stream = await ragAgent.stream(messages);
+
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkFormat(stream, { from: 'agent' }));
+    },
   });
-  return stream.toUIMessageStreamResponse();
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }
