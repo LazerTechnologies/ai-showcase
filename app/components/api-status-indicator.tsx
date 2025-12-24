@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { checkGeminiStatus } from "../actions/check-gemini-status";
+import { checkModelStatus } from "../actions/check-model-status";
 import {
   Tooltip,
   TooltipContent,
@@ -17,8 +17,8 @@ export function ApiStatusIndicator() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["gemini-status"],
-    queryFn: checkGeminiStatus,
+    queryKey: ["model-status"],
+    queryFn: checkModelStatus,
     refetchInterval: TEN_MINUTES,
     retry: false,
   });
@@ -47,14 +47,14 @@ export function ApiStatusIndicator() {
               }`}
             ></div>
             <span className="text-sm hidden md:block">
-              {finalStatus?.success ? "Connected" : "Gemini is down"}
+              {finalStatus?.success ? "Connected" : "Model is down"}
             </span>
           </div>
         </TooltipTrigger>
         <TooltipContent>
           {finalStatus?.success
-            ? "Gemini API is operational"
-            : `Gemini API error: ${finalStatus?.error || "Unknown error"}`}
+            ? "Model API is operational"
+            : `Model API error: ${finalStatus?.error || "Unknown error"}`}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -3,7 +3,7 @@
 import { Agent } from "@mastra/core/agent";
 import { flash } from "../utils/models";
 
-export async function checkGeminiStatus() {
+export async function checkModelStatus() {
   try {
     const testAgent = new Agent({
       name: "test-agent",
@@ -17,11 +17,11 @@ export async function checkGeminiStatus() {
       return { success: true };
     }
 
-    console.error(`Gemini API check failed, received: \`${result.text}\``);
+    console.error(`Model API check failed, received: \`${result.text}\``);
 
     return { success: false };
   } catch (error) {
-    console.error("Gemini API check failed:", error);
+    console.error("Model API check failed:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
