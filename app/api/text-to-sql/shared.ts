@@ -24,21 +24,24 @@ const columnSchema = z.object({
   table_name: z.string(),
 });
 
+/**
+ * Schema after being transformed by the database schema fetcher
+ */
+const columnOutputSchema = columnSchema.extend({
+  is_nullable: z.boolean(),
+  foreignKey: relationshipSchema
+    .pick({
+      constraint_name: true,
+      foreign_table_schema: true,
+      foreign_table_name: true,
+      foreign_column_name: true,
+    })
+    .optional(),
+});
+
 export const tableSchema = z.object({
   name: z.string(),
-  columns: z.record(
-    z.string(),
-    columnSchema.extend({
-      foreignKey: relationshipSchema
-        .pick({
-          constraint_name: true,
-          foreign_table_schema: true,
-          foreign_table_name: true,
-          foreign_column_name: true,
-        })
-        .optional(),
-    })
-  ),
+  columns: z.record(z.string(), columnOutputSchema),
 });
 
 export const databaseSchema = z.record(z.string(), tableSchema);

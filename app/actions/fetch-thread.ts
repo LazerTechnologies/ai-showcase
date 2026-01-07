@@ -17,9 +17,9 @@ export async function fetchThread(threadId: string, userUiId: string) {
   if (thread.resourceId !== user.id) {
     throw new Error("Unauthorized");
   }
-  const { uiMessages } = await threadMemory.query({
+  const { messages } = await threadMemory.recall({
     threadId,
     resourceId: user.id,
   });
-  return { messages: convertMessages(uiMessages).to("AIV5.UI"), resourceId: user.id };
+  return { messages: convertMessages(messages).to("AIV5.UI"), resourceId: user.id };
 }

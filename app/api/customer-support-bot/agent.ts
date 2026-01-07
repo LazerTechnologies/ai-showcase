@@ -9,6 +9,7 @@ import {
 import { flash } from "../../utils/models";
 
 export const customerSupportAgent = new Agent({
+  id: 'customer-support-agent',
   name: "customer-support-agent",
   instructions: `You are a helpful and empathetic customer support agent for an e-commerce website similar to Amazon. Your role is to:
 

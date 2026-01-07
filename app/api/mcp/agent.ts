@@ -19,10 +19,11 @@ export async function createMCPAgent() {
   });
 
   const agent = new Agent({
+    id: 'mcp-agent',
     name: "mcp-agent",
     instructions: `You are an agent that can perform various tasks.`,
     model: flash,
-    tools: await mcpClient.getTools(),
+    tools: await mcpClient.listTools(),
     memory: threadMemory,
   });
 

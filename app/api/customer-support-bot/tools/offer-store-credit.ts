@@ -22,13 +22,16 @@ export const offerStoreCreditTool = createTool({
     message: z.string(),
     success: z.boolean(),
   }),
-  execute: async ({ context, runtimeContext }) => {
+  execute: async (inputData, context) => {
     try {
-      const { userId } = validateRuntimeContext(runtimeContext);
+      if (!context?.requestContext) {
+        throw new Error("Request context is required");
+      }
+      const { userId } = validateRuntimeContext(context?.requestContext);
 
       const existingCredits = await StoreCreditService.getCreditsByTicket({
         requestingUserId: userId,
-        ticketId: context.ticketId,
+        ticketId: inputData.ticketId,
       });
 
       if (existingCredits.length > 0) {
@@ -36,7 +39,7 @@ export const offerStoreCreditTool = createTool({
           creditId: existingCredits[0].id,
           amount: existingCredits[0].amount,
           expirationDate: existingCredits[0].expirationDate.toISOString(),
-          message: `A store credit of ${existingCredits[0].amount} has already been issued for ticket ${context.ticketId}. Please check your account for details.`,
+          message: `A store credit of ${existingCredits[0].amount} has already been issued for ticket ${inputData.ticketId}. Please check your account for details.`,
           success: false,
         };
       }
@@ -44,20 +47,20 @@ export const offerStoreCreditTool = createTool({
       const storeCredit = await StoreCreditService.createStoreCredit({
         requestingUserId: userId,
         creditData: {
-          amount: context.amount,
-          reason: context.reason,
-          ticketId: context.ticketId,
+          amount: inputData.amount,
+          reason: inputData.reason,
+          ticketId: inputData.ticketId,
         },
       });
 
       return {
         creditId: storeCredit.id,
-        amount: context.amount,
+        amount: inputData.amount,
         expirationDate: storeCredit.expirationDate.toISOString(),
         message: `I've issued you $${
-          context.amount
+          inputData.amount
         } in store credit (Credit ID: ${storeCredit.id}) as compensation for ${
-          context.reason
+          inputData.reason
         }. This credit will expire on ${new Date(
           storeCredit.expirationDate
         ).toLocaleDateString()} and can be used on any future purchase. You should receive an email confirmation shortly.`,

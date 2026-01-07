@@ -12,6 +12,7 @@ const connectionString = `postgresql://${user}:${password}@${host}:${port}/${dat
 const schemaName = "mastra";
 
 const storage = new PostgresStore({
+  id: 'thread-memory-postgres-storage',
   host,
   port,
   user,
@@ -20,7 +21,11 @@ const storage = new PostgresStore({
   ssl: true,
   schemaName,
 });
-const vector = new PgVector({ connectionString, schemaName });
+const vector = new PgVector({ 
+  id: 'thread-memory-pgvector',
+  connectionString, 
+  schemaName 
+});
 
 const createMemoryWithScope = (scope: "thread" | "resource") =>
   new Memory({

@@ -6,6 +6,7 @@ import { flash } from "../utils/models";
 export async function checkModelStatus() {
   try {
     const testAgent = new Agent({
+      id: 'test-agent',
       name: "test-agent",
       instructions: "Say exactly this when spoken to: 'hi'",
       model: flash,

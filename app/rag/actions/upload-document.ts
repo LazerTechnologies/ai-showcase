@@ -18,7 +18,7 @@ export async function uploadDocument(namespace: string, document: string) {
     // Chunk the document
     const chunks = await doc.chunk({
       strategy: "markdown",
-      size: 512,
+      maxSize: 512,
       overlap: 50,
     });
 
@@ -30,6 +30,7 @@ export async function uploadDocument(namespace: string, document: string) {
 
     // Initialize Pinecone store
     const store = new PineconeVector({
+      id: 'rag-document-upload-pinecone-store',
       apiKey: process.env.PINECONE_API_KEY!,
     });
 

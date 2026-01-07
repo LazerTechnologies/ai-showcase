@@ -1,7 +1,7 @@
 import { createAuthorizationAgent } from "./agent";
 import { UserService } from "../../../services/user";
 import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
-import { toAISdkFormat } from "@mastra/ai-sdk";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
   const uiMessageStream = createUIMessageStream({
     execute: async ({ writer }) => {
-      writer.merge(toAISdkFormat(stream, { from: 'agent' }));
+      writer.merge(toAISdkStream(stream, { from: 'agent' }));
     },
   });
 

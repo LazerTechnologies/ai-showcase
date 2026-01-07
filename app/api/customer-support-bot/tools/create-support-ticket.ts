@@ -16,14 +16,17 @@ export const createSupportTicketTool = createTool({
     status: z.string(),
     message: z.string(),
   }),
-  execute: async ({ context, runtimeContext }) => {
+  execute: async (inputData, context) => {
     try {
-      const { userId } = validateRuntimeContext(runtimeContext);
+      if (!context?.requestContext) {
+        throw new Error("Request context is required");
+      }
+      const { userId } = validateRuntimeContext(context?.requestContext);
 
       const ticket = await SupportTicketService.createTicket({
         userId,
         ticketData: {
-          description: context.description,
+          description: inputData.description,
         },
       });
 

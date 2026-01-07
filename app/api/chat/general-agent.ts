@@ -4,6 +4,7 @@ import { threadMemory } from "../memory";
 import { flash } from "../../utils/models";
 
 export const generalAgent = new Agent({
+  id: 'general-agent',
   name: "general-agent",
   instructions:
     "You are a general-purpose agent. You're able to use tools or respond without tools.",

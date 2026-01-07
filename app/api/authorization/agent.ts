@@ -31,7 +31,7 @@ const createMockGoogleDriveTool = (userRole: "viewer" | "admin") => {
       totalResults: z.number(),
       hasMoreResults: z.boolean(),
     }),
-    execute: async ({ context }) => {
+    execute: async (inputData) => {
       // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 500));
 
@@ -46,8 +46,8 @@ const createMockGoogleDriveTool = (userRole: "viewer" | "admin") => {
       }
 
       // Simple file name matching
-      if (context.query.trim()) {
-        const searchTerm = context.query.toLowerCase();
+      if (inputData.query.trim()) {
+        const searchTerm = inputData.query.toLowerCase();
         authorizedFiles = authorizedFiles.filter((file) =>
           file.name.toLowerCase().includes(searchTerm)
         );
@@ -79,6 +79,7 @@ export function createAuthorizationAgent(userRole: "viewer" | "admin") {
   
 
   return new Agent({
+    id: `authorization-agent-${userRole}`,
     name: `authorization-agent-${userRole}`,
     instructions,
     model: flash,

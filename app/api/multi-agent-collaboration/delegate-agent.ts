@@ -14,11 +14,11 @@ const coderTool = createTool({
   outputSchema: z.object({
     output: z.string().describe("The coder agent's response"),
   }),
-  execute: async ({ context, writer }) => {
-    const stream = await coderAgent.stream(context.prompt);
+  execute: async (inputData, context) => {
+    const stream = await coderAgent.stream(inputData.prompt, context);
 
-    if (writer) {
-      await stream.fullStream.pipeTo(writer);
+    if (context?.writer) {
+      await stream.fullStream.pipeTo(context.writer);
     }
 
     return {
@@ -28,6 +28,7 @@ const coderTool = createTool({
 });
 
 export const delegateAgent = new Agent({
+  id: 'delegate-agent',
   name: "delegate-agent",
   instructions: `You respond to user queries by delegating work to other agents via your toolset.
   Don't try to create your own output.
