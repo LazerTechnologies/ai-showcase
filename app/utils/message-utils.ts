@@ -1,20 +1,10 @@
 "use client";
 
-import { Message as UIMessage } from "ai";
-import { useChat } from "@ai-sdk/react";
+import { UIMessage } from "ai";
 import {
   THREAD_ID_STORAGE_KEY,
-  USER_ID_STORAGE_KEY,
 } from "../constants/local-storage";
-
-// Extract the type of the request parameter from useChat's experimental_prepareRequestBody
-type PrepareRequestBodyRequest = Parameters<
-  NonNullable<
-    NonNullable<
-      Parameters<typeof useChat>[0]
-    >["experimental_prepareRequestBody"]
-  >
->[0];
+import type { AgentDataPart } from "@mastra/ai-sdk";
 
 /**
  * Gets the thread ID from local storage and prefixes it.
@@ -33,32 +23,60 @@ export function getPrefixedThreadId(threadPrefix: string): string | null {
 }
 
 /**
- * Shared experimental_prepareRequestBody function for useChat
- * This sends only the last message to the API since Mastra handles message persistence rather than
- * maintaining the full conversation history locally. Send all messages if you want to store the full conversation
- * history locally (but make sure to remove memory usage from the agent).
- * See docs: https://mastra.ai/en/examples/memory/use-chat#preventing-message-duplication-with-usechat
- *
- * @param threadPrefix - Prefix to add to the thread ID to ensure uniqueness per agent (in a real application, you would probably just have a fully unique thread ID for every conversation)
- * @param requestBody - Additional request body to include in the request
+ * Type guard to check if a part is a tool agent part with an id
  */
-export function createPrepareRequestBody(
-  threadPrefix: string,
-  requestBody?: Record<string, unknown>
-) {
-  return (request: PrepareRequestBodyRequest) => {
-    const lastMessage =
-      request.messages.length > 0
-        ? request.messages[request.messages.length - 1]
-        : null;
+export function isToolAgentPart(
+  part: UIMessage["parts"][number]
+): part is AgentDataPart & { data: { id: string } } {
+  return part.type === "data-tool-agent";
+}
 
-    return {
-      ...(requestBody || {}),
-      messages: lastMessage ? [lastMessage] : [],
-      threadId: getPrefixedThreadId(threadPrefix),
-      userId: localStorage.getItem(USER_ID_STORAGE_KEY),
-    };
-  };
+/**
+ * Extracts the streamId from a message's first part if it's a tool agent part
+ */
+export function getStreamIdFromMessage(message: UIMessage): string | undefined {
+  const part = message.parts?.[0];
+  return part && isToolAgentPart(part) ? part.data.id : undefined;
+}
+
+/**
+ * Converts a single part to content string
+ */
+export function partToString(part: UIMessage["parts"][number]): string {
+  if (typeof part !== "object" || part === null || !("type" in part)) {
+    return "";
+  }
+
+  const typedPart = part as { type: string; [key: string]: unknown };
+
+  if (typedPart.type.startsWith("tool-")) {
+    const toolToStringify = {
+      type: typedPart.type.split("tool-")[1],
+      input: typedPart.input,
+    }
+    return `Tool: ${JSON.stringify(toolToStringify)}`;
+  }
+
+  switch (typedPart.type) {
+    case "text":
+      return (typedPart as unknown as { text: string }).text || "";
+    case "reasoning":
+      return (
+        (typedPart as unknown as { reasoning: string }).reasoning || ""
+      );
+    case "source":
+      return `Source: ${JSON.stringify(typedPart.source)}`;
+    case "data-tool-agent":
+      return `Tool Agent: ${JSON.stringify(typedPart.data)}`;
+    case "file":
+      return `File: ${
+        (typedPart as unknown as { mimeType: string }).mimeType
+      }`;
+    // case "step-start":
+    //   return "--- Step Start ---";
+    default:
+      return "";
+  }
 }
 
 /**
@@ -67,44 +85,5 @@ export function createPrepareRequestBody(
 export function partsToString(parts: UIMessage["parts"]): string {
   if (!parts || parts.length === 0) return "";
 
-  return parts
-    .map((part) => {
-      if (typeof part !== "object" || part === null || !("type" in part)) {
-        return "";
-      }
-
-      const typedPart = part as { type: string; [key: string]: unknown };
-
-      switch (typedPart.type) {
-        case "text":
-          return (typedPart as unknown as { text: string }).text || "";
-        case "reasoning":
-          return (
-            (typedPart as unknown as { reasoning: string }).reasoning || ""
-          );
-        case "tool-invocation":
-          const toolInvocation = typedPart.toolInvocation as unknown;
-          if (
-            toolInvocation &&
-            typeof toolInvocation === "object" &&
-            "toolName" in toolInvocation
-          ) {
-            return `Using tool: ${
-              (toolInvocation as { toolName: string }).toolName
-            }`;
-          }
-          return `Tool: ${JSON.stringify(typedPart.toolInvocation)}`;
-        case "source":
-          return `Source: ${JSON.stringify(typedPart.source)}`;
-        case "file":
-          return `File: ${
-            (typedPart as unknown as { mimeType: string }).mimeType
-          }`;
-        // case "step-start":
-        //   return "--- Step Start ---";
-        default:
-          return "";
-      }
-    })
-    .join("\n");
+  return parts.map(partToString).join("\n");
 }

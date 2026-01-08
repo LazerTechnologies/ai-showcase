@@ -1,5 +1,7 @@
 import { generalAgent } from "./general-agent";
 import { UserService } from "../../../services/user";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
@@ -8,9 +10,19 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
 
   const generalStream = await generalAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
   });
 
-  return generalStream.toDataStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkStream(generalStream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

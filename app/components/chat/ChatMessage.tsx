@@ -1,23 +1,21 @@
 import { User, Bot, Wrench } from "lucide-react";
 import Markdown from "react-markdown";
 import Codeblock from "../markdown/codeblock";
-import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
-import { Message as UIMessage } from "ai";
-import { partsToString } from "@/app/utils/message-utils";
+import { UIMessage } from "ai";
+import { isToolAgentPart, partToString } from "@/app/utils/message-utils";
 import {
   MessageColors,
   USER_MESSAGE_COLORS,
 } from "@/app/constants/message-colors";
 
 interface ChatMessageProps {
-  message: MultiAgentUIMessage | UIMessage;
+  part: UIMessage["parts"][number];
+  role: UIMessage["role"];
   messageColors: MessageColors;
 }
 
-function isToolMessage(message: MultiAgentUIMessage | UIMessage): boolean {
-  return (
-    message.parts?.some((part) => part.type === "tool-invocation") ?? false
-  );
+function isToolPart(part: UIMessage["parts"][number]): boolean {
+  return part.type.startsWith("tool-");
 }
 
 interface AvatarProps {
@@ -57,14 +55,14 @@ function Avatar({ isUser, isTool, streamId, messageColors }: AvatarProps) {
 }
 
 interface MessageContentProps {
-  message: MultiAgentUIMessage | UIMessage;
+  part: UIMessage["parts"][number];
   isUser: boolean;
   isTool: boolean;
   messageColors?: MessageColors;
 }
 
 function MessageContent({
-  message,
+  part,
   isUser,
   isTool,
   messageColors,
@@ -74,7 +72,7 @@ function MessageContent({
     : messageColors?.streamColor || "";
 
   const borderClass = isTool ? "border border-opacity-20" : "";
-  const content = partsToString(message.parts);
+  const content = partToString(part);
 
   if (isTool) {
     return (
@@ -102,10 +100,15 @@ function MessageContent({
   );
 }
 
-export function ChatMessage({ message, messageColors }: ChatMessageProps) {
-  const isUser = message.role === "user";
-  const isTool = isToolMessage(message);
-  const streamId = "streamId" in message ? message.streamId : undefined;
+export function ChatMessage({ part, role, messageColors }: ChatMessageProps) {
+  const isUser = role === "user";
+
+  if (!part) {
+    return null;
+  }
+
+  const isTool = isToolPart(part);
+  const streamId = isToolAgentPart(part) ? part.data.id : undefined;
 
   return (
     <div
@@ -123,7 +126,7 @@ export function ChatMessage({ message, messageColors }: ChatMessageProps) {
           messageColors={messageColors}
         />
         <MessageContent
-          message={message}
+          part={part}
           isUser={isUser}
           isTool={isTool}
           messageColors={messageColors}

@@ -1,5 +1,7 @@
 import { textToSqlAgent } from "./agent";
 import { UserService } from "../../../services/user";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
@@ -8,9 +10,19 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
 
   const stream = await textToSqlAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
   });
 
-  return stream.toDataStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkStream(stream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

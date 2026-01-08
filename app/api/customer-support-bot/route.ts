@@ -1,23 +1,35 @@
-import { RuntimeContext } from "@mastra/core/runtime-context";
+import { RequestContext } from '@mastra/core/request-context';
 import { customerSupportAgent } from "./agent";
 import { CustomerSupportRuntimeContextSchema } from "./shared";
 import { z } from "zod";
 import { UserService } from "../../../services/user";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
-  const runtimeContext = new RuntimeContext<
+  const requestContext = new RequestContext<
     z.infer<typeof CustomerSupportRuntimeContextSchema>
   >();
   const user = await UserService.createIfNotExists(userId);
-  runtimeContext.set("userId", user.id);
+  requestContext.set("userId", user.id);
   const stream = await customerSupportAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
-    runtimeContext,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
+    requestContext,
   });
 
-  return stream.toDataStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkStream(stream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

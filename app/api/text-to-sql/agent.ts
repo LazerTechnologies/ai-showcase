@@ -1,7 +1,7 @@
 import { Agent } from "@mastra/core/agent";
 import { threadMemory } from "../memory";
 import { flash } from "../../utils/models";
-import { createTool } from "@mastra/core";
+import { createTool } from '@mastra/core/tools';
 import { z } from "zod";
 import { databaseSchema, getDatabaseSchema } from "./shared";
 import { db } from "../../db/db";
@@ -26,6 +26,7 @@ const schemaFetcher = createTool({
 });
 
 const maliciousIntentCheckerAgent = new Agent({
+  id: 'malicious-intent-checker-agent',
   name: "malicious-intent-checker-agent",
   instructions: `You are an expert SQL assistant. You will be given a SQL query and you will need to check if it is malicious.
 
@@ -56,14 +57,16 @@ const executeQuery = createTool({
   outputSchema: z.object({
     results: z.array(z.any()),
   }),
-  execute: async ({ context }) => {
+  execute: async (inputData) => {
     const maliciousIntent = await maliciousIntentCheckerAgent.generate(
-      `Check the following query for malicious intent: ${context.query}`,
+      `Check the following query for malicious intent: ${inputData.query}`,
       {
-        output: z.object({
-          safetyLevel: z.enum(["malicious", "safe", "unknown"]),
-          explanation: z.string(),
-        }),
+        structuredOutput: {
+          schema: z.object({
+            safetyLevel: z.enum(["malicious", "safe", "unknown"]),
+            explanation: z.string(),
+          })
+        },
       }
     );
 
@@ -71,7 +74,7 @@ const executeQuery = createTool({
       throw new Error(maliciousIntent.object.explanation);
     } else if (maliciousIntent.object.safetyLevel === "unknown") {
       console.warn(
-        `Unknown safety level for query. Explanation: ${maliciousIntent.object.explanation}. Query: ${context.query}`
+        `Unknown safety level for query. Explanation: ${maliciousIntent.object.explanation}. Query: ${inputData.query}`
       );
     }
 
@@ -81,7 +84,7 @@ const executeQuery = createTool({
     // could also be other checks to put in place beyond just these keywords.
     const bannedKeywords = ["DROP", "DELETE", "UPDATE", "ALTER", "TRUNCATE"];
     const bannedKeywordsFound = bannedKeywords.find((keyword) =>
-      context.query.includes(keyword)
+      inputData.query.includes(keyword)
     );
     if (bannedKeywordsFound) {
       throw new Error(
@@ -93,12 +96,13 @@ const executeQuery = createTool({
       );
     }
 
-    const results = await db.execute(sql.raw(context.query));
+    const results = await db.execute(sql.raw(inputData.query));
     return { results: results.rows };
   },
 });
 
 export const textToSqlAgent = new Agent({
+  id: 'text-to-sql-agent',
   name: "text-to-sql-agent",
   instructions: `You are an expert SQL assistant that helps users convert natural language queries into SQL statements and provides intelligent analysis of database results.
 

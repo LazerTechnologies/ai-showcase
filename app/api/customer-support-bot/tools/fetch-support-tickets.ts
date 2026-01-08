@@ -24,13 +24,16 @@ export const fetchSupportTicketsTool = createTool({
     ),
     totalCount: z.number(),
   }),
-  execute: async ({ context, runtimeContext }) => {
+  execute: async (inputData, context) => {
     try {
-      const { userId } = validateRuntimeContext(runtimeContext);
+      if (!context?.requestContext) {
+        throw new Error("Request context is required");
+      }
+      const { userId } = validateRuntimeContext(context?.requestContext);
 
       const tickets = await SupportTicketService.getTicketsByUser({
         requestingUserId: userId,
-        statusFilter: context.status === "all" ? undefined : context.status,
+        statusFilter: inputData.status === "all" ? undefined : inputData.status,
       });
 
       const ticketSummaries = tickets.map((ticket) => ({

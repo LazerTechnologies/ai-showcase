@@ -1,7 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { checkGeminiStatus } from "../actions/check-gemini-status";
+import { useMutation } from "@tanstack/react-query";
+import { checkModelStatus } from "../actions/check-model-status";
 import {
   Tooltip,
   TooltipContent,
@@ -9,17 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const TEN_MINUTES = 10 * 60 * 1000;
-
 export function ApiStatusIndicator() {
   const {
+    mutate,
     data: status,
-    isLoading,
+    isPending,
     error,
-  } = useQuery({
-    queryKey: ["gemini-status"],
-    queryFn: checkGeminiStatus,
-    refetchInterval: TEN_MINUTES,
+  } = useMutation({
+    mutationFn: checkModelStatus,
     retry: false,
   });
 
@@ -30,31 +27,62 @@ export function ApiStatusIndicator() {
       }
     : status;
 
-  if (isLoading) {
+  const handleClick = () => {
+    if (!isPending) {
+      mutate();
+    }
+  };
+
+  if (!status && !error && !isPending) {
     return (
-      <div className="w-3 h-3 rounded-full bg-gray-300 animate-pulse mr-2"></div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleClick}
+              className="flex gap-2 items-center mr-2 cursor-pointer hover:opacity-80 transition-opacity"
+            >
+              <div className="w-3 h-3 rounded-full bg-current"></div>
+              <span className="text-sm hidden md:block">Check API status</span>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>Click to check model API status</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  if (isPending) {
+    return (
+      <div className="flex gap-2 items-center mr-2 pointer-events-none opacity-60">
+        <div className="w-3 h-3 rounded-full bg-gray-300 animate-pulse"></div>
+        <span className="text-sm hidden md:block">Checking...</span>
+      </div>
     );
   }
 
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
-          <div className="flex gap-2 items-center mr-2">
+        <TooltipTrigger asChild>
+          <button
+            onClick={handleClick}
+            className="flex gap-2 items-center mr-2 cursor-pointer hover:opacity-80 transition-opacity"
+          >
             <div
               className={`w-3 h-3 rounded-full ${
                 finalStatus?.success ? "bg-green-500" : "bg-red-500"
               }`}
             ></div>
             <span className="text-sm hidden md:block">
-              {finalStatus?.success ? "Connected" : "Gemini is down"}
+              {finalStatus?.success ? "Connected" : "Model is down"}
             </span>
-          </div>
+          </button>
         </TooltipTrigger>
         <TooltipContent>
           {finalStatus?.success
-            ? "Gemini API is operational"
-            : `Gemini API error: ${finalStatus?.error || "Unknown error"}`}
+            ? "Model API is operational"
+            : `Model API error: ${finalStatus?.error || "Unknown error"}`}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

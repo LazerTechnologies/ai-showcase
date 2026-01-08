@@ -3,28 +3,38 @@
 import { useRef, useEffect, useMemo } from "react";
 import { Bot } from "lucide-react";
 import { ChatMessage } from "./ChatMessage";
-import { MultiAgentUIMessage } from "@/app/hooks/useMultiAgentStream";
-import { Message as UIMessage } from "ai";
+import { UIMessage } from "ai";
 import {
   DEFAULT_MESSAGE_COLORS,
   MESSAGE_COLOR_SETS,
   MessageColors,
 } from "@/app/constants/message-colors";
+import { getStreamIdFromMessage } from "@/app/utils/message-utils";
 
 interface MessagesContainerProps {
   isSingleAgent?: boolean;
-  messages: (MultiAgentUIMessage | UIMessage)[];
+  messages: UIMessage[];
   isResponseLoading: boolean;
 }
 
-const supportedPartsSequence = ["tool-invocation", "text"];
+const isPartSupported = (part: UIMessage["parts"][number]) => {
+  if (part.type === "text") {
+    return true;
+  }
+  if (part.type === "data-tool-agent") {
+    // Sub-agent messages
+    return true;
+  }
+  if (part.type.startsWith("tool-")) {
+    return true;
+  }
+  return false;
+};
 
 /**
  * Re-arrange messages so that they only have one part for UI purposes.
  */
-const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
-  messages: T[]
-): T[] => {
+const separateMessages = <T extends UIMessage>(messages: T[]): T[] => {
   const result: T[] = [];
   for (const message of messages) {
     if (!message.parts) {
@@ -33,18 +43,8 @@ const separateMessages = <T extends UIMessage | MultiAgentUIMessage>(
     if (message.parts.length === 1) {
       result.push(message);
     } else {
-      // Tools go above text
-      const sortedParts = message.parts.sort((a, b) => {
-        if (a.type === "tool-invocation") {
-          return -1;
-        }
-        if (b.type === "tool-invocation") {
-          return 1;
-        }
-        return 0;
-      });
-      sortedParts.forEach((part) => {
-        if (supportedPartsSequence.includes(part.type)) {
+      message.parts.forEach((part) => {
+        if (isPartSupported(part)) {
           result.push({ ...message, parts: [part] });
         }
       });
@@ -106,8 +106,9 @@ export function MessagesContainer({
     const uniqueStreams = new Set<string>();
 
     messages.forEach((message) => {
-      if ("streamId" in message && message.streamId) {
-        uniqueStreams.add(message.streamId);
+      const streamId = getStreamIdFromMessage(message);
+      if (streamId) {
+        uniqueStreams.add(streamId);
       }
     });
 
@@ -145,21 +146,28 @@ export function MessagesContainer({
       ) : (
         <div className="space-y-1">
           {messages.map((message) => {
-            const streamId =
-              "streamId" in message ? message.streamId : undefined;
+            const streamId = getStreamIdFromMessage(message);
             const messageColors = streamId
               ? streamColorMap.get(streamId)
               : DEFAULT_MESSAGE_COLORS;
 
             let messageKey = `${message.id}-${message.role}`;
-            if (message.parts?.[0]?.type === "tool-invocation") {
-              messageKey += `-${message.parts?.[0]?.toolInvocation?.state}-${message.parts?.[0]?.toolInvocation.toolCallId}`;
+            const part = message.parts?.[0];
+            if (part?.type.startsWith("tool-") && "toolCallId" in part) {
+              messageKey += `-${part.toolCallId}`;
+            } else if (part?.type === "text") {
+              messageKey += `-${part.text.length}`;
+            }
+
+            if (!part) {
+              return null;
             }
 
             return (
               <ChatMessage
                 key={messageKey}
-                message={message}
+                part={part}
+                role={message.role === "system" ? "assistant" : message.role}
                 messageColors={messageColors || DEFAULT_MESSAGE_COLORS}
               />
             );

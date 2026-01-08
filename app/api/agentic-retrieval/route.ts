@@ -2,11 +2,12 @@ import { Agent } from "@mastra/core/agent";
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { PineconeVector } from "@mastra/pinecone";
-import { embed } from "ai";
+import { embed, createUIMessageStream, createUIMessageStreamResponse } from "ai";
 import { PINECONE_INDEX_NAME } from "../../constants";
 import { threadMemory } from "../memory";
 import { flash, textEmbedding } from "../../utils/models";
 import { UserService } from "../../../services/user";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 interface DriveFile {
   id: string;
@@ -122,8 +123,8 @@ const retrieveByNameOrIdTool = createTool({
     found: z.boolean(),
     message: z.string(),
   }),
-  execute: async ({ context }) => {
-    const { query } = context;
+  execute: async (inputData) => {
+    const { query } = inputData;
 
     let file = mockDriveFiles.find((f) => f.id === query);
 
@@ -188,8 +189,8 @@ const keywordSearchTool = createTool({
     totalFound: z.number(),
     message: z.string(),
   }),
-  execute: async ({ context }) => {
-    const { keywords, limit = 5 } = context;
+  execute: async (inputData) => {
+    const { keywords, limit = 5 } = inputData;
     const searchTerms = keywords.toLowerCase().split(/\s+/);
 
     const scoredFiles = mockDriveFiles
@@ -266,12 +267,13 @@ const vectorSearchTool = createTool({
     query: z.string(),
     namespace: z.string(),
   }),
-  execute: async ({ context }) => {
-    const { query, limit = 3 } = context;
+  execute: async (inputData) => {
+    const { query, limit = 3 } = inputData;
     const namespace = "agentic-retrieval";
 
     try {
       const store = new PineconeVector({
+        id: 'agentic-retrieval-pinecone-store',
         apiKey: process.env.PINECONE_API_KEY!,
       });
 
@@ -314,6 +316,7 @@ const vectorSearchTool = createTool({
 });
 
 const agenticRetrievalAgent = new Agent({
+  id: 'agentic-retrieval-agent',
   name: "agentic-retrieval-agent",
   instructions: `You are an intelligent retrieval agent that helps users find information from Google Drive files. When the user asks for a file, you should use the most appropriate search method to find the file.`,
   model: flash,
@@ -332,9 +335,19 @@ export async function POST(req: Request) {
   const user = await UserService.createIfNotExists(userId);
 
   const agentStream = await agenticRetrievalAgent.stream(messages, {
-    resourceId: user.id,
-    threadId,
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
   });
 
-  return agentStream.toDataStreamResponse();
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkStream(agentStream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

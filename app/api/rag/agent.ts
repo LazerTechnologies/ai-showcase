@@ -4,10 +4,11 @@ import { PineconeVector } from "@mastra/pinecone";
 import { embed } from "ai";
 import { z } from "zod";
 import { PINECONE_INDEX_NAME } from "../../constants";
-import { flash, textEmbedding } from "../../utils/models";
+import { flash, textEmbeddingProviderOptions, textEmbedding } from "../../utils/models";
 
 function createCustomVectorSearchTool(namespace: string) {
   const store = new PineconeVector({
+    id: `rag-pinecone-store`,
     apiKey: process.env.PINECONE_API_KEY!,
   });
 
@@ -27,13 +28,14 @@ function createCustomVectorSearchTool(namespace: string) {
         .default(5)
         .describe("Number of results to return"),
     }),
-    execute: async ({ context }) => {
-      const { query, topK } = context;
+    execute: async (inputData) => {
+      const { query, topK } = inputData;
       try {
         // Generate embedding for the query text using the same model used for document chunks
         const { embedding: queryVector } = await embed({
           model: textEmbedding,
           value: query,
+          providerOptions: textEmbeddingProviderOptions,
         });
 
         // Perform actual vector search using the Pinecone store
@@ -76,6 +78,7 @@ export function createRAGAgent(namespace: string) {
   const vectorSearchTool = createCustomVectorSearchTool(namespace);
 
   return new Agent({
+    id: `rag-agent-${namespace}`,
     name: "rag-agent",
     instructions: `You are a RAG (Retrieval-Augmented Generation) agent. You have access to a knowledge base stored in a Pinecone vector database with index name "${PINECONE_INDEX_NAME}" and namespace "${namespace}". 
 

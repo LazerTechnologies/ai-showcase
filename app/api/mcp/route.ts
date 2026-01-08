@@ -1,15 +1,31 @@
 import { createMCPAgent } from "./agent";
 import { UserService } from "../../../services/user";
+import { createUIMessageStream, createUIMessageStreamResponse } from "ai";
+import { toAISdkStream } from "@mastra/ai-sdk";
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages, userId, threadId } = await req.json();
   const user = await UserService.createIfNotExists(userId);
-  const mcpAgentInstance = await createMCPAgent();
-  const stream = await mcpAgentInstance.stream(messages, {
-    resourceId: user.id,
-    threadId,
+  const { agent, mcpClient } = await createMCPAgent();
+  const stream = await agent.stream(messages, {
+    memory: {
+      resource: user.id,
+      thread: threadId,
+    },
+    onFinish: async () => {
+      await mcpClient.disconnect();
+    }
   });
-  return stream.toDataStreamResponse();
+
+  const uiMessageStream = createUIMessageStream({
+    execute: async ({ writer }) => {
+      writer.merge(toAISdkStream(stream, { from: 'agent' }));
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream: uiMessageStream,
+  });
 }

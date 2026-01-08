@@ -22,19 +22,22 @@ export const getTicketDetailsTool = createTool({
     found: z.boolean(),
     message: z.string(),
   }),
-  execute: async ({ context, runtimeContext }) => {
+  execute: async (inputData, context) => {
     try {
-      const { userId } = validateRuntimeContext(runtimeContext);
+      if (!context?.requestContext) {
+        throw new Error("Request context is required");
+      }
+      const { userId } = validateRuntimeContext(context?.requestContext);
 
       const ticket = await SupportTicketService.getTicketById({
         requestingUserId: userId,
-        ticketId: context.ticketId,
+        ticketId: inputData.ticketId,
       });
 
       if (!ticket) {
         return {
           found: false,
-          message: `Ticket ${context.ticketId} not found or you don't have permission to view it.`,
+          message: `Ticket ${inputData.ticketId} not found or you don't have permission to view it.`,
         };
       }
 
@@ -47,7 +50,7 @@ export const getTicketDetailsTool = createTool({
           updatedAt: ticket.updated_at,
         },
         found: true,
-        message: `Retrieved details for ticket ${context.ticketId}`,
+        message: `Retrieved details for ticket ${inputData.ticketId}`,
       };
     } catch (error) {
       console.error("Error fetching ticket details:", error);
