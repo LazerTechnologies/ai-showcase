@@ -4,7 +4,7 @@ import { PineconeVector } from "@mastra/pinecone";
 import { embed } from "ai";
 import { z } from "zod";
 import { PINECONE_INDEX_NAME } from "../../constants";
-import { flash, textEmbedding } from "../../utils/models";
+import { flash, textEmbeddingProviderOptions, textEmbedding } from "../../utils/models";
 
 function createCustomVectorSearchTool(namespace: string) {
   const store = new PineconeVector({
@@ -35,6 +35,7 @@ function createCustomVectorSearchTool(namespace: string) {
         const { embedding: queryVector } = await embed({
           model: textEmbedding,
           value: query,
+          providerOptions: textEmbeddingProviderOptions,
         });
 
         // Perform actual vector search using the Pinecone store
