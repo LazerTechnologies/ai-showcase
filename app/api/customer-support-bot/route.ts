@@ -20,7 +20,8 @@ export async function POST(req: Request) {
       resource: user.id,
       thread: threadId,
     },
-    requestContext,
+    // TODO: Bug in Mastra typing, check in a future version
+    requestContext: requestContext as RequestContext<unknown>,
   });
 
   const uiMessageStream = createUIMessageStream({
